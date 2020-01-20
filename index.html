@@ -52,13 +52,24 @@
       </div>
       <div class="col-auto px-2">
         <div id="faqButton">
-          <p class="h4"><a class="badge badge-pill badge-light p-0" href="#" data-toggle="modal" data-target="#faqModal">?</a></p>
+          <p class="h4"><a class="badge badge-pill badge-light p-0" alt="Help and Frequently Asked Questions" href="#" data-toggle="modal" data-target="#faqModal">?</a></p>
         </div>
-        <div class="modal fade" id="faqModal" tabindex="-1"></div>
+        <div class="modal fade" id="faqModal" tabindex="-1" role="dialog" aria-labelledby="faqModalTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="faqModalTitle">Welcome to simpleMITs!</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+              </div>
+              <div class="modal-body" id="faqModalBody"></div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <p class="text-center"><a class="badge badge-pill badge-light text-muted refresh p-0" href="#" onClick="window.location.reload();">&orarr;</a></p>
+    <p class="text-center"><a class="badge badge-pill badge-light refresh p-0" href="#" onClick="window.location.reload();">&orarr;</a></p>
 
   </div>
 

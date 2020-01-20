@@ -1,5 +1,5 @@
 $( function(){
-  $( '#faqModal' ).load( 'faq.html' );
+  $( '#faqModalBody' ).load( 'faq.html' );
 });
 
 
