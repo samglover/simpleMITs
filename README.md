@@ -1,2 +1,3 @@
 # simpleMITs
- A simple tool for Most Important Tasks.
+
+A simple tool for keeping track of your Most Important Tasks (MITs).

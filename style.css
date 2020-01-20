@@ -1,0 +1,53 @@
+.task.done,
+.task:nth-child( n + 6 ) {
+  opacity: .35;
+}
+
+.taskNum {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  width: 30px;
+  -webkit-appearance: none;
+}
+
+  .taskNum > * {
+    display: block;
+    font-weight: bolder;
+  }
+
+  .taskNum .checkmark {
+    display: none;
+  }
+
+  .task.done .number,
+  a.taskNum:hover .number {
+    display: none;
+  }
+
+  .task.done .checkmark,
+  .taskNum:hover .checkmark {
+    display: block;
+  }
+
+.task.done .taskDesc {
+  text-decoration: line-through;
+}
+
+.taskDesc .badge {
+  font-weight: normal;
+}
+
+.close {
+  float: unset;
+}
+
+button.addTask {
+  font-weight: bolder;
+}
+
+
+#faqButton a {
+  line-height: 18px;
+  width: 18px;
+}
