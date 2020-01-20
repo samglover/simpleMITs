@@ -1,3 +1,5 @@
+/* Tasks */
+
 .task.done,
 .task:nth-child( n + 6 ) {
   opacity: .35;
@@ -13,54 +15,59 @@
   -webkit-appearance: none;
 }
 
+  .task.done .taskNum {
+    background-color: #6c757d;
+  }
+
   a.badge-secondary.taskNum:focus,
   a.badge-secondary.taskNum:hover {
     background-color: #78828a;
     box-shadow: 0 0 0 0.2rem #484e54;
   }
 
-  .taskNum > * {
-    display: block;
-    font-weight: bolder;
-  }
+    .taskNum > * {
+      display: block;
+      font-weight: bolder;
+    }
 
-  .taskNum .checkmark {
-    display: none;
-  }
+    .taskNum .checkmark {
+      display: none;
+    }
 
-  .task.done .number,
-  .taskNum:hover .number {
-    display: none;
-  }
+    .task.done .number,
+    .taskNum:hover .number {
+      display: none;
+    }
 
-  .task.done .checkmark,
-  .taskNum:hover .checkmark {
-    display: block;
-  }
-
-.task.done .taskNum {
-  background-color: #6c757d;
-}
+    .task.done .checkmark,
+    .taskNum:hover .checkmark {
+      display: block;
+    }
 
 .task.done .taskDesc {
   text-decoration: line-through;
 }
 
-.taskDesc .badge {
-  font-weight: normal;
-}
+  .taskDesc .badge {
+    font-weight: normal;
+  }
 
 .close {
   float: unset;
 }
+
+
+/* Add Task Form */
 
 button.addTask {
   font-weight: bolder;
 }
 
 
+/* Footer */
+
 a.refresh,
 #faqButton a {
-  line-height: 18px;
-  width: 18px;
+  line-height: 28px;
+  width: 28px;
 }
