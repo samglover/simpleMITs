@@ -7,7 +7,7 @@
 
 .taskNum {
   background-color: #dae0e5;
-  box-shadow: 0 0 0 0.2rem #6c757d;
+  box-shadow: 0 0 0 0.2rem #bcc7d0;
   height: 30px;
   line-height: 30px;
   text-align: center;
@@ -17,12 +17,13 @@
 
   .task.done .taskNum {
     background-color: #6c757d;
+    box-shadow: 0 0 0 0.2rem #6c757d;
   }
 
   a.badge-secondary.taskNum:focus,
   a.badge-secondary.taskNum:hover {
     background-color: #78828a;
-    box-shadow: 0 0 0 0.2rem #484e54;
+    box-shadow: 0 0 0 0.2rem #545b62;
   }
 
     .taskNum > * {
