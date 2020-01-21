@@ -6,10 +6,11 @@
 }
 
 .taskNum {
-  background-color: #dae0e5;
-  box-shadow: 0 0 0 0.2rem #bcc7d0;
+  background-color: #6c757d;
+  box-shadow: 0 0 0 0.2rem #545b62;
   height: 30px;
   line-height: 30px;
+  opacity: .5;
   text-align: center;
   width: 30px;
   -webkit-appearance: none;
@@ -22,8 +23,8 @@
 
   a.badge-secondary.taskNum:focus,
   a.badge-secondary.taskNum:hover {
-    background-color: #78828a;
-    box-shadow: 0 0 0 0.2rem #545b62;
+    box-shadow: 0 0 0 0.2rem #3c4247;
+    opacity: .75;
   }
 
     .taskNum > * {
@@ -62,6 +63,11 @@
 
 button.addTask {
   font-weight: bolder;
+  opacity: .5;
+}
+
+button.addTask:hover {
+  opacity: .75;
 }
 
 
