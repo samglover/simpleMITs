@@ -5,7 +5,12 @@ $( function(){
 
 function getMITs() {
 
-  let mits          = JSON.parse( localStorage.getItem( 'simpleMITs' ) );
+  let mits = JSON.parse( localStorage.getItem( 'simpleMITs' ) );
+
+  if ( !mits ) {
+    mits = [];
+  }
+
   let taskList      = document.getElementById( 'taskList' );
   let tasksNotDone  = 0;
 
@@ -26,7 +31,7 @@ function getMITs() {
 
   });
 
-  taskList.innerHTML    = '';
+  taskList.innerHTML = '';
 
   for ( let i = 0; i < mits.length; i++ ) {
 
@@ -79,6 +84,15 @@ function getMITs() {
 
   }
 
+
+  // Adds a "Clear All" button if there is more than one task.
+  if ( mits.length > 1 ) {
+
+    $( '#clearAllButton' ).addClass( 'd-block' );
+
+  }
+
+
   // Changes the field label depending on the number of .notDone tasks.
   let inputLabel = document.getElementById( 'newTaskInputLabel' );
 
@@ -89,7 +103,7 @@ function getMITs() {
     case 0 :
       inputLabel.innerHTML = 'What\'s the most important thing you could do today?';
       break;
-      
+
     case 1 :
       inputLabel.innerHTML = 'What\'s the next really important thing you could do today?';
       break;
@@ -109,8 +123,6 @@ function getMITs() {
       break;
 
   }
-
-  console.log( tasksNotDone );
 
 }
 
@@ -201,6 +213,14 @@ function delTask( id ) {
   }
 
   localStorage.setItem( 'simpleMITs', JSON.stringify( mits ) );
+
+  getMITs();
+
+}
+
+function clearAll() {
+
+  localStorage.removeItem( 'simpleMITs' );
 
   getMITs();
 
