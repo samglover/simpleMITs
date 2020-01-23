@@ -5,8 +5,14 @@ $( function(){
 
 function getMITs() {
 
-  let mits       = JSON.parse( localStorage.getItem( 'simpleMITs' ) );
-  let taskList   = document.getElementById( 'taskList' );
+  let mits = JSON.parse( localStorage.getItem( 'simpleMITs' ) );
+
+  if ( !mits ) {
+    mits = [];
+  }
+
+  let taskList      = document.getElementById( 'taskList' );
+  let tasksNotDone  = 0;
 
   mits.sort( function ( a, b ) {
 
@@ -34,6 +40,10 @@ function getMITs() {
     let desc    = mits[ i ].description;
     let status  = mits[ i ].status;
 
+    if ( status == 'notDone' ) {
+      tasksNotDone++;
+    }
+
     taskList.innerHTML += '<div class="list-group-item lead task ' + status + '" id="' + id + '">' +
                             '<div class="row mx-n2">' +
                               '<div class="col-auto px-2"><a type="button" class="badge badge-pill badge-secondary p-0 taskNum" href="#" onclick="changeStatus(\''+id+'\')"><span class="number">' + ( i + 1 ) + '</span><span class="checkmark">&check;</span></a></div>' +
@@ -45,6 +55,7 @@ function getMITs() {
                           '</div>';
 
 
+    // Adds a label if the task is more than 1 day (24 hours) old.
     let thisDate  = new Date();
     let taskDate  = new Date( date );
     let timeDiff  = thisDate.getTime() - taskDate.getTime();
@@ -68,7 +79,48 @@ function getMITs() {
       let ageBadge  = '<span class="badge badge-pill badge-light text-muted">' + daysOld + ' ' + days + ' old</span>';
 
       $( ageBadge ).appendTo( '#' + id + '_desc' );
+
     }
+
+  }
+
+
+  // Adds a "Clear All" button if there is more than one task.
+  if ( mits.length > 1 ) {
+
+    $( '#clearAllButton' ).addClass( 'd-block' );
+
+  }
+
+
+  // Changes the field label depending on the number of .notDone tasks.
+  let inputLabel = document.getElementById( 'newTaskInputLabel' );
+
+  inputLabel.innerHTML = '';
+
+  switch ( tasksNotDone ) {
+
+    case 0 :
+      inputLabel.innerHTML = 'What\'s the most important thing you could do today?';
+      break;
+
+    case 1 :
+      inputLabel.innerHTML = 'What\'s the next really important thing you could do today?';
+      break;
+
+    case 2 :
+      inputLabel.innerHTML = 'What\'s another important thing you could do today?';
+      break;
+
+    case 3 :
+    case 4 :
+      inputLabel.innerHTML = 'Need to make sure you get something else done today?';
+      break;
+
+    default :
+      inputLabel.innerHTML = 'That\'s probably enough, but you can add more if you really want to.';
+      // $( inputLabel ).addClass( 'sr-only' );
+      break;
 
   }
 
@@ -161,6 +213,14 @@ function delTask( id ) {
   }
 
   localStorage.setItem( 'simpleMITs', JSON.stringify( mits ) );
+
+  getMITs();
+
+}
+
+function clearAll() {
+
+  localStorage.removeItem( 'simpleMITs' );
 
   getMITs();
 
