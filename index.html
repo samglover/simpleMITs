@@ -36,7 +36,7 @@
 
     <div class="list-group" id="taskList"></div>
 
-    <div class="d-none" id="clearAllButton">
+    <div id="clearAllButton">
       <p class="text-right"><a class="badge badge-pill badge-light text-muted mt-3" href="#" data-toggle="modal" data-target="#clearAllConfirmation">Clear All</a></p>
     </div>
     <div class="modal fade" id="clearAllConfirmation" tabindex="-1" role="dialog" aria-labelledby="clearAllModalTitle" aria-hidden="true">
@@ -46,7 +46,7 @@
             <h4 class="modal-title" id="clearAllModalTitle">Clear <em>all</em> your MITs?</h4>
           </div>
           <div class="modal-body row mx-n2" id="clearAllModalBody">
-            <div class="col px-2"><button type="button" class="btn btn-block btn-danger" onClick="clearAll();">Clear All</button></div>
+            <div class="col px-2"><button type="button" class="btn btn-block btn-danger" onClick="clearAll();" data-dismiss="modal">Clear All</button></div>
             <div class="col px-2"><button type="button" class="btn btn-block btn-secondary" data-dismiss="modal">Cancel</button></div>
           </div>
         </div>
