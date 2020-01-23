@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
-## [0.2.0] - 2020-01-21
+## [0.2.0] - 2020-01-22
 
 ### [Added]
 - If there is more than one task, use the Clear All button to clear them all at once.
