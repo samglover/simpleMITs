@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. The format 
 - Clear all button with undo.
 
 ## [Unreleased]
+- Change the input field label depending on the number of uncompleted tasks.
 
 ## [0.1.0] - 2020-01-21
 
