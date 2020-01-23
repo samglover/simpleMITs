@@ -7,8 +7,6 @@ All notable changes to this project will be documented in this file. The format 
 - Drag-and-drop reordering.
 - Pull to refresh.
 - Include roles & ARIA labels for accessibility.
-- Undo task deletion.
-- Clear all button with undo.
 
 ## [Unreleased]
 
