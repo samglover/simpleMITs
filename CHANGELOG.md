@@ -12,6 +12,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.2.1] - 2020-01-22
+
+### [Fixed]
+- Clicking Clear All in the modal also dismisses the modal.
+
 ## [0.2.0] - 2020-01-22
 
 ### [Added]

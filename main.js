@@ -85,11 +85,11 @@ function getMITs() {
   }
 
 
-  // Adds a "Clear All" button if there is more than one task.
+  // Shows a "Clear All" button if there is more than one task.
   if ( mits.length > 1 ) {
-
-    $( '#clearAllButton' ).addClass( 'd-block' );
-
+    $( '#clearAllButton' ).show();
+  } else {
+    $( '#clearAllButton' ).hide();
   }
 
 
