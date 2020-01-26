@@ -10,6 +10,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.2.2] - 2020-01-26
+
+### [Added]
+- Clear Done button.
+
 ## [0.2.1] - 2020-01-22
 
 ### [Fixed]

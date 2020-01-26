@@ -58,6 +58,9 @@
   float: unset;
 }
 
+#clearButtons .badge {
+  font-weight: unset;
+}
 
 /* Add Task Form */
 
