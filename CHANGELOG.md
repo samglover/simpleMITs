@@ -7,10 +7,13 @@ All notable changes to this project will be documented in this file. The format 
 - Drag-and-drop reordering.
 - Pull to refresh.
 - Include roles & ARIA labels for accessibility.
-- Undo task deletion.
-- Clear all button with undo.
 
 ## [Unreleased]
+
+## [0.2.2] - 2020-01-26
+
+### [Added]
+- Clear Done button.
 
 ## [0.2.1] - 2020-01-22
 

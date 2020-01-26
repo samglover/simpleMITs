@@ -11,8 +11,7 @@ function getMITs() {
     mits = [];
   }
 
-  let taskList      = document.getElementById( 'taskList' );
-  let tasksNotDone  = 0;
+  let taskList = document.getElementById( 'taskList' );
 
   mits.sort( function ( a, b ) {
 
@@ -39,10 +38,6 @@ function getMITs() {
     let date    = mits[ i ].date;
     let desc    = mits[ i ].description;
     let status  = mits[ i ].status;
-
-    if ( status == 'notDone' ) {
-      tasksNotDone++;
-    }
 
     taskList.innerHTML += '<div class="list-group-item lead task ' + status + '" id="' + id + '">' +
                             '<div class="row mx-n2">' +
@@ -84,6 +79,15 @@ function getMITs() {
 
   }
 
+  let tasksNotDone  = $( '.task.notDone' ).length;
+  let tasksDone     = $( '.task.done' ).length;
+
+  // Shows a "Clear All" button if there is more than one task.
+  if ( tasksDone > 1 ) {
+    $( '#clearDoneButton' ).show();
+  } else {
+    $( '#clearDoneButton' ).hide();
+  }
 
   // Shows a "Clear All" button if there is more than one task.
   if ( mits.length > 1 ) {
@@ -208,6 +212,25 @@ function delTask( id ) {
 
     if ( mits[ i ].id == id ) {
       mits.splice( i, 1 );
+    }
+
+  }
+
+  localStorage.setItem( 'simpleMITs', JSON.stringify( mits ) );
+
+  getMITs();
+
+}
+
+function clearDone() {
+
+  let mits = JSON.parse( localStorage.getItem( 'simpleMITs' ) );
+
+  for ( let i = 0; i < mits.length; i++ ) {
+
+    // Deletes all tasks after the first .done task found.
+    if ( mits[ i ].status == 'done' ) {
+      mits.splice( i );
     }
 
   }
