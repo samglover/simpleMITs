@@ -36,9 +36,11 @@
 
     <div class="list-group" id="taskList"></div>
 
-    <div id="clearButtons">
-      <p class="text-right">
+    <div class="row" id="clearButtons">
+      <div class="col">
         <a id="clearDoneButton" class="badge badge-pill badge-light text-muted mt-3" href="#" onClick="clearDone();">Clear Done</a>
+      </div>
+      <div class="col text-right">
         <a id="clearAllButton" class="badge badge-pill badge-light text-muted mt-3" href="#" data-toggle="modal" data-target="#clearAllConfirmation">Clear All</a>
         <div class="modal fade" id="clearAllConfirmation" tabindex="-1" role="dialog" aria-labelledby="clearAllModalTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
@@ -53,7 +55,7 @@
             </div>
           </div>
         </div>
-      </p>
+      </div>
     </div>
 
     <form class="mt-3 mb-4" id="newTaskForm">
