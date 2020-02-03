@@ -10,6 +10,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.2.3] - 2020-02-03
+
+### [Changed]
+- Move Clear Done button to the left.
+
 ## [0.2.2] - 2020-01-26
 
 ### [Added]
