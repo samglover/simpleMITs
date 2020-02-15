@@ -38,7 +38,20 @@
 
     <div class="row" id="clearButtons">
       <div class="col">
-        <a id="clearDoneButton" class="badge badge-pill badge-light text-muted mt-3" href="#" onClick="clearDone();">Clear Done</a>
+        <a id="clearCompletedButton" class="badge badge-pill badge-light text-muted mt-3" href="#" data-toggle="modal" data-target="#clearCompletedConfirmation">Clear Completed</a>
+        <div class="modal fade" id="clearCompletedConfirmation" tabindex="-1" role="dialog" aria-labelledby="clearCompletedModalTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="clearCompletedModalTitle">Clear completed MITs?</h4>
+              </div>
+              <div class="modal-body row mx-n2" id="clearCompletedModalBody">
+                <div class="col px-2"><button type="button" class="btn btn-block btn-danger" onClick="clearCompleted();" data-dismiss="modal">Clear Done</button></div>
+                <div class="col px-2"><button type="button" class="btn btn-block btn-secondary" data-dismiss="modal">Cancel</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col text-right">
         <a id="clearAllButton" class="badge badge-pill badge-light text-muted mt-3" href="#" data-toggle="modal" data-target="#clearAllConfirmation">Clear All</a>
@@ -46,7 +59,7 @@
           <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title" id="clearAllModalTitle">Clear <em>all</em> your MITs?</h4>
+                <h4 class="modal-title" id="clearAllModalTitle">Clear all MITs?</h4>
               </div>
               <div class="modal-body row mx-n2" id="clearAllModalBody">
                 <div class="col px-2"><button type="button" class="btn btn-block btn-danger" onClick="clearAll();" data-dismiss="modal">Clear All</button></div>
