@@ -8,22 +8,34 @@ All notable changes to this project will be documented in this file. The format 
 - Pull to refresh.
 - Include roles & ARIA labels for accessibility.
 
+
 ## [Unreleased]
+
+
+## [0.2.4] - 2020-02-15
+
+### [Changed]
+- Clear Done button changed to Clear Completed.
+- Clicking Clear Completed pops up a modal confirmation dialog.
+
 
 ## [0.2.3] - 2020-02-03
 
 ### [Changed]
 - Move Clear Done button to the left.
 
+
 ## [0.2.2] - 2020-01-26
 
 ### [Added]
 - Clear Done button.
 
+
 ## [0.2.1] - 2020-01-22
 
 ### [Fixed]
 - Clicking Clear All in the modal also dismisses the modal.
+
 
 ## [0.2.0] - 2020-01-22
 
@@ -32,6 +44,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### [Changed]
 - The input field label changes depending on the number of uncompleted tasks.
+
 
 ## [0.1.0] - 2020-01-21
 

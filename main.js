@@ -84,9 +84,9 @@ function getMITs() {
 
   // Shows a "Clear All" button if there is more than one task.
   if ( tasksDone > 1 ) {
-    $( '#clearDoneButton' ).show();
+    $( '#clearCompletedButton' ).show();
   } else {
-    $( '#clearDoneButton' ).hide();
+    $( '#clearCompletedButton' ).hide();
   }
 
   // Shows a "Clear All" button if there is more than one task.
@@ -222,7 +222,7 @@ function delTask( id ) {
 
 }
 
-function clearDone() {
+function clearCompleted() {
 
   let mits = JSON.parse( localStorage.getItem( 'simpleMITs' ) );
 
