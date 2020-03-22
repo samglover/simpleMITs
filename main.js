@@ -13,6 +13,9 @@ function getMITs() {
 
   let taskList = document.getElementById( 'taskList' );
 
+  // Sorts the task list by status (done/notDone).
+  // Since there are only two statuses and done is "less than" notDone because
+  // d comes before n in the alphabet, this is a pretty simple sorting function.
   mits.sort( function ( a, b ) {
 
     const statusA = a.status.toUpperCase();
@@ -30,6 +33,7 @@ function getMITs() {
 
   });
 
+  // Outputs the task list.
   taskList.innerHTML = '';
 
   for ( let i = 0; i < mits.length; i++ ) {
@@ -43,7 +47,7 @@ function getMITs() {
                             '<div class="row mx-n2">' +
                               '<div class="col-auto px-2"><a type="button" class="badge badge-pill badge-secondary p-0 taskNum" href="#" onclick="changeStatus(\''+id+'\')"><span class="number">' + ( i + 1 ) + '</span><span class="checkmark">&check;</span></a></div>' +
                               '<div class="col align-items-center px-2">' +
-                                '<p class="taskDesc mb-0" id="' + id + '_desc">' + desc + ' </p>' +
+                                '<p class="taskDesc mb-0" id="' + id + '_desc" contenteditable="true">' + desc + ' </p>' +
                               '</div>' +
                               '<div class="col col-auto px-2"><button type="button" class="close text-muted taskDel" onclick="delTask(\''+id+'\')">&times;</button></div>' +
                             '</div>' +
@@ -59,17 +63,7 @@ function getMITs() {
 
     if ( daysOld > 0 ) {
 
-      switch ( daysOld ) {
-
-        case 1 :
-          days = 'day';
-          break;
-
-        default :
-          days = 'days';
-          break;
-
-      }
+      days = daysOld > 1 ? 'days' : 'day';
 
       let ageBadge  = '<span class="badge badge-pill badge-light text-muted">' + daysOld + ' ' + days + ' old</span>';
 
@@ -123,7 +117,6 @@ function getMITs() {
 
     default :
       inputLabel.innerHTML = 'That\'s probably enough, but you can add more if you really want to.';
-      // $( inputLabel ).addClass( 'sr-only' );
       break;
 
   }
