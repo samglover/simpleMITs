@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file. The format 
 
 
 ## [Unreleased]
-- Minor tweaks to streamline the code.
+- Minor tweaks to streamline the code and prepare for future features.
 
 
 ## [0.2.4] - 2020-02-15

@@ -47,7 +47,7 @@ function getMITs() {
                             '<div class="row mx-n2">' +
                               '<div class="col-auto px-2"><a type="button" class="badge badge-pill badge-secondary p-0 taskNum" href="#" onclick="changeStatus(\''+id+'\')"><span class="number">' + ( i + 1 ) + '</span><span class="checkmark">&check;</span></a></div>' +
                               '<div class="col align-items-center px-2">' +
-                                '<p class="taskDesc mb-0" id="' + id + '_desc" contenteditable="true">' + desc + ' </p>' +
+                                '<span class="taskDesc mb-0" id="' + id + '_desc">' + desc + ' </span>' +
                               '</div>' +
                               '<div class="col col-auto px-2"><button type="button" class="close text-muted taskDel" onclick="delTask(\''+id+'\')">&times;</button></div>' +
                             '</div>' +
@@ -65,9 +65,9 @@ function getMITs() {
 
       days = daysOld > 1 ? 'days' : 'day';
 
-      let ageBadge  = '<span class="badge badge-pill badge-light text-muted">' + daysOld + ' ' + days + ' old</span>';
+      let ageBadge  = '<span class="badge badge-pill badge-light taskDesc-badge text-muted">' + daysOld + ' ' + days + ' old</span>';
 
-      $( ageBadge ).appendTo( '#' + id + '_desc' );
+      $( ageBadge ).insertAfter( '#' + id + '_desc' );
 
     }
 
