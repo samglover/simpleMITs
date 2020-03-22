@@ -2,6 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+
 ## [In Development]
 - Edit tasks.
 - Drag-and-drop reordering.
@@ -10,6 +11,7 @@ All notable changes to this project will be documented in this file. The format 
 
 
 ## [Unreleased]
+- Minor tweaks to streamline the code.
 
 
 ## [0.2.4] - 2020-02-15
