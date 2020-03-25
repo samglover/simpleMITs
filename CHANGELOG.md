@@ -50,7 +50,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [0.1.0] - 2020-01-21
 
-### Added
+### [Added]
 - Logo, favicon, and app icons.
 - Tasks can be added, completed, and deleted.
 - Tasks show a badge if they are more than 24 hours old.
