@@ -6,12 +6,19 @@ is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [In Development]
 - Edit tasks.
-- Drag-and-drop reordering.
 - Pull to refresh.
 - Include roles & ARIA labels for accessibility.
 
 
 ## [Unreleased]
+
+
+## [0.3.0] - 2020-03-28
+
+### [Added]
+- Drag-and-drop reordering.
+
+### [Changed]
 - Minor tweaks to streamline the code and prepare for future features.
 
 
