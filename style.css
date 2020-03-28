@@ -1,5 +1,17 @@
 /* Tasks */
 
+.task {
+  cursor: 'move';
+}
+
+.task.dragging {
+  opacity: .4;
+}
+
+.task.over {
+  border-top: 5px solid rgba( 0, 0, 0, 0.125 );
+}
+
 .task.done,
 .task:nth-child( n + 6 ) {
   opacity: .35;
@@ -50,7 +62,7 @@
   text-decoration: line-through;
 }
 
-  .taskDesc .badge {
+  .taskDesc-badge {
     font-weight: normal;
   }
 
