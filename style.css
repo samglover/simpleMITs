@@ -1,10 +1,11 @@
 /* Tasks */
 
 .task {
-  cursor: 'move';
+  cursor: move;
 }
 
 .task.dragging {
+  cursor: grab;
   opacity: .4;
 }
 
@@ -65,6 +66,10 @@
   .taskDesc-badge {
     font-weight: normal;
   }
+
+.taskDesc {
+  cursor: text;
+}
 
 .close {
   float: unset;
