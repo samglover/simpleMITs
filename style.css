@@ -67,10 +67,6 @@
     font-weight: normal;
   }
 
-.taskDesc {
-  cursor: text;
-}
-
 .close {
   float: unset;
 }
