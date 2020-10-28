@@ -46,10 +46,13 @@ function getMITs() {
     let date    = mits[ i ].date;
     let desc    = mits[ i ].description.trim();
     let status  = mits[ i ].status;
+    let checked = '';
+
+    if ( status == 'done' ) { checked = 'aria-checked'; }
 
     taskList.innerHTML += '<div class="list-group-item lead task ' + status + '" id="' + id + '" draggable="true">' +
                             '<div class="row mx-n2">' +
-                              '<div class="col-auto px-2"><a type="button" class="badge badge-pill badge-secondary p-0 taskNum" href="#" onclick="changeStatus( \''+id+'\' )"><span class="number">' + ( i + 1 ) + '</span><span class="checkmark">&check;</span></a></div>' +
+                              '<div class="col-auto px-2"><a type="button" class="badge badge-pill badge-secondary p-0 taskNum" href="#" role="checkbox"' + checked + ' onclick="changeStatus( \''+id+'\' )"><span class="number">' + ( i + 1 ) + '</span><span class="checkmark">&check;</span></a></div>' +
                               '<div class="col align-items-center px-2">' +
                                 '<span class="taskDesc mb-0" id="' + id + '_desc">' + desc + '</span>' +
                               '</div>' +
