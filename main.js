@@ -3,6 +3,9 @@ $( function(){
 });
 
 
+// Fetches the list of MITs from the browser's local storage and sorts them by
+// status, outputs them, adds labels to old tasks, and adds the new task input
+// label.
 function getMITs() {
 
   let mits = JSON.parse( localStorage.getItem( 'simpleMITs' ) );
@@ -41,14 +44,14 @@ function getMITs() {
 
     let id      = mits[ i ].id;
     let date    = mits[ i ].date;
-    let desc    = mits[ i ].description;
+    let desc    = mits[ i ].description.trim();
     let status  = mits[ i ].status;
 
     taskList.innerHTML += '<div class="list-group-item lead task ' + status + '" id="' + id + '" draggable="true">' +
                             '<div class="row mx-n2">' +
                               '<div class="col-auto px-2"><a type="button" class="badge badge-pill badge-secondary p-0 taskNum" href="#" onclick="changeStatus( \''+id+'\' )"><span class="number">' + ( i + 1 ) + '</span><span class="checkmark">&check;</span></a></div>' +
                               '<div class="col align-items-center px-2">' +
-                                '<span class="taskDesc mb-0" id="' + id + '_desc">' + desc + ' </span>' +
+                                '<span class="taskDesc mb-0" id="' + id + '_desc">' + desc + '</span>' +
                               '</div>' +
                               '<div class="col col-auto px-2"><button type="button" class="close text-muted taskDel" onclick="delTask( \''+id+'\' )">&times;</button></div>' +
                             '</div>' +
