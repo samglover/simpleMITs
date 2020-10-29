@@ -86,6 +86,13 @@ function getMITs() {
   let tasks = taskList.childNodes;
   [].forEach.call( tasks, addDragHandlers );
 
+  // Assigns event listeners for task editing.
+  let taskDescs = document.getElementsByClassName( '.taskDesc' );
+  [].forEach.call( tasks, function( e ) {
+    e.addEventListener( 'focusin', editTask );
+    e.addEventListener( 'focusout', editTask );
+  });
+
   let tasksNotDone  = $( '.task.notDone' ).length;
   let tasksDone     = $( '.task.done' ).length;
 
