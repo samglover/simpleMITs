@@ -50,12 +50,12 @@ function getMITs() {
 
     if ( status == 'done' ) { checked = 'aria-checked'; }
 
-    taskList.innerHTML += '<div class="list-group-item lead task ' + status + ' p-0" id="' + id + '" draggable="true">' +
+    taskList.innerHTML += '<div class="list-group-item lead task ' + status + ' p-0" id="' + id + '">' +
                             '<div class="row mx-0">' +
                               '<div class="col-auto py-3 pl-2 pr-1 dragHandle text-muted">&uarr;<br/>&darr;</div>' +
                               '<div class="col-auto px-2 py-3"><a type="button" class="badge badge-pill badge-secondary p-0 taskNum" href="#" role="checkbox"' + checked + ' onclick="changeStatus( \''+id+'\' )"><span class="number">' + ( i + 1 ) + '</span><span class="checkmark">&check;</span></a></div>' +
                               '<div class="col align-items-center px-2 py-3">' +
-                                '<span class="taskDesc mb-0" id="' + id + '_desc">' + desc + ' </span>' +
+                                '<span class="taskDesc mb-0" id="' + id + '_desc" contenteditable="true">' + desc + '</span> ' +
                               '</div>' +
                               '<div class="col col-auto p-3"><button type="button" class="close text-muted taskDel" onclick="delTask( \''+id+'\' )">&times;</button></div>' +
                             '</div>' +
@@ -83,8 +83,16 @@ function getMITs() {
 
   localStorage.setItem( 'simpleMITs', JSON.stringify( mits ) );
 
+  // Assigns event listeners for drag-and-drop reordering.
   let tasks = taskList.childNodes;
   [].forEach.call( tasks, addDragHandlers );
+
+  // Assigns event listeners for task editing.
+  let taskDescs = document.getElementsByClassName( '.taskDesc' );
+  [].forEach.call( tasks, function( e ) {
+    e.addEventListener( 'focusin', editTask );
+    e.addEventListener( 'focusout', editTask );
+  });
 
   let tasksNotDone  = $( '.task.notDone' ).length;
   let tasksDone     = $( '.task.done' ).length;
@@ -139,13 +147,25 @@ function getMITs() {
 
 // Drag & Drop
 // Based on https://codepen.io/retrofuturistic/pen/tlbHE?editors=0010
-function addDragHandlers( elem ) {
-  elem.addEventListener( 'dragstart', handleDragStart, false );
-  // elem.addEventListener( 'dragenter', handleDragEnter, false )
-  elem.addEventListener( 'dragover', handleDragOver, false );
-  elem.addEventListener( 'dragleave', handleDragLeave, false );
-  elem.addEventListener( 'drop', handleDrop, false );
-  elem.addEventListener( 'dragend', handleDragEnd, false );
+function addDragHandlers( task ) {
+
+  let dragHandle = task.querySelector( '.dragHandle' );
+
+  dragHandle.addEventListener( 'mousedown', function () {
+    task.setAttribute( 'draggable', 'true');
+  });
+
+  dragHandle.addEventListener( 'mouseout', function () {
+    task.removeAttribute( 'draggable' );
+  });
+
+  task.addEventListener( 'dragstart', handleDragStart, false );
+  // task.addEventListener( 'dragenter', handleDragEnter, false )
+  task.addEventListener( 'dragover', handleDragOver, false );
+  task.addEventListener( 'dragleave', handleDragLeave, false );
+  task.addEventListener( 'drop', handleDrop, false );
+  task.addEventListener( 'dragend', handleDragEnd, false );
+
 }
 
   function handleDragStart( e ) {
@@ -275,6 +295,34 @@ function saveTask( e ) {
   getMITs();
 
   e.preventDefault();
+
+}
+
+
+function editTask( e ) {
+
+  console.log( e );
+
+  /*
+
+  let editedMIT   = document.getElementById( id );
+  let storedMITs  = JSON.parse( localStorage.getItem( 'simpleMITs' ) );
+
+  console.log( editedMIT );
+
+  for ( let i = 0; i < storedMITs.length; i++ ) {
+
+    if ( storedMITs[ i ].id == id ) {
+      storedMITs[ i ].description = editedMIT.description.trim();
+    }
+
+  }
+
+  localStorage.setItem( 'simpleMITs', JSON.stringify( mits ) );
+
+  getMITs();
+
+  */
 
 }
 
