@@ -1,6 +1,11 @@
 /* Tasks */
 
+.task {
+  cursor: move;
+}
+
 .task.dragging {
+  cursor: grabbing !important;
   opacity: .4;
 }
 
@@ -11,17 +16,6 @@
 .task.done,
 .task:nth-child( n + 6 ) {
   opacity: .35;
-}
-
-.task .dragHandle {
-  cursor: move;
-  font-size: 50%;
-  font-weight: bold;
-  opacity: .35;
-}
-
-.task .dragHandle:hover {
-  opacity: unset;
 }
 
 .taskNum {
@@ -68,10 +62,6 @@
 .task.done .taskDesc {
   text-decoration: line-through;
 }
-
-  .taskDesc-badge {
-    font-weight: normal;
-  }
 
 .close {
   float: unset;

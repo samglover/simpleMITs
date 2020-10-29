@@ -50,14 +50,13 @@ function getMITs() {
 
     if ( status == 'done' ) { checked = 'aria-checked'; }
 
-    taskList.innerHTML += '<div class="list-group-item lead task ' + status + ' p-0" id="' + id + '">' +
-                            '<div class="row mx-0">' +
-                              '<div class="col-auto py-3 pl-2 pr-1 dragHandle text-muted">&uarr;<br/>&darr;</div>' +
-                              '<div class="col-auto px-2 py-3"><a type="button" class="badge badge-pill badge-secondary p-0 taskNum" href="#" role="checkbox"' + checked + ' onclick="changeStatus( \''+id+'\' )"><span class="number">' + ( i + 1 ) + '</span><span class="checkmark">&check;</span></a></div>' +
-                              '<div class="col align-items-center px-2 py-3">' +
-                                '<span class="taskDesc mb-0" id="' + id + '_desc" contenteditable="true">' + desc + '</span> ' +
+    taskList.innerHTML += '<div class="list-group-item lead task ' + status + '" id="' + id + '" draggable="true">' +
+                            '<div class="row mx-n2">' +
+                              '<div class="col-auto px-2"><a type="button" class="badge badge-pill badge-secondary p-0 taskNum" href="#" role="checkbox"' + checked + ' onclick="changeStatus( \''+id+'\' )"><span class="number">' + ( i + 1 ) + '</span><span class="checkmark">&check;</span></a></div>' +
+                              '<div class="col">' +
+                                '<span class="align-text-top taskDesc p-2" id="' + id + '_desc">' + desc + '</span>' +
                               '</div>' +
-                              '<div class="col col-auto p-3"><button type="button" class="close text-muted taskDel" onclick="delTask( \''+id+'\' )">&times;</button></div>' +
+                              '<div class="col col-auto mx-2"><button type="button" class="close text-muted taskDel" onclick="delTask( \''+id+'\' )">&times;</button></div>' +
                             '</div>' +
                           '</div>';
 
@@ -73,7 +72,7 @@ function getMITs() {
 
       days = daysOld > 1 ? 'days' : 'day';
 
-      let ageBadge  = '<span class="badge badge-pill badge-light taskDesc-badge text-muted">' + daysOld + ' ' + days + ' old</span>';
+      let ageBadge  = '<span class="badge badge-pill badge-light font-weight-normal taskDesc-badge text-muted">' + daysOld + ' ' + days + ' old</span>';
 
       $( ageBadge ).insertAfter( '#' + id + '_desc' );
 
@@ -148,24 +147,12 @@ function getMITs() {
 // Drag & Drop
 // Based on https://codepen.io/retrofuturistic/pen/tlbHE?editors=0010
 function addDragHandlers( task ) {
-
-  let dragHandle = task.querySelector( '.dragHandle' );
-
-  dragHandle.addEventListener( 'mousedown', function () {
-    task.setAttribute( 'draggable', 'true');
-  });
-
-  dragHandle.addEventListener( 'mouseout', function () {
-    task.removeAttribute( 'draggable' );
-  });
-
   task.addEventListener( 'dragstart', handleDragStart, false );
   // task.addEventListener( 'dragenter', handleDragEnter, false )
   task.addEventListener( 'dragover', handleDragOver, false );
   task.addEventListener( 'dragleave', handleDragLeave, false );
   task.addEventListener( 'drop', handleDrop, false );
   task.addEventListener( 'dragend', handleDragEnd, false );
-
 }
 
   function handleDragStart( e ) {
