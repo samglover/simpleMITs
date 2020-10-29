@@ -12,6 +12,9 @@ is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### 0.3.2 - 2020-10-29
 
+#### Added
+- Tasks are now editable.
+
 #### Changed
 - Use drag handles instead of making the whole task draggable.
 - Re-add spaces after task descriptions, for layout purposes.
