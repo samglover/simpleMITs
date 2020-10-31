@@ -53,10 +53,10 @@ function getMITs() {
     taskList.innerHTML += '<div class="list-group-item lead task ' + status + '" id="' + id + '" draggable="true">' +
                             '<div class="row mx-n2">' +
                               '<div class="col-auto px-2"><a type="button" class="badge badge-pill badge-secondary p-0 taskNum" href="#" role="checkbox"' + checked + ' onclick="changeStatus( \''+id+'\' )"><span class="number">' + ( i + 1 ) + '</span><span class="checkmark">&check;</span></a></div>' +
-                              '<div class="col">' +
-                                '<span class="align-text-top taskDesc p-2" id="' + id + '_desc">' + desc + '</span>' +
+                              '<div class="col px-2">' +
+                                '<span class="align-text-top taskDesc" id="' + id + '_desc">' + desc + '</span>' +
                               '</div>' +
-                              '<div class="col col-auto mx-2"><button type="button" class="close text-muted taskDel" onclick="delTask( \''+id+'\' )">&times;</button></div>' +
+                              '<div class="col col-auto px-2"><button type="button" class="close text-muted taskDel" onclick="delTask( \''+id+'\' )">&times;</button></div>' +
                             '</div>' +
                           '</div>';
 
@@ -72,7 +72,7 @@ function getMITs() {
 
       days = daysOld > 1 ? 'days' : 'day';
 
-      let ageBadge  = '<span class="badge badge-pill badge-light font-weight-normal taskDesc-badge text-muted">' + daysOld + ' ' + days + ' old</span>';
+      let ageBadge  = '<span class="badge badge-pill badge-light font-weight-normal taskDesc-badge text-muted ml-2">' + daysOld + ' ' + days + ' old</span>';
 
       $( ageBadge ).insertAfter( '#' + id + '_desc' );
 
