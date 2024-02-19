@@ -1,135 +1,63 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
   <meta name="robots" content="noindex">
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <link rel="apple-touch-icon" sizes="180x180" href="ico/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="ico/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="ico/favicon-16x16.png">
-  <link rel="manifest" href="ico/site.webmanifest">
-
+  <link rel="icon" type="image/svg" href="assets/img/simpleMITs-logo.svg">
+  <link rel="stylesheet" href="vendor/normalize/normalize.css">
+  <link rel="stylesheet" href="assets/css/style.css">
   <title>simpleMITs</title>
-
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css">
-
 </head>
-
-<body onload="getMITs()">
-
-  <div class="container">
-
-    <header>
-
-      <div class="page-header row mt-4 mb-3 mx-n2">
-        <div class="col-auto px-2">
-          <img srcset="img/simpleMITs-logo-2x.png 2x, img/simpleMITs-logo-1x.png 1x" src="img/simpleMITs-logo-2x.png" alt="simpleMITs logo">
-        </div>
-        <div class="col px-2">
-          <h1>simpleMITs</h1>
-        </div>
-      </div>
-
+<body onload="listMITs()">
+  <div class="page-container">
+    <header class="page-header row gap-xs">
+      <img src="assets/img/simpleMITs-logo.svg" alt="simpleMITs logo">
+      <h1>simpleMITs</h1>
     </header>
-
-    <main>
-
-      <div class="list-group" id="taskList"></div>
-
-      <!--
-      Outputs buttons to clear all tasks and clear completed tasks, with
-      confirmation modals.
-      -->
-      <div class="row" id="clearButtons">
-        <div class="col">
-          <a id="clearCompletedButton" class="badge badge-pill badge-light text-muted mt-3" href="#" data-toggle="modal" data-target="#clearCompletedConfirmation">Clear Completed</a>
-          <div class="modal fade" id="clearCompletedConfirmation" tabindex="-1" role="dialog" aria-labelledby="clearCompletedModalTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title" id="clearCompletedModalTitle">Clear completed MITs?</h4>
-                </div>
-                <div class="modal-body row mx-n2" id="clearCompletedModalBody">
-                  <div class="col col-8 px-2"><button type="button" class="btn btn-block btn-danger" onClick="clearCompleted();" data-dismiss="modal">Clear Completed</button></div>
-                  <div class="col col-4 px-2"><button type="button" class="btn btn-block btn-secondary" data-dismiss="modal" aria-label="Cancel">Cancel</button></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col text-right">
-          <a id="clearAllButton" class="badge badge-pill badge-light text-muted mt-3" href="#" data-toggle="modal" data-target="#clearAllConfirmation">Clear All</a>
-          <div class="modal fade" id="clearAllConfirmation" tabindex="-1" role="dialog" aria-labelledby="clearAllModalTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title" id="clearAllModalTitle">Clear all MITs?</h4>
-                </div>
-                <div class="modal-body row mx-n2" id="clearAllModalBody">
-                  <div class="col px-2"><button type="button" class="btn btn-block btn-danger" onClick="clearAll();" data-dismiss="modal">Clear All</button></div>
-                  <div class="col px-2"><button type="button" class="btn btn-block btn-secondary" data-dismiss="modal" aria-label="Cancel">Cancel</button></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <ul id="task-list" class="task-list"></ul>
+    <!-- Clear Tasks -->
+    <div id="clear-buttons" class="row gap-tiny">
+      <!-- Clear Completed -->
+      <button id="clear-completed-button" class="modal-button" data-modal-id="clear-completed-modal">Clear Completed</button>
+      <dialog id="clear-completed-modal" class="modal confirmation-modal">
+        <h4>Clear completed MITs?</h4>
+        <button class="confirm" onclick="clearCompleted()"><span class="screen-reader-text">Clear Completed</span></button>
+        <button class="cancel"><span class="screen-reader-text">Cancel</span></button>
+      </dialog>
+      <!-- Clear All -->
+      <button id="clear-all-button" class="modal-button" data-modal-id="clear-all-modal">Clear All</button>
+      <dialog id="clear-all-modal" class="modal confirmation-modal">
+        <h4>Clear all MITs?</h4>
+        <button class="confirm" onclick="clearAll()"><span class="screen-reader-text">Clear All</span></button>
+        <button class="cancel"><span class="screen-reader-text">Cancel</span></button>
+      </dialog>
+    </div>
+    <!-- New Task Form -->
+    <form id="add-task-form">
+      <label for="add-task-input">Add a task.</label>
+      <div class="input-group">
+        <input id="add-task-input" type="text" placeholder="Add a task.">
+        <button type="submit"><span class="screen-reader-text">Add task</span></button>
       </div>
-
-      <form class="mt-3 mb-4" id="newTaskForm">
-        <label class="text-muted" id="newTaskInputLabel" for="newTaskInput"></label>
-        <div class="input-group">
-          <input type="text" class="form-control" id="newTaskInput" placeholder="Add a task.">
-          <div class="input-group-append">
-            <button type="submit" class="btn btn-secondary addTask">&plus;</button>
-          </div>
+    </form>
+    <footer class="row">
+      <p>Built by <a href="https://samglover.net" target="_blank">Sam Glover</a></p>
+      <!-- FAQ -->
+      <button class="modal-button square-button" data-modal-id="faq-modal">?</button>
+      <dialog id="faq-modal" class="modal content-modal">
+        <div class="modal-header">
+          <h4>simpleMITs FAQ</h4>
+          <button class="close-modal"><span class="screen-reader-text">Close modal</span></button>
         </div>
-      </form>
-
-    </main>
-
-    <footer>
-
-      <div class="footer row mx-n2">
-        <div class="col px-2">
-          <p class="text-muted"><small>&copy; Sam Glover</small></p>
-        </div>
-        <div class="col-auto px-2">
-          <div id="faqButton">
-            <p class="h4"><a class="badge badge-pill badge-light p-0" alt="Help and Frequently Asked Questions" href="#" data-toggle="modal" data-target="#faqModal">?</a></p>
-          </div>
-          <div class="modal fade" id="faqModal" tabindex="-1" role="dialog" aria-labelledby="faqModalTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title" id="faqModalTitle">simpleMITs FAQ</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                </div>
-                <div class="modal-body" id="faqModalBody"></div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <p class="text-center"><a class="badge badge-pill badge-light refresh p-0" href="#" onClick="window.location.reload();">&orarr;</a></p>
-
+        <div class="modal-content"></div>
+      </dialog>
     </footer>
-
   </div>
-
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  <script src="https://chancejs.com/chance.min.js"></script>
-  <script type="text/javascript" src="main.js"></script>
-
+  <script type="text/javascript" src="vendor/jquery/jquery-3.7.1.min.js"></script>
+  <script type="text/javascript" src="vendor/chance/chance.min.js"></script>
+  <script type="text/javascript" src="assets/js/main.js"></script>
+  <script type="text/javascript" src="assets/js/modals.js"></script>
+  <script type="text/javascript" src="assets/js/template-loader.js"></script>
 </body>
-
 </html>

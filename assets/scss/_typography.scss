@@ -1,0 +1,51 @@
+body {
+  font-family: $font-system-sans-serif;
+
+  * {
+    line-height: 1.5;
+  }
+}
+
+a {
+  &:not(:hover) {
+    text-decoration-color: $gray-light;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  margin-top: 2em;
+  margin-bottom: $size-10;
+}
+
+h1 {
+  font-size: $size-40;
+}
+
+h2 {
+  font-size: $size-30;
+}
+
+h3 {
+  font-size: $size-25;
+}
+
+h4 {
+  font-size: $size-20;
+  text-transform: uppercase;
+}
+
+h5 {
+  font-size: $size-15;
+  text-transform: uppercase;
+}
+
+h6 {
+  font-size: $size-12-5;
+  text-transform: uppercase;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: $size-15;
+}

@@ -1,0 +1,171 @@
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  list-style: none;
+  padding: 0;
+}
+
+.task {
+  align-items: center;
+  display: grid;
+  grid-template-columns: $size-15 $size-50 1fr $size-50;
+  position: relative;
+  width: 100%;
+
+  &:nth-child(n+6):not(.completed) {
+    opacity: .5;
+  }
+
+  &.completed {
+    opacity: .5;
+
+    .task-checkbox {
+      .number {
+        display: none;
+      }
+
+      .check {
+        display: revert;
+      }
+
+      &:hover {
+        .number {
+          display: revert;
+        }
+
+        .check {
+          display: none;
+        }
+      }
+    }
+
+    .task-description {
+      text-decoration: line-through;
+    }
+  }
+
+  > *:not(.task-grab-handle) {
+    background-color: $gray-lighter;
+  }
+
+  &.dragging {
+    cursor: ns-resize !important;
+    opacity: .4;
+  }
+  
+  &.over {
+    opacity: .5;
+    
+    &::before {
+      background: url('../img/arrow.svg') no-repeat center/$size-20;
+      content: '';
+      display: grid;
+      font-weight: bold;
+      height: $size-50;
+      place-content: center;
+      position: absolute;
+        top: 0;
+        left: -$size-50;
+      width: $size-50;
+    }
+  }
+
+  
+}
+
+.task-grab-handle {
+  background: url('../img/grab.svg') no-repeat center/$size-20;
+  color: $gray-lighter;
+  cursor: pointer;
+  display: grid;
+  height: 100%;
+  line-height: .5;
+  place-content: center;
+
+  &:hover {
+    background-color: $gray-light;
+    color: White;
+  }
+}
+
+.task-checkbox {
+  align-content: start;
+  background-color: transparent;
+  border: none;
+  color: White;
+  cursor: pointer;
+  display: grid;
+  font-size: $size-30;
+  font-weight: bold;
+  height: 100%;
+  padding: 0;
+  position: relative;
+  width: $size-50;
+
+  > * {
+    line-height: $size-50;
+  }
+
+  .check {
+    display: none;
+  }
+
+  &:hover {
+    background-color: $gray-light;
+
+    .number {
+      display: none;
+    }
+
+    .check {
+      display: revert;
+    }
+  }
+}
+
+.task-description-col {
+  font-size: $size-20;
+  padding: $size-10;
+}
+
+.task-age {
+  background-color: $gray-light;
+  color: White;
+  display: inline-block;
+  font-size: $size-12-5;
+  line-height: $size-20;
+  margin-left: $size-10;
+  opacity: .5;
+  padding: $size-2-5 $size-5;
+}
+
+.task-delete {
+  align-content: start;
+  background-color: transparent;
+  border: none;
+  display: grid;
+  height: 100%;
+  padding: 0;
+  position: relative;
+  width: $size-50;
+
+  &::before {
+    content: '';
+    display: block;
+    background: url('../img/close.svg') no-repeat center/$size-20;
+    height: $size-50;
+    position: absolute;
+      top: 0;
+      left: 0;
+    width: $size-50;
+  }
+
+  &:hover {
+    background-color: $gray-light;
+  }
+
+  &::selection {
+    background-color: transparent;
+  }
+}

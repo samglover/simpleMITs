@@ -1,0 +1,13 @@
+.page-header {
+  gap: $size-5;
+  
+  img {
+    height: $size-50;
+    width: $size-50;
+  }
+
+  h1 {
+    font-size: $size-40;
+    margin: 0;
+  }
+}

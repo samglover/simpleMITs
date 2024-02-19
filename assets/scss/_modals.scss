@@ -1,0 +1,154 @@
+// Stops the page from scrolling behind modals.
+body {
+  &:has(.modal.visible) {
+    overflow: hidden;
+  }
+}
+
+.modal {
+  --display: none;
+  border: none;
+  font-size: $size-20;
+  max-width: $breakpoint-sm;
+  max-height: calc(100% - $size-20);
+  padding: 0;
+  
+  &::backdrop {
+    background-color: rgba(119, 136, 153, .5);
+  }
+}
+
+.close-modal {
+  display: grid;
+  height: 100%;
+  padding: 0;
+  position: relative;
+  width: $size-50;
+
+  &::before {
+    content: '';
+    display: grid;
+    background: url('../img/close.svg') no-repeat center/$size-20;
+    height: 100%;
+    place-content: center;
+    position: absolute;
+      top: 0;
+      left: 0;
+    width: $size-50;
+  }
+}
+
+.confirmation-modal {
+  background-color: $gray-lighter;
+
+  &.visible {
+    display: grid;
+    grid-template: 
+      "a b" minmax($size-50, 1fr)
+      "a c" minmax($size-50, 1fr)
+      / 1fr $size-50
+    ;
+  }
+
+  h4 {
+    align-self: center;
+    display: grid;
+    font-size: $size-25;
+    grid-area: a;
+    height: 100%;
+    margin: 0;
+    padding: $size-20;
+    place-content: center;
+    position: relative;
+    text-transform: revert;
+    width: 100%;
+  }
+
+  button {
+    border: none;
+    display: grid;
+    height: 100%;
+    padding: 0;
+    position: relative;
+    width: $size-50;
+
+    &::before {
+      display: grid;
+      height: 100%;
+      place-content: center;
+      position: absolute;
+        top: 0;
+        left: 0;
+      width: $size-50;
+    }
+
+    &::selection {
+      background-color: transparent;
+    }
+
+    &.confirm {
+      grid-area: b;
+  
+      &::before {
+        content: '\2713';
+        font-size: $size-30;
+        font-weight: bold;
+      }
+    
+      &:hover {
+        background-color: #aa0000;
+      }
+    }
+  
+    &.cancel {
+      background-color: transparent;
+      grid-area: c;
+      opacity: 1;
+  
+      &::before {
+        background: url('../img/close.svg') no-repeat center/$size-20;
+        content: '';
+      }
+    
+      &:hover {
+        background-color: $gray-light;
+      }
+    }
+  }
+}
+
+.content-modal {
+  &.visible {
+    display: grid;
+    gap: 0;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .modal-header {
+    background-color: $gray-lighter;
+    display: grid;
+    grid-template-columns: 1fr $size-50;
+  
+    h4 {
+      font-size: $size-30;
+      margin-top: 0;
+      margin-bottom: $size-10;
+      padding: $size-20;
+      text-transform: revert;
+    }
+  }
+  
+  .modal-content {
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: $size-20;
+    scrollbar-width: thin;
+  
+    > *:first-child {
+      margin-top: 0;
+    }
+  }
+}
