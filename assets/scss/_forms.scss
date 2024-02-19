@@ -1,0 +1,49 @@
+#add-task-form {
+  .input-group {
+    background-color: $gray-lighter;
+    display: grid;
+    grid-template-columns: 1fr $size-50;
+  }
+}
+
+#add-task-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: none;
+  font-size: $size-20;
+  padding: $size-10 $size-15;
+  width: 100%;
+
+  &:active,
+  &:focus {
+    border-color: SlateBlue;
+    outline: 0;
+  }
+  
+  + button {
+    background-color: transparent;
+    border: none;
+    display: grid;
+    height: 100%;
+    padding: 0;
+    place-content: center;
+    position: relative;
+    width: $size-50;
+
+    &::before {
+      content: '';
+      display: block;
+      background: url('../img/add.svg') no-repeat center/$size-20;
+      height: $size-50;
+      position: absolute;
+        top: 0;
+        left: 0;
+      width: $size-50;
+    }
+
+    &:hover {
+      background-color: $gray-medium;
+    }
+  }
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 2560 2560" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <circle id="Circle" cx="1280" cy="1280" r="1250" style="fill:rgb(17,17,17);"/>
+    <path id="Chexclamation-Point" serif:id="Chexclamation Point" d="M1000,1840C1110.38,1840 1200,1929.62 1200,2040C1200,2150.38 1110.38,2240 1000,2240C889.617,2240 800,2150.38 800,2040C800,1929.62 889.617,1840 1000,1840ZM280,1200L600,880L1000,1280L1800,480L2120,800L1200,1720L800,1720L280,1200Z" style="fill:white;"/>
+</svg>

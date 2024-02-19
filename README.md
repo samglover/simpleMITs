@@ -10,6 +10,30 @@ All notable changes to this project will be documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
+### 0.4 - 2024-02-18s
+
+#### Added
+- You can finally edit tasks!
+
+#### Changed
+- New look! Now that simpleMITs no longer relies on Bootstrap, it needed its own look.
+- Also, no more Bootstrap modals. Modals are now handled by /assets/js/modals.js and /assets/scss/_modals.scss.
+- Added SASS now that it needs more CSS.
+- Logo and icons are now SVGs.
+- jQuery and Chance are now stored locally for faster access.
+- jQuery updated to 3.7.
+- Reduce the maximum width.
+- Now uses createElement to create tasks as nodes rather than just injecting HTML.
+- Now uses CSS instead of Javascript for showing and hiding the clear-task buttons.
+- Dragging and dropping now has more helpful graphical indicators, including grab handles to initiate dragging.
+- Updated the FAQ.
+
+#### Removed
+- Removed Bootstrap.
+- Removed PNG icons and images.
+- Removed /ico.
+
+
 ### 0.3.2 - 2020-10-31
 
 #### Changed

@@ -1,0 +1,60 @@
+body {
+  background-color: $gray-lightest;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.page-container {
+  margin: 0 auto;
+  max-width: $breakpoint-sm;
+  padding: $size-20 $size-10;
+}
+
+.page-header {
+  margin-bottom: $size-20;
+}
+
+#task-list {
+  margin: 0;
+
+  &:has(.task) {
+    margin-bottom: 2px;
+  }
+
+  &:has(.task + .task) {
+    + #clear-buttons {
+      #clear-all-button {
+        display: block;
+      }
+    }
+  }
+
+  &:has(.completed + .completed) {
+    + #clear-buttons {
+      #clear-completed-button {
+        display: block;
+      }
+    }
+  }
+}
+
+#clear-buttons {
+  .modal-button {
+    display: none;
+  }
+}
+
+#add-task-form {
+  margin-top: $size-20;
+  margin-bottom: $size-20;
+}
+
+#clear-buttons {
+  justify-content: end;
+}
