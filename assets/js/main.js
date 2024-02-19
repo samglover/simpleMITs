@@ -252,8 +252,6 @@ function addDragHandlers(task) {
 }
 
   function handleDragStart(event) {
-    event.originalEvent.preventDefault();
-
     draggedTask = this;
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setData('text/html', this.outerHTML);
