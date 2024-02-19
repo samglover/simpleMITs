@@ -1,5 +1,23 @@
-// Event Listeners
-document.getElementById('add-task-form').addEventListener('submit', saveTask);
+// Waits for the document to load before doing things.
+if (document.readyState === "loading") {
+  // Loading hasn't finished yet
+  document.addEventListener("DOMContentLoaded", () => {
+    addEventListeners();
+    setFocus()
+  });
+} else {
+  // `DOMContentLoaded` has already fired
+  addEventListeners();
+  setFocus();
+}
+
+function addEventListeners() {
+  document.getElementById('add-task-form').addEventListener('submit', saveTask);
+}
+
+function setFocus() {
+  document.getElementById('add-task-input').focus();
+}
 
 const taskList = document.getElementById('task-list');
 
@@ -234,6 +252,8 @@ function addDragHandlers(task) {
 }
 
   function handleDragStart(event) {
+    event.originalEvent.preventDefault();
+
     draggedTask = this;
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setData('text/html', this.outerHTML);

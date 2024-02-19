@@ -9,8 +9,14 @@ Use it at [simpleMITs.com](https://simplemits.com).
 All notable changes to this project will be documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+### 1.0.1 - 2024-02-19
 
-### 0.4 - 2024-02-18s
+#### Changed
+- Closing modals with Escape key now fires on keydown instead of keyup.
+- The add-task input now gets focus when the page loads.
+
+
+### 1.0 - 2024-02-18
 
 #### Added
 - You can finally edit tasks!

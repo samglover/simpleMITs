@@ -48,10 +48,13 @@
   > *:not(.task-grab-handle) {
     background-color: $gray-lighter;
   }
-
+  
   &.dragging {
-    cursor: ns-resize !important;
-    opacity: .4;
+    opacity: .5;
+    
+    .task-grab-handle {
+      cursor: grabbing !important;
+    }
   }
   
   &.over {
@@ -70,14 +73,12 @@
       width: $size-50;
     }
   }
-
-  
 }
 
 .task-grab-handle {
   background: url('../img/grab.svg') no-repeat center/$size-20;
   color: $gray-lighter;
-  cursor: pointer;
+  cursor: grab;
   display: grid;
   height: 100%;
   line-height: .5;

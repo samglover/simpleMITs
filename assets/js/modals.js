@@ -19,7 +19,7 @@ function showModal(event) {
   modal.classList.add('visible');
   modal.showModal();
   
-  addEventListener('keyup', closeIfEsc);
+  addEventListener('keydown', closeIfEsc);
   closeModalButton.addEventListener('click', () => {
     closeModal(modal);
   }, {once: true});
@@ -33,7 +33,7 @@ function closeIfEsc(event) {
 
 function closeModal(modal) {
   if (!modal) modal = document.querySelector('.modal.visible');
-  removeEventListener('keyup', closeIfEsc);
+  removeEventListener('keydown', closeIfEsc);
   modal.classList.remove('visible');
   modal.close();
 }
