@@ -16,7 +16,6 @@ function listMITs() {
     newTask.id = id;
     newTask.classList.add('task');
     if (mits[i].status) newTask.classList.add(mits[i].status);
-    if (mits[i].justChanged) newTask.classList.add('just-changed');
     // Adds a label if the task is more than 1 day (24 hours) old.
     let taskAge = '';
     let taskDate  = new Date(mits[i].date);
