@@ -4,10 +4,21 @@ A simple tool for keeping track of your Most Important Tasks (MITs).
 
 Use it at [simpleMITs.com](https://simplemits.com).
 
+
 ## Changelog
 
 All notable changes to this project will be documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+### 1.0.2 - 2024-02-22
+
+#### Changed
+- Changed all background properties to explicit declarations to make inheritance work better.
+
+#### Fixed
+- Using display:flex on the .task-list element was screwing with .task height on Safari. Fixed by making .task-list a block element with bottom margins instead.
+- Similarly, using display:grid on modal containers was forcing them to full height on Safari. Fixed by adding a sub-container to the `dialog` element.
+
 
 ### 1.0.1 - 2024-02-19
 

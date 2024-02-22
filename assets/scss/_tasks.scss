@@ -1,7 +1,4 @@
 .task-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
   list-style: none;
   padding: 0;
 }
@@ -12,6 +9,10 @@
   grid-template-columns: $size-15 $size-50 1fr $size-50;
   position: relative;
   width: 100%;
+  
+  &:not(:last-child) {
+    margin-bottom: $size-2-5;
+  }
 
   &:nth-child(n+6):not(.completed) {
     opacity: .5;
@@ -45,7 +46,7 @@
     }
   }
 
-  > *:not(.task-grab-handle) {
+  > * {
     background-color: $gray-lighter;
   }
   
@@ -61,7 +62,10 @@
     opacity: .5;
     
     &::before {
-      background: url('../img/arrow.svg') no-repeat center/$size-20;
+      background-image: url('../img/arrow.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: $size-20;
       content: '';
       display: grid;
       font-weight: bold;
@@ -76,8 +80,10 @@
 }
 
 .task-grab-handle {
-  background: url('../img/grab.svg') no-repeat center/$size-20;
-  color: $gray-lighter;
+  background-image: url('../img/grab.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: $size-20;
   cursor: grab;
   display: grid;
   height: 100%;
@@ -92,7 +98,6 @@
 
 .task-checkbox {
   align-content: start;
-  background-color: transparent;
   border: none;
   color: White;
   cursor: pointer;
@@ -143,7 +148,6 @@
 
 .task-delete {
   align-content: start;
-  background-color: transparent;
   border: none;
   display: grid;
   height: 100%;
@@ -154,7 +158,10 @@
   &::before {
     content: '';
     display: block;
-    background: url('../img/close.svg') no-repeat center/$size-20;
+    background-image: url('../img/close.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: $size-20;
     height: $size-50;
     position: absolute;
       top: 0;

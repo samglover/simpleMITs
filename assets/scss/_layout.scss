@@ -22,12 +22,10 @@ body {
 
 #task-list {
   margin: 0;
-
-  &:has(.task) {
-    margin-bottom: 2px;
-  }
-
+  
   &:has(.task + .task) {
+    margin-bottom: $size-2-5;
+
     + #clear-buttons {
       #clear-all-button {
         display: block;

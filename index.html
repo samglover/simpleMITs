@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="icon" type="image/svg" href="assets/img/simpleMITs-logo.svg">
   <link rel="stylesheet" href="vendor/normalize/normalize.css">
-  <link rel="stylesheet" href="assets/css/style.css?ver=1.0.1">
+  <link rel="stylesheet" href="assets/css/style.css?ver=1.0.2">
   <title>simpleMITs</title>
 </head>
 <body onload="listMITs()">
@@ -21,16 +21,20 @@
       <!-- Clear Completed -->
       <button id="clear-completed-button" class="modal-button" data-modal-id="clear-completed-modal">Clear Completed</button>
       <dialog id="clear-completed-modal" class="modal confirmation-modal">
-        <h4>Clear completed MITs?</h4>
-        <button class="confirm" onclick="clearCompleted()"><span class="screen-reader-text">Clear Completed</span></button>
-        <button class="cancel"><span class="screen-reader-text">Cancel</span></button>
+        <div class="confirmation-modal-container">
+          <h4>Clear completed MITs?</h4>
+          <button class="confirm" onclick="clearCompleted()"><span class="screen-reader-text">Clear Completed</span></button>
+          <button class="cancel"><span class="screen-reader-text">Cancel</span></button>
+        </div>
       </dialog>
       <!-- Clear All -->
       <button id="clear-all-button" class="modal-button" data-modal-id="clear-all-modal">Clear All</button>
       <dialog id="clear-all-modal" class="modal confirmation-modal">
-        <h4>Clear all MITs?</h4>
-        <button class="confirm" onclick="clearAll()"><span class="screen-reader-text">Clear All</span></button>
-        <button class="cancel"><span class="screen-reader-text">Cancel</span></button>
+        <div class="confirmation-modal-container">
+          <h4>Clear all MITs?</h4>
+          <button class="confirm" onclick="clearAll()"><span class="screen-reader-text">Clear All</span></button>
+          <button class="cancel"><span class="screen-reader-text">Cancel</span></button>
+        </div>
       </dialog>
     </div>
     <!-- New Task Form -->
@@ -56,8 +60,8 @@
   </div>
   <script type="text/javascript" src="vendor/jquery/jquery-3.7.1.min.js"></script>
   <script type="text/javascript" src="vendor/chance/chance.min.js"></script>
-  <script type="text/javascript" src="assets/js/main.js?ver=1.0.1"></script>
-  <script type="text/javascript" src="assets/js/modals.js?ver=1.0.1"></script>
-  <script type="text/javascript" src="assets/js/template-loader.js?ver=1.0.1"></script>
+  <script type="text/javascript" src="assets/js/main.js?ver=1.0.2"></script>
+  <script type="text/javascript" src="assets/js/modals.js?ver=1.0.2"></script>
+  <script type="text/javascript" src="assets/js/template-loader.js?ver=1.0.2"></script>
 </body>
 </html>

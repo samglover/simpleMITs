@@ -34,7 +34,10 @@
     &::before {
       content: '';
       display: block;
-      background: url('../img/add.svg') no-repeat center/$size-20;
+      background-image: url('../img/add.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: $size-20;
       height: $size-50;
       position: absolute;
         top: 0;

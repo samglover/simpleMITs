@@ -9,9 +9,13 @@ body {
   --display: none;
   border: none;
   font-size: $size-20;
-  max-width: $breakpoint-sm;
+  max-width: calc($breakpoint-sm - $size-20);
   max-height: calc(100% - $size-20);
   padding: 0;
+
+  @media (max-width: $breakpoint-sm) {
+    width: calc(100% - $size-20);
+  }
   
   &::backdrop {
     background-color: rgba(119, 136, 153, .5);
@@ -28,7 +32,10 @@ body {
   &::before {
     content: '';
     display: grid;
-    background: url('../img/close.svg') no-repeat center/$size-20;
+    background-image: url('../img/close.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: $size-20;
     height: 100%;
     place-content: center;
     position: absolute;
@@ -39,29 +46,27 @@ body {
 }
 
 .confirmation-modal {
-  background-color: $gray-lighter;
+  background-color: White;
 
-  &.visible {
+  .confirmation-modal-container {
     display: grid;
     grid-template: 
       "a b" minmax($size-50, 1fr)
       "a c" minmax($size-50, 1fr)
       / 1fr $size-50
     ;
+    height: fit-content;
+    width: 100%;
   }
 
   h4 {
-    align-self: center;
     display: grid;
     font-size: $size-25;
     grid-area: a;
-    height: 100%;
     margin: 0;
     padding: $size-20;
-    place-content: center;
-    position: relative;
+    place-content: center start;
     text-transform: revert;
-    width: 100%;
   }
 
   button {
@@ -101,12 +106,15 @@ body {
     }
   
     &.cancel {
-      background-color: transparent;
+      background-color: $gray-lighter;
       grid-area: c;
       opacity: 1;
   
       &::before {
-        background: url('../img/close.svg') no-repeat center/$size-20;
+        background-image: url('../img/close.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: $size-20;
         content: '';
       }
     
