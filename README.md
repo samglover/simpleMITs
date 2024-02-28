@@ -10,6 +10,12 @@ Use it at [simpleMITs.com](https://simplemits.com).
 All notable changes to this project will be documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+### 1.0.3 - 2024-02-28
+
+#### Changed
+- Removed animation event listener when changing task status because if the mouse left the checkbox the function would not complete, meaning the task status would not change.
+
+
 ### 1.0.2 - 2024-02-22
 
 #### Changed

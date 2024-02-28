@@ -157,14 +157,8 @@ function changeStatus(id) {
       thisMIT.status = 'completed';
       thisCheckOrNum = thisCheck;
     }
-  thisCheckOrNum.classList.add('pulsing');
-  thisCheckOrNum.onanimationend = () => {
-    // [todo] Animate the element moving to the bottom.
-    // [todo] Figure out how to prevent the :hover effect until the mouse leaves whatever 
-    // box it is in after the animation completes and listMITs() runs.
-    localStorage.setItem('simpleMITs', JSON.stringify(mits));
-    listMITs();
-  }
+  localStorage.setItem('simpleMITs', JSON.stringify(mits));
+  listMITs();
 }
 
 function updateDescription(task) {
