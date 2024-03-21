@@ -145,6 +145,7 @@
   margin: 0;
   opacity: .5;
   padding: $size-2-5 $size-5;
+  transform: translateY(-$size-2-5);
 }
 
 .task-delete {
