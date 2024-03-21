@@ -118,6 +118,7 @@ function fetchMITs() {
 
 // Handles saving new tasks entered into the #new-task-form.
 function saveTask(event) {
+  event.preventDefault();
   let taskDesc = document.getElementById('add-task-input').value;
   if (!taskDesc) return;
   let mits = fetchMITs();

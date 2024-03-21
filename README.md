@@ -14,6 +14,7 @@ is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 #### Changed
 - Adjusted the vertical alignment of the task-age tag so that it is vertically centered on the line.
+- Added event.preventDefault() to saveTask() to stop it from adding a ? to the URL when adding a task.
 
 
 ### 1.0.3 - 2024-02-28
