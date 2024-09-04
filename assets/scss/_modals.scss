@@ -92,7 +92,7 @@ body {
     }
 
     &.confirm {
-      grid-area: b;
+      grid-area: c;
   
       &::before {
         content: '\2713';
@@ -107,7 +107,7 @@ body {
   
     &.cancel {
       background-color: $gray-lighter;
-      grid-area: c;
+      grid-area: b;
       opacity: 1;
   
       &::before {
