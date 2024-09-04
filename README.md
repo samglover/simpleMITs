@@ -15,6 +15,9 @@ is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 #### Changed
 - Switched the order of the confirm and cancel buttons so that the confirm button is in the lower right, more prominent position.
 
+#### Removed
+- Removed unnecessary class in the FAQ file.
+
 
 ### 1.0.4 - 2024-03-21
 
