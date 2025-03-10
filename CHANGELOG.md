@@ -6,8 +6,9 @@ is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## 1.0.6 - 2025-03-10
 
 ### Changed
-- Remove focus after the user presses enter, escape, or removes the focus from the task description.
-- Re-style task descriptions on focus.
+- Remove focus after the user presses enter, escape, or removes the focus from the task description
+- Re-style task descriptions on focus
+- Hide the task age when editing the task description
 
 
 ## 1.0.5 - 2024-09-03
