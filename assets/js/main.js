@@ -104,8 +104,6 @@ function listMITs() {
  */
 function fetchMITs() {
   let mits = localStorage.getItem('simpleMITs');
-  console.log(mits);
-  
   if (mits) {
     mits = JSON.parse(mits);
     // Sorts completed tasks to the end of the list (uses alphabetical sorting, 'completed' >< '').
