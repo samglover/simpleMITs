@@ -71,15 +71,22 @@ function listMITs() {
       
       // Handles task editing.
       let taskDesc = task.querySelector('.task-description');
+      let oldDesc = taskDesc.innerText;
       taskDesc.addEventListener('focusin', () => {
         addEventListener('keydown', updateDescIfEnter);
+
         taskDesc.addEventListener('focusout', () => {
           removeEventListener('keydown', updateDescIfEnter);
           updateDescription(task);
         });
+
         function updateDescIfEnter(event) {
-          if (event.code === 'Enter' && !event.shiftKey) {
+          if (
+            (event.code === 'Enter' || event.code === 'Escape')
+            && !event.shiftKey
+          ) {
             event.preventDefault();
+            event.target.blur();
             updateDescription(task);
             return false;
           }
@@ -90,8 +97,11 @@ function listMITs() {
   addTaskInputLabel();
 }
 
-// Fetches and sorts MITs from local storage.
-// Returns a sorted array of MITs, or else an empty array.
+/**
+ * Fetches and sorts MITs from local storage.
+ * 
+ * @return array Sorted array of MITs (empty if there are none).
+ */
 function fetchMITs() {
   let mits = localStorage.getItem('simpleMITs');
   if (mits) {
@@ -116,7 +126,11 @@ function fetchMITs() {
 }
 
 
-// Handles saving new tasks entered into the #new-task-form.
+/**
+ * Handles saving new tasks entered into the #new-task-form.
+ * 
+ * @param {*} event
+ */
 function saveTask(event) {
   event.preventDefault();
   let taskDesc = document.getElementById('add-task-input').value;
@@ -135,7 +149,11 @@ function saveTask(event) {
 }
 
 
-// Handles checking off (or un-checking) tasks.
+/**
+ * Handles completing and uncompleting tasks.
+ * 
+ * @param {string} id The task's `id` attribute.
+ */
 function changeStatus(id) {
   let mits = fetchMITs();
   let thisMIT; // This will be the object in the browser's local storage.
@@ -162,6 +180,12 @@ function changeStatus(id) {
   listMITs();
 }
 
+
+/**
+ * Updates the task description.
+ * 
+ * @param {Object} task Task node.
+ */
 function updateDescription(task) {
   let mits = fetchMITs();
   let thisMIT;
@@ -174,7 +198,11 @@ function updateDescription(task) {
 }
 
 
-// Handles deleting tasks by clicking on the X.
+/**
+ * Handles deleting tasks by clicking on the X.
+ * 
+ * @param {string} id The task's `id` attribute.
+ */
 function delTask(id) {
   let mits = fetchMITs();
   for (let i = 0; i < mits.length; i++) {
@@ -185,7 +213,9 @@ function delTask(id) {
 }
 
 
-// Handles clearing all completed tasks at once, if there are two or more.
+/**
+ * Handles clearing all completed tasks at once, if there are two or more.
+ */
 function clearCompleted() {
   let mits = fetchMITs();
   for (let i = 0; i < mits.length; i++) {
@@ -197,7 +227,9 @@ function clearCompleted() {
 }
 
 
-// Clears all tasks and the local storage.
+/**
+ * Clears all tasks and the local storage.
+ */
 function clearAll() {
   localStorage.removeItem('simpleMITs');
   closeModal();
@@ -235,8 +267,12 @@ function addTaskInputLabel() {
 }
 
 
-// Drag & Drop
-// Based on https://codepen.io/retrofuturistic/pen/tlbHE?editors=0010
+/**
+ * Drag & drop functionality.
+ * 
+ * @link https://codepen.io/retrofuturistic/pen/tlbHE?editors=0010
+ * @param {Object} task Task node.
+ */
 function addDragHandlers(task) {
   task.addEventListener('dragstart', handleDragStart);
   task.addEventListener('dragover', handleDragOver);

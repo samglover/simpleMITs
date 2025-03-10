@@ -134,6 +134,19 @@
 .task-description-col {
   font-size: $size-20;
   padding: $size-10;
+
+  .task-description {
+    display: inline-block;
+    width: 100%;
+  }
+
+  &:has(.task-description:focus) {
+    background-color: $gray-wash-lightest;
+    
+    .task-description {
+      outline: none;
+    }
+  }
 }
 
 .task-age {
