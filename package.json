@@ -1,6 +1,6 @@
 {
   "name": "sass-minimal",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "A minimal sass compiler configuration.",
   "main": "index.js",
   "devDependencies": {
