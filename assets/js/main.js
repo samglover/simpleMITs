@@ -161,11 +161,9 @@ function changeStatus(id) {
     if (mits[i].id == id) thisMIT = mits[i];
   }
   let thisElement = document.getElementById(thisMIT.id);
-  let thisButton  = thisElement.querySelector('button');
-  let thisCheck   = thisElement.querySelector('.task-checkbox .check');
-  let thisNum     = thisElement.querySelector('.task-checkbox .number');
+  let thisNum = thisElement.querySelector('.task-checkbox .number');
+  let thisCheck = thisElement.querySelector('.task-checkbox .check');
   let thisCheckOrNum;
-  thisButton.blur();
   thisMIT.justChanged = true;
   switch (thisMIT.status) {
     case 'completed': // i.e., we're un-completing this task.
