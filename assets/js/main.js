@@ -164,15 +164,12 @@ function changeStatus(id) {
   let thisNum = thisElement.querySelector('.task-checkbox .number');
   let thisCheck = thisElement.querySelector('.task-checkbox .check');
   let thisCheckOrNum;
-  thisMIT.justChanged = true;
   switch (thisMIT.status) {
     case 'completed': // i.e., we're un-completing this task.
       thisMIT.status = '';
-      // [todo] Move the element to the last uncompleted position.
       thisCheckOrNum = thisNum;
       break;
     default:
-      // [todo] Move the element to the last position.
       thisMIT.status = 'completed';
       thisCheckOrNum = thisCheck;
     }
