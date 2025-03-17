@@ -175,6 +175,10 @@ function changeStatus(id) {
     }
   localStorage.setItem('simpleMITs', JSON.stringify(mits));
   listMITs();
+  taskList.classList.add('a-task-just-changed-status');
+  setTimeout(() => {
+    taskList.classList.remove('a-task-just-changed-status');
+  }, 750);
 }
 
 

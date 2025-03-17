@@ -30,7 +30,7 @@
         display: revert;
       }
 
-      &:hover {
+      :where(.task-list:not(.a-task-just-changed-status)) &:hover {
         .number {
           display: revert;
         }
@@ -118,9 +118,7 @@
     display: none;
   }
 
-  &:hover {
-    background-color: $gray-light;
-
+  :where(.task-list:not(.a-task-just-changed-status)) &:hover {
     .number {
       display: none;
     }
