@@ -33,6 +33,14 @@ body {
     }
   }
 
+  &:not(:has(.task:not(.completed))) {
+    + #clear-buttons {
+      #clear-all-button {
+        display: none;
+      }
+    }
+  }
+
   &:has(.completed + .completed) {
     + #clear-buttons {
       #clear-completed-button {
