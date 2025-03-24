@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 1.0.9 - 2025-03-24
+
+### Changed
+- Use SlateBlue for link colors so links are not so bright
+- Hide Clear All button if all tasks are completed
+
+
 ## 1.0.8 - 2025-03-17
 
 ### Changed
