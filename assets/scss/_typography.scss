@@ -7,8 +7,14 @@ body {
 }
 
 a {
+  color: $links;
+  
   &:not(:hover) {
-    text-decoration-color: $gray-light;
+    text-decoration-color: $gray-lighter;
+  }
+
+  &:hover {
+    color: $links-hover;
   }
 }
 
