@@ -104,8 +104,14 @@ function listMITs() {
 
           // Returns if Shift + Enter is pressed.
           if (
-            'Enter' == event.code
-            && true == event.shiftKey
+            (
+              'Enter' == event.code
+              && true == event.shiftKey
+            )
+            || (
+              'Tab' == event.code
+              && true == event.shiftKey
+            )
           ) return;
           
           if (
