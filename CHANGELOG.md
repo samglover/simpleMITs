@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 1.0.10 - 2025-03-26
+
+### Changed
+- Update input labels and placeholders
+- When updating a task description, pressing Enter updates the description as before, but now pressing Tab also updates the description. Removing focus in any other way (Escape, Shift + Tab, or clicking outside the task description) reverts the task description to its initial value.
+
+### Fixed
+- New task input labels weren't updating on clearing tasks
+
+
 ## 1.0.9 - 2025-03-24
 
 ### Changed
