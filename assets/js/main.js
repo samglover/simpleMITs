@@ -20,30 +20,37 @@ function setFocus() {
 }
 
 const taskList = document.getElementById('task-list');
+const defaultAddTaskInputLabel = document.querySelector('#add-task-form label').innerText;
+const defaultAddTaskInputPlaceholder = document.querySelector('#add-task-form input').getAttribute('placeholder');
 
 function listMITs() {
   while(taskList.firstChild) taskList.removeChild(taskList.lastChild); // Clears the task list.
 
   let mits = fetchMITs();
-  if (mits.length == 0) return;
+  // if (mits.length == 0) return;
   
   // Outputs the task list.
   for (let i = 0; i < mits.length; i++) {
     let id = mits[i].id;
+
     const newTask = document.createElement('li');
     newTask.id = id;
     newTask.classList.add('task');
+
     if (mits[i].status) newTask.classList.add(mits[i].status);
+
     // Adds a label if the task is more than 1 day (24 hours) old.
     let taskAge = '';
     let taskDate  = new Date(mits[i].date);
     let thisDate  = new Date();
     let timeDiff  = thisDate.getTime() - taskDate.getTime();
     let daysOld   = Math.floor(timeDiff / (1000 * 3600 * 24));
+
     if (daysOld > 0) {
       let days = daysOld > 1 ? 'days' : 'day';
       taskAge  = '<span class="task-age">' + daysOld + ' ' + days + ' old</span>';
     }
+
     newTask.innerHTML = `
       <div class="task-grab-handle"></div>
       <button class="task-checkbox" href="#" role="checkbox" onclick="changeStatus('${id}')">
@@ -56,6 +63,7 @@ function listMITs() {
       </div>        
       <button class="task-delete" onclick="delTask('${id}')"></button>
     `;
+
     taskList.append(newTask);
   }
   
@@ -63,37 +71,61 @@ function listMITs() {
     tasks.forEach((task) => {
       // Enables dragging when the grab handles are clicked.
       addDragHandlers(task);
+
       let grabHandle = task.querySelector('.task-grab-handle');
       grabHandle.addEventListener('mousedown', makeTaskDraggable);
+
       function makeTaskDraggable(event) {
         task.setAttribute('draggable', true);
       }
       
       // Handles task editing.
       let taskDesc = task.querySelector('.task-description');
-      let oldDesc = taskDesc.innerText;
+      let taskDescText = taskDesc.innerText;
+
       taskDesc.addEventListener('focusin', () => {
-        addEventListener('keydown', updateDescIfEnter);
+        addEventListener('keydown', updateDescIf);
+        addEventListener('pointerdown', updateDescIf);
 
-        taskDesc.addEventListener('focusout', () => {
-          removeEventListener('keydown', updateDescIfEnter);
-          updateDescription(task);
-        });
-
-        function updateDescIfEnter(event) {
+        function updateDescIf(event) {
+          // Returns if the user clicks on the task description.
           if (
-            (event.code === 'Enter' || event.code === 'Escape')
-            && !event.shiftKey
+            'pointerdown' == event.type
+            && taskDesc == event.target
+          ) return;
+
+          // Returns if Enter, Tab, or Escape are pressed.
+          if (
+            'keydown' == event.type
+            && 'Enter' !== event.code
+            && 'Tab' !== event.code
+            && 'Escape' !== event.code
+          ) return;
+
+          // Returns if Shift + Enter is pressed.
+          if (
+            'Enter' == event.code
+            && true == event.shiftKey
+          ) return;
+          
+          if (
+            'Enter' == event.code
+            || 'Tab' == event.code
           ) {
-            event.preventDefault();
-            event.target.blur();
-            updateDescription(task);
-            return false;
+            taskDescText = taskDesc.innerText;
           }
+
+          event.preventDefault();
+          removeEventListener('keydown', updateDescIf);
+          removeEventListener('pointerdown', updateDescIf);
+          taskDesc.blur();
+          
+          updateDescription(task, taskDescText);
         }
       });
     });
   }
+
   addTaskInputLabel();
 }
 
@@ -175,6 +207,7 @@ function changeStatus(id) {
     }
   localStorage.setItem('simpleMITs', JSON.stringify(mits));
   listMITs();
+  
   taskList.classList.add('a-task-just-changed-status');
   setTimeout(() => {
     taskList.classList.remove('a-task-just-changed-status');
@@ -186,16 +219,17 @@ function changeStatus(id) {
  * Updates the task description.
  * 
  * @param {Object} task Task node.
+ * @param {string} taskDescText The new task description.
  */
-function updateDescription(task) {
+function updateDescription(task, taskDescText) {
   let mits = fetchMITs();
   let thisMIT;
   for (let i = 0; i < mits.length; i++) {
     if (mits[i].id == task.id) thisMIT = mits[i];
   }
-  let desc = task.querySelector('.task-description');
-  thisMIT.description = desc.innerText.trim();
+  thisMIT.description = taskDescText.trim();
   localStorage.setItem('simpleMITs', JSON.stringify(mits));
+  listMITs();
 }
 
 
@@ -239,32 +273,36 @@ function clearAll() {
 
 
 function addTaskInputLabel() {
-  let incompleteTasks = document.querySelectorAll('.task:not(.completed)').length;
+  let addTaskInput = document.querySelector('#add-task-form input');
   let addTaskInputLabel = document.querySelector('#add-task-form label');
-  // let addTaskInput = document.querySelector('#add-task-form input');
-  switch (incompleteTasks) {
-    case 0:
-      addTaskInputLabel.innerText = 'What\'s the most important thing you could do today?';
-      // addTaskInput.setAttribute('placeholder', 'What\'s the most important thing you could do today?');
-      break;
-    case 1:
-      addTaskInputLabel.innerText = 'What\'s the next really important thing you could do today?';
-      // addTaskInput.setAttribute('placeholder', 'What\'s the next really important thing you could do today?');
-      break;
-    case 2:
-      addTaskInputLabel.innerText = 'What\'s another important thing you could do today?';
-      // addTaskInput.setAttribute('placeholder', 'What\'s another important thing you could do today?');
-      break;
-    case 3:
-    case 4:
-      addTaskInputLabel.innerText = 'Need to make sure you get something else done today?';
-      // addTaskInput.setAttribute('placeholder', 'Need to make sure you get something else done today?');
-      break;
-    default:
-      addTaskInputLabel.innerText = 'That\'s probably enough, but you can add more if you really want to.';
-      // addTaskInput.setAttribute('placeholder', 'That\'s probably enough, but you can add more if you really want to.');
-      break;
+  let incompleteTasks = taskList.querySelectorAll('.task:not(.completed)').length;
+  let inputPlaceholder = defaultAddTaskInputPlaceholder;
+  let inputLabelText = addTaskInputLabel.innerText;
+
+  if (incompleteTasks > 0) inputPlaceholder = 'Add another important task';
+  if (incompleteTasks <= 4) {
+    switch (incompleteTasks) {
+      case 0:
+        inputLabelText = defaultAddTaskInputLabel;
+        break;
+      case 1:
+        inputLabelText = 'What\'s the next important thing you could do today?';
+        break;
+      case 2:
+        inputLabelText = 'What\'s another important thing you could do today?';
+        break;
+      case 3:
+      case 4:
+        inputLabelText = 'Need to make sure you get something else done today?';
+        break;
+    }
+  } else {
+    inputLabelText = 'That\'s probably enough for today, but you can add more if you really want to.';
+    inputPlaceholder = 'Add another task';
   }
+
+  addTaskInputLabel.innerText = inputLabelText;
+  addTaskInput.setAttribute('placeholder', inputPlaceholder);
 }
 
 
