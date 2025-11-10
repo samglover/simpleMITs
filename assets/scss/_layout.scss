@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 body {
   background-color: $gray-lightest;
   height: 100%;
