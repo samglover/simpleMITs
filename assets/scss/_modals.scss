@@ -72,35 +72,21 @@ body {
   }
 
   button {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: $size-25;
     border: none;
-    display: grid;
     height: 100%;
-    padding: 0;
-    position: relative;
     width: $size-50;
-
-    &::before {
-      display: grid;
-      height: 100%;
-      place-content: center;
-      position: absolute;
-        top: 0;
-        left: 0;
-      width: $size-50;
-    }
 
     &::selection {
       background-color: transparent;
     }
 
     &.confirm {
+      background-image: url('../img/check-white.svg');
+      background-size: $size-20;
       grid-area: c;
-  
-      &::before {
-        content: '\2713';
-        font-size: $size-30;
-        font-weight: bold;
-      }
     
       &:hover {
         background-color: #aa0000;
@@ -108,17 +94,10 @@ body {
     }
   
     &.cancel {
-      background-color: $gray-lighter;
+      background-color: $gray-light;
+      background-image: url('../img/close-white.svg');
+      background-size: $size-20;
       grid-area: b;
-      opacity: 1;
-  
-      &::before {
-        background-image: url('../img/close-white.svg');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: $size-20;
-        content: '';
-      }
     
       &:hover {
         background-color: $gray-light;
