@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 #add-task-form {
   .input-group {
     background-color: $gray-lighter;
