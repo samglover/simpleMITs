@@ -55,7 +55,7 @@ function listMITs() {
       <div class="task-grab-handle"></div>
       <button class="task-checkbox" href="#" role="checkbox" onclick="changeStatus('${id}')">
         <span class="number">${i + 1}</span>
-        <span class="check">&check;</span>
+        <span class="check"></span>
       </button>
       <div class="task-description-col">
         <span class="task-description" contenteditable="plaintext-only">${mits[i].description.trim()}</span>

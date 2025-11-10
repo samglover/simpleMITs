@@ -34,7 +34,7 @@ body {
   &::before {
     content: '';
     display: grid;
-    background-image: url('../img/close.svg');
+    background-image: url('../img/close-white.svg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: $size-20;
@@ -113,7 +113,7 @@ body {
       opacity: 1;
   
       &::before {
-        background-image: url('../img/close.svg');
+        background-image: url('../img/close-white.svg');
         background-position: center;
         background-repeat: no-repeat;
         background-size: $size-20;

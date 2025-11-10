@@ -64,7 +64,7 @@
     opacity: .5;
     
     &::before {
-      background-image: url('../img/arrow.svg');
+      background-image: url('../img/arrow-black.svg');
       background-position: center;
       background-repeat: no-repeat;
       background-size: $size-20;
@@ -72,6 +72,7 @@
       display: grid;
       font-weight: bold;
       height: $size-50;
+      opacity: .5;
       place-content: center;
       position: absolute;
         top: 0;
@@ -82,7 +83,7 @@
 }
 
 .task-grab-handle {
-  background-image: url('../img/grab.svg');
+  background-image: url('../img/grab-round-white.svg');
   background-position: top $size-15 center;
   background-repeat: no-repeat;
   background-size: $size-20;
@@ -117,7 +118,13 @@
   }
 
   .check {
+    background-image: url('../img/check-white.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: $size-25;
     display: none;
+    height: $size-50;
+    width: $size-50;
   }
 
   :where(.task-list:not(.a-task-just-changed-status)) &:hover {
@@ -175,7 +182,7 @@
   &::before {
     content: '';
     display: block;
-    background-image: url('../img/close.svg');
+    background-image: url('../img/close-white.svg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: $size-20;
