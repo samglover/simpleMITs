@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 1.0.12 - 2025-11-12
+
+### Changed
+- Renamed the `vendor` folder to `includes` to avoid conflict with composer if I ever use it for this project
+
+
 ## 1.0.11 - 2025-11-10
 
 ### Changed
@@ -11,6 +17,7 @@ is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 - Animations
+
 
 ## 1.0.10 - 2025-03-26
 
