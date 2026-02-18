@@ -157,6 +157,10 @@
   }
 }
 
+.task-description:has(+ .task-age) {
+  padding-right: .5em;
+}
+
 .task-age {
   background-color: $gray-light;
   color: White;

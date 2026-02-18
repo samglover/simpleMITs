@@ -58,8 +58,7 @@ function listMITs() {
         <span class="check"></span>
       </button>
       <div class="task-description-col">
-        <span class="task-description" contenteditable="plaintext-only">${mits[i].description.trim()}</span>
-        ${taskAge}
+        <span class="task-description" contenteditable="plaintext-only">${mits[i].description.trim()}</span>${taskAge}
       </div>        
       <button class="task-delete" onclick="delTask('${id}')"></button>
     `;
@@ -83,7 +82,7 @@ function listMITs() {
       let taskDesc = task.querySelector('.task-description');
       let taskDescText = taskDesc.innerText;
 
-      taskDesc.addEventListener('focusin', () => {
+      taskDesc.addEventListener('focusin', () => {        
         addEventListener('keydown', updateDescIf);
         addEventListener('pointerdown', updateDescIf);
 
