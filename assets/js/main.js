@@ -315,14 +315,21 @@ function addTaskInputLabel() {
  * @param {Object} task Task node.
  */
 function addDragHandlers(task) {
+  // Mouse events
   task.addEventListener('dragstart', handleDragStart);
   task.addEventListener('dragover', handleDragOver);
   task.addEventListener('dragenter', handleDragEnter);
   task.addEventListener('dragleave', handleDragLeave);
   task.addEventListener('dragend', handleDragEnd);
   task.addEventListener('drop', handleDrop);
+  
+  // Touch events
+  task.addEventListener('touchstart', handleTouchStart);
+  task.addEventListener('touchmove', handleTouchMove);
+  task.addEventListener('touchend', handleTouchEnd);
 }
 
+  // Mouse drag and drop functions
   function handleDragStart(event) {
     draggedTask = this;
     event.dataTransfer.effectAllowed = 'move';
@@ -372,4 +379,78 @@ function addDragHandlers(task) {
     }
 
     return false;
+  }
+
+  // Touch drag and drop functions
+  function handleTouchStart(event) {
+    draggedTask = this;
+    this.classList.add('dragging');
+  }
+
+  function handleTouchMove(event) {
+    if (!draggedTask) return;
+
+    const touch = event.touches[0];
+    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+
+    // Find which task is under the touch point
+    let targetTask = null;
+    for (let node of taskList.childNodes) {
+      if (node === element || node.contains(element)) {
+        targetTask = node;
+        break;
+      }
+    }
+
+    // Remove 'over' class from all tasks
+    taskList.childNodes.forEach(function (task) {
+      task.classList.remove('over');
+    });
+
+    // Add 'over' class to the target task
+    if (targetTask && targetTask !== draggedTask) {
+      targetTask.classList.add('over');
+    }
+  }
+
+  function handleTouchEnd(event) {
+    if (!draggedTask) return;
+
+    const touch = event.changedTouches[0];
+    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+
+    // Find which task is under the touch point
+    let targetTask = null;
+    for (let node of taskList.childNodes) {
+      if (node === element || node.contains(element)) {
+        targetTask = node;
+        break;
+      }
+    }
+
+    if (targetTask && targetTask !== draggedTask) {
+      // Move the element
+      taskList.insertBefore(draggedTask, targetTask);
+
+      // Move the object in local storage
+      let mits = fetchMITs();
+      let oldPosition, targetPosition;
+      for (let i = 0; i < mits.length; i++) {
+        if (mits[i].id == draggedTask.id) oldPosition = i;
+        if (mits[i].id == targetTask.id) targetPosition = i;
+      }
+      let task = mits[oldPosition];
+      mits.splice(oldPosition, 1);
+      mits.splice(targetPosition, 0, task);
+      localStorage.setItem('simpleMITs', JSON.stringify(mits));
+      listMITs();
+    }
+
+    // Cleanup
+    draggedTask.classList.remove('dragging', 'over');
+    taskList.childNodes.forEach(function (task) {
+      task.classList.remove('over');
+    });
+    
+    draggedTask = null;
   }
