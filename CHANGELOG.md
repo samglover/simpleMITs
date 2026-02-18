@@ -8,6 +8,9 @@ is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - Drag and drop for touchscreens!
 
+### Changed
+- Use padding on task descriptions so it is easier to insert the cursor at the end of the description
+
 
 ## 1.0.12 - 2025-11-12
 
