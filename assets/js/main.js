@@ -335,9 +335,10 @@ function addDragHandlers(task) {
     event.dataTransfer.setData('text/html', this.outerHTML);
     this.classList.add('dragging');
   }
-
+  
   function handleDragOver(event) {
     event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
     return false;
   }
 
