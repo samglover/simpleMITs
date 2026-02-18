@@ -51,12 +51,12 @@
   > * {
     background-color: $gray-lighter;
   }
-  
+
   &.dragging {
     opacity: .5;
     
     .task-grab-handle {
-      cursor: grabbing !important;
+      cursor: grabbing;
     }
   }
   
