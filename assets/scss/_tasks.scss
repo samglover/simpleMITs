@@ -82,6 +82,73 @@
   }
 }
 
+/**
+ * Prevents drop indicator from displaying for completed tasks when dragging an uncompleted task over them.
+ */
+.task-list:has(.dragging:not(.completed)) {
+  .task.over.completed {
+    &::before {
+      display: none;
+    }
+  }
+
+  &:has(.task.over.completed) {
+    .task:not(.completed):has(+ .task.completed) {
+      opacity: .5;
+      
+      &::before {
+        background-image: url('../img/arrow-black.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: $size-20;
+        content: '';
+        display: grid;
+        font-weight: bold;
+        height: $size-50;
+        opacity: .5;
+        place-content: center;
+        position: absolute;
+          top: 0;
+          left: -$size-50;
+        width: $size-50;
+      }
+    }
+  }
+}
+
+/**
+ * Prevents drop indicator from displaying for uncompleted tasks when dragging a completed task over them.
+ */
+.task-list:has(.dragging.completed) {
+  .task.over:not(.completed) {
+    opacity: revert;
+    
+    &::before {
+      display: none;
+    }
+    
+    & + .task.completed,
+    ~ .task:not(.completed) + .task.completed {
+      &::before {
+        background-image: url('../img/arrow-black.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: $size-20;
+        content: '';
+        display: grid;
+        font-weight: bold;
+        height: $size-50;
+        opacity: .5;
+        place-content: center;
+        position: absolute;
+          top: 0;
+          left: -$size-50;
+        width: $size-50;
+      }
+    }
+  }
+}
+
 .task-grab-handle {
   background-image: url('../img/grab-round-white.svg');
   background-position: top $size-15 center;

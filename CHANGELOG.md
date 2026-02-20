@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 1.1.1 - 2026-02-20
+
+### Changed
+- When dragging a task over an invalid drop target (i.e., dragging a completed task over an uncompleted task), the drop arrow now accurately indicates where the task will end up
+
+
 ## 1.1.0 - 2026-02-18
 
 ### Added
