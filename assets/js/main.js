@@ -194,25 +194,28 @@ function changeStatus(id) {
     if (mits[i].id == id) thisMIT = mits[i];
   }
   let thisElement = document.getElementById(thisMIT.id);
-  let thisNum = thisElement.querySelector('.task-checkbox .number');
-  let thisCheck = thisElement.querySelector('.task-checkbox .check');
-  let thisCheckOrNum;
+  let thisCheckbox = thisElement.querySelector('.task-checkbox');
+  
   switch (thisMIT.status) {
     case 'completed': // i.e., we're un-completing this task.
       thisMIT.status = '';
-      thisCheckOrNum = thisNum;
       break;
     default:
       thisMIT.status = 'completed';
-      thisCheckOrNum = thisCheck;
     }
   localStorage.setItem('simpleMITs', JSON.stringify(mits));
-  listMITs();
   
   taskList.classList.add('a-task-just-changed-status');
-  setTimeout(() => {
+  
+  // Remove the class only when the mouse leaves the checkbox
+  const handleMouseLeave = () => {
     taskList.classList.remove('a-task-just-changed-status');
-  }, 750);
+    thisCheckbox.removeEventListener('mouseleave', handleMouseLeave);
+  };
+  
+  thisCheckbox.addEventListener('mouseleave', handleMouseLeave, { once: true });
+  
+  listMITs();
 }
 
 
