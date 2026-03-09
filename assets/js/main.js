@@ -190,9 +190,11 @@ function saveTask(event) {
 function changeStatus(id) {
   let mits = fetchMITs();
   let thisMIT; // This will be the object in the browser's local storage.
+
   for (let i = 0; i < mits.length; i++) {
     if (mits[i].id == id) thisMIT = mits[i];
   }
+  
   let thisElement = document.getElementById(thisMIT.id);
   let thisCheckbox = thisElement.querySelector('.task-checkbox');
   
@@ -207,15 +209,22 @@ function changeStatus(id) {
   
   taskList.classList.add('a-task-just-changed-status');
   
-  // Remove the class only when the mouse leaves the checkbox
-  const handleMouseLeave = () => {
-    taskList.classList.remove('a-task-just-changed-status');
-    thisCheckbox.removeEventListener('mouseleave', handleMouseLeave);
-  };
-  
-  thisCheckbox.addEventListener('mouseleave', handleMouseLeave, { once: true });
-  
   listMITs();
+  
+  const controller = new AbortController();
+  const checkboxes = taskList.querySelectorAll('.task-checkbox');
+
+  const clearStatusClass = () => {
+    taskList.classList.remove('a-task-just-changed-status');
+    controller.abort();
+  };
+
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('pointerleave', clearStatusClass, {
+      once: true,
+      signal: controller.signal
+    });
+  });
 }
 
 

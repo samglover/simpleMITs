@@ -194,6 +194,10 @@
     width: $size-50;
   }
 
+  :where(.task-list.a-task-just-changed-status) &:hover {
+    background-color: $gray-lighter;
+  }
+
   :where(.task-list:not(.a-task-just-changed-status)) &:hover {
     .number {
       display: none;
