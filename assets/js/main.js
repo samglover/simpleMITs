@@ -1,12 +1,10 @@
 // Waits for the document to load before doing things.
 if (document.readyState === "loading") {
-  // Loading hasn't finished yet
   document.addEventListener("DOMContentLoaded", () => {
     addEventListeners();
     setFocus()
   });
 } else {
-  // `DOMContentLoaded` has already fired
   addEventListeners();
   setFocus();
 }
@@ -24,10 +22,10 @@ const defaultAddTaskInputLabel = document.querySelector('#add-task-form label').
 const defaultAddTaskInputPlaceholder = document.querySelector('#add-task-form input').getAttribute('placeholder');
 
 function listMITs() {
-  while(taskList.firstChild) taskList.removeChild(taskList.lastChild); // Clears the task list.
+  // Clears the task list.
+  while(taskList.firstChild) taskList.removeChild(taskList.lastChild); 
 
   let mits = fetchMITs();
-  // if (mits.length == 0) return;
   
   // Outputs the task list.
   for (let i = 0; i < mits.length; i++) {
@@ -285,6 +283,9 @@ function clearAll() {
 }
 
 
+/**
+ * Sets the new-task field label based on the number of incomplete tasks.
+ */
 function addTaskInputLabel() {
   let addTaskInput = document.querySelector('#add-task-form input');
   let addTaskInputLabel = document.querySelector('#add-task-form label');
@@ -326,7 +327,7 @@ function addTaskInputLabel() {
  * @param {Object} task Task node.
  */
 function addDragHandlers(task) {
-  // Mouse events
+  // Adds event listeners for mouse events.
   task.addEventListener('dragstart', handleDragStart);
   task.addEventListener('dragover', handleDragOver);
   task.addEventListener('dragenter', handleDragEnter);
@@ -334,13 +335,13 @@ function addDragHandlers(task) {
   task.addEventListener('dragend', handleDragEnd);
   task.addEventListener('drop', handleDrop);
   
-  // Touch events
+  // Adds event listeners for touch events.
   task.addEventListener('touchstart', handleTouchStart);
   task.addEventListener('touchmove', handleTouchMove);
   task.addEventListener('touchend', handleTouchEnd);
 }
 
-  // Mouse drag and drop functions
+  // Handles mouse drag and drop functions.
   function handleDragStart(event) {
     draggedTask = this;
     event.dataTransfer.effectAllowed = 'move';
@@ -373,10 +374,10 @@ function addDragHandlers(task) {
     event.stopPropagation();
 
     if (draggedTask !== this) {
-      // Move the element.
+      // Moves the element.
       taskList.insertBefore(draggedTask, this);
 
-      // Move the object in local storage.
+      // Moves the object in local storage.
       let mits = fetchMITs();
       let oldPosition, targetPosition;
       for (let i = 0; i < mits.length; i++) {
@@ -393,7 +394,7 @@ function addDragHandlers(task) {
     return false;
   }
 
-  // Touch drag and drop functions
+  // Handles touch drag and drop functions.
   function handleTouchStart(event) {
     draggedTask = this;
     this.classList.add('dragging');
@@ -405,7 +406,7 @@ function addDragHandlers(task) {
     const touch = event.touches[0];
     const element = document.elementFromPoint(touch.clientX, touch.clientY);
 
-    // Find which task is under the touch point
+    // Finds the task under the touch point.
     let targetTask = null;
     for (let node of taskList.childNodes) {
       if (node === element || node.contains(element)) {
@@ -414,12 +415,12 @@ function addDragHandlers(task) {
       }
     }
 
-    // Remove 'over' class from all tasks
+    // Removes 'over' class from all tasks.
     taskList.childNodes.forEach(function (task) {
       task.classList.remove('over');
     });
 
-    // Add 'over' class to the target task
+    // Adds 'over' class to the target task.
     if (targetTask && targetTask !== draggedTask) {
       targetTask.classList.add('over');
     }
@@ -431,7 +432,7 @@ function addDragHandlers(task) {
     const touch = event.changedTouches[0];
     const element = document.elementFromPoint(touch.clientX, touch.clientY);
 
-    // Find which task is under the touch point
+    // Finds the task under the touch point.
     let targetTask = null;
     for (let node of taskList.childNodes) {
       if (node === element || node.contains(element)) {
@@ -441,10 +442,10 @@ function addDragHandlers(task) {
     }
 
     if (targetTask && targetTask !== draggedTask) {
-      // Move the element
+      // Moves the task.
       taskList.insertBefore(draggedTask, targetTask);
 
-      // Move the object in local storage
+      // Moves the object in local storage.
       let mits = fetchMITs();
       let oldPosition, targetPosition;
       for (let i = 0; i < mits.length; i++) {
