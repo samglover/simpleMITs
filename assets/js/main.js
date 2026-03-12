@@ -1,3 +1,6 @@
+/* exported changeStatus, delTask, clearCompleted, clearAll */
+/* global closeModal */
+
 // Waits for the document to load before doing things.
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
@@ -18,6 +21,7 @@ function setFocus() {
 }
 
 const taskList = document.getElementById('task-list');
+let draggedTask;
 const defaultAddTaskInputLabel = document.querySelector('#add-task-form label').innerText;
 const defaultAddTaskInputPlaceholder = document.querySelector('#add-task-form input').getAttribute('placeholder');
 
@@ -72,7 +76,7 @@ function listMITs() {
       let grabHandle = task.querySelector('.task-grab-handle');
       grabHandle.addEventListener('mousedown', makeTaskDraggable);
 
-      function makeTaskDraggable(event) {
+      function makeTaskDraggable() {
         task.setAttribute('draggable', true);
       }
       
@@ -192,9 +196,6 @@ function changeStatus(id) {
   for (let i = 0; i < mits.length; i++) {
     if (mits[i].id == id) thisMIT = mits[i];
   }
-  
-  let thisElement = document.getElementById(thisMIT.id);
-  let thisCheckbox = thisElement.querySelector('.task-checkbox');
   
   switch (thisMIT.status) {
     case 'completed': // i.e., we're un-completing this task.
@@ -395,7 +396,7 @@ function addDragHandlers(task) {
   }
 
   // Handles touch drag and drop functions.
-  function handleTouchStart(event) {
+  function handleTouchStart() {
     draggedTask = this;
     this.classList.add('dragging');
   }
