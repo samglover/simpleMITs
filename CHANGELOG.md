@@ -8,6 +8,9 @@ is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - The task list can now be maximized and minimized using the button on the bottom row
 
+### Changed
+- Base sizing increased from 16px to 18px
+
 
 ## 1.1.3 - 2026-03-12
 
@@ -15,8 +18,6 @@ is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - ESLint
 - Playwright testing
 
-### Changed
-- Base sizing increased from 16px to 18px
 
 
 ## 1.1.2 - 2026-03-09
