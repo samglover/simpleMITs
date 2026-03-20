@@ -50,14 +50,19 @@
     <footer class="row">
       <p>Built by <a href="https://samglover.net" target="_blank">Sam Glover</a></p>
       <!-- FAQ -->
-      <button class="modal-button square-button" data-modal-id="faq-modal">?</button>
-      <dialog id="faq-modal" class="modal content-modal">
-        <div class="modal-header">
-          <h4>simpleMITs FAQ</h4>
-          <button class="close-modal"><span class="screen-reader-text">Close modal</span></button>
-        </div>
-        <div class="modal-content"></div>
-      </dialog>
+      <div class="row gap-tiny">
+        <button class="modal-button square-button max-min-button maximize">
+          <span class="screen-reader-text">Maximize</span>
+        </button>
+        <button class="modal-button square-button faq-button" data-modal-id="faq-modal">?</button>
+        <dialog id="faq-modal" class="modal content-modal">
+          <div class="modal-header">
+            <h4>simpleMITs FAQ</h4>
+            <button class="close-modal"><span class="screen-reader-text">Close modal</span></button>
+          </div>
+          <div class="modal-content"></div>
+        </dialog>
+      </div>
     </footer>
   </div>
   <script type="text/javascript" src="includes/jquery/jquery-3.7.1.min.js"></script>

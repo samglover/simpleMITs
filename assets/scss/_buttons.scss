@@ -34,6 +34,43 @@ button {
   }
 }
 
+.max-min-button {
+  &::before {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: $size-12-5;
+    content: '';
+    display: block;
+    height: $size-12-5;
+    width: $size-12-5;
+  }
+
+  &.maximize {
+    &::before {
+      background-image: url(../img/maximize-black.svg); 
+    }
+  
+    &:hover::before {
+      background-image: url(../img/maximize-white.svg);
+    }
+  }
+  
+  &.minimize {
+    &::before {
+      background-image: url(../img/minimize-black.svg);
+    }
+
+    &:hover::before {
+      background-image: url(../img/minimize-white.svg);
+    }
+  }
+}
+
+.faq-button {
+  font-weight: bold;
+}
+
+
 .modal button {
   &.close-modal:not(:hover) {
     background-color: transparent;
