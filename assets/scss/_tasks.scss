@@ -76,7 +76,7 @@
       place-content: center;
       position: absolute;
         top: 0;
-        left: -$size-50;
+        left: calc(-1 * $size-50);
       width: $size-50;
     }
   }
@@ -109,7 +109,7 @@
         place-content: center;
         position: absolute;
           top: 0;
-          left: -$size-50;
+          left: calc(-1 * $size-50);
         width: $size-50;
       }
     }
@@ -142,7 +142,7 @@
         place-content: center;
         position: absolute;
           top: 0;
-          left: -$size-50;
+          left: calc(-1 * $size-50);
         width: $size-50;
       }
     }
@@ -242,7 +242,7 @@
   opacity: .5;
   padding: $size-2-5 $size-5;
   text-transform: uppercase;
-  transform: translateY(-$size-2-5);
+  transform: translateY(calc(-1 * $size-2-5));
 }
 
 .task-delete {

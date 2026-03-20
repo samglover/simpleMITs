@@ -24,7 +24,7 @@ $(document).ready(function($) {
 	}
 	
 	function minimize() {
-		$('.page-container').removeClass('maximized').css('--root-size', '16px')
+		$('.page-container').removeClass('maximized').css('--root-size', '18px')
 		$('.max-min-button').removeClass('minimize').addClass('maximize');
 		$('.max-min-button .screen-reader-text').text('Maximize');
 		

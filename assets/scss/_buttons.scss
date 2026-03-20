@@ -35,6 +35,16 @@ button {
 }
 
 .max-min-button {
+  background-color: $gray-lighter;
+  color: revert;
+  font-size: $size-12-5;
+  opacity: .5;
+
+  &:hover {
+    color: White;
+    opacity: revert;
+  }
+  
   &::before {
     background-position: center;
     background-repeat: no-repeat;
