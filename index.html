@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="includes/normalize/normalize.css">
   <link rel="stylesheet" href="assets/css/jost.css">
-  <link rel="stylesheet" href="assets/css/style.css?ver=1.1.2">
+  <link rel="stylesheet" href="assets/css/style.css?ver=1.1.4">
   <title>simpleMITs</title>
 </head>
 <body onload="listMITs()">
@@ -50,20 +50,26 @@
     <footer class="row">
       <p>Built by <a href="https://samglover.net" target="_blank">Sam Glover</a></p>
       <!-- FAQ -->
-      <button class="modal-button square-button" data-modal-id="faq-modal">?</button>
-      <dialog id="faq-modal" class="modal content-modal">
-        <div class="modal-header">
-          <h4>simpleMITs FAQ</h4>
-          <button class="close-modal"><span class="screen-reader-text">Close modal</span></button>
-        </div>
-        <div class="modal-content"></div>
-      </dialog>
+      <div class="row gap-tiny">
+        <button class="square-button max-min-button">
+          <span class="screen-reader-text"></span>
+        </button>
+        <button class="modal-button square-button faq-button" data-modal-id="faq-modal">?</button>
+        <dialog id="faq-modal" class="modal content-modal">
+          <div class="modal-header">
+            <h4>simpleMITs FAQ</h4>
+            <button class="close-modal"><span class="screen-reader-text">Close modal</span></button>
+          </div>
+          <div class="modal-content"></div>
+        </dialog>
+      </div>
     </footer>
   </div>
   <script type="text/javascript" src="includes/jquery/jquery-3.7.1.min.js"></script>
   <script type="text/javascript" src="includes/chance/chance.min.js"></script>
-  <script type="text/javascript" src="assets/js/main.js?ver=1.1.2"></script>
-  <script type="text/javascript" src="assets/js/modals.js?ver=1.1.2"></script>
-  <script type="text/javascript" src="assets/js/template-loader.js?ver=1.1.2"></script>
+  <script type="text/javascript" src="assets/js/main.js?ver=1.1.4"></script>
+  <script type="text/javascript" src="assets/js/modals.js?ver=1.1.4"></script>
+  <script type="text/javascript" src="assets/js/max-min.js?ver=1.1.4"></script>
+  <script type="text/javascript" src="assets/js/template-loader.js?ver=1.1.4"></script>
 </body>
 </html>
