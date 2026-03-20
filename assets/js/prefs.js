@@ -1,7 +1,16 @@
 $(document).ready(function($) {
-	let maximized = localStorage.getItem('simpleMITs_maximized');
+	let prefs = localStorage.getItem('simpleMITs_prefs');
+
+	if (prefs) {
+    prefs = JSON.parse(prefs);
+	} else {
+		prefs = {
+			'maximized': false
+		};
+	}
 	
-	if (maximized) {
+	// Maximize/minimize
+	if (prefs.maximized) {
 		maximize();
 	} else {
 		minimize();
@@ -16,18 +25,20 @@ $(document).ready(function($) {
 	});
 	
 	function maximize() {
-		$('.page-container').addClass('maximized').css('--root-size', '24px')
+		$('.page-container').addClass('maximized')
 		$('.max-min-button').removeClass('maximize').addClass('minimize');
 		$('.max-min-button .screen-reader-text').text('Minimize');
-		
-		localStorage.setItem('simpleMITs_maximized', true);
+
+		prefs.maximized = true;
+		localStorage.setItem('simpleMITs_prefs', JSON.stringify(prefs));
 	}
 	
 	function minimize() {
-		$('.page-container').removeClass('maximized').css('--root-size', '18px')
+		$('.page-container').removeClass('maximized')
 		$('.max-min-button').removeClass('minimize').addClass('maximize');
 		$('.max-min-button .screen-reader-text').text('Maximize');
 		
-		localStorage.removeItem('simpleMITs_maximized');
+		prefs.maximized = false;
+		localStorage.setItem('simpleMITs_prefs', JSON.stringify(prefs));
 	}
 });
