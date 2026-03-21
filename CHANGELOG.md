@@ -6,10 +6,8 @@ is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## 1.1.4 - 2026-03-20
 
 ### Added
-- The task list can now be maximized and minimized using the button on the bottom row
-
-### Changed
-- Base sizing increased from 16px to 18px
+- The task list can now be maximized and minimized using the buttons on the bottom row
+- The base size can be increased and decreased using the new buttons on the bottom row
 
 
 ## 1.1.3 - 2026-03-12
