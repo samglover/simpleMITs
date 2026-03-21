@@ -50,10 +50,18 @@
     <footer class="row">
       <p>Built by <a href="https://samglover.net" target="_blank">Sam Glover</a></p>
       <!-- FAQ -->
-      <div class="row gap-tiny">
-        <button class="square-button max-min-button">
-          <span class="screen-reader-text"></span>
-        </button>
+      <div class="col row gap-xs">
+        <div class="prefs row gap-tiny">
+          <button class="square-button size-button decrease-size-button">
+            <span class="screen-reader-text">Decrease text size</span>
+          </button>
+          <button class="square-button size-button increase-size-button">
+            <span class="screen-reader-text">Increase text size</span>
+          </button>
+          <button class="square-button max-min-button">
+            <span class="screen-reader-text"></span>
+          </button>
+        </div>
         <button class="modal-button square-button faq-button" data-modal-id="faq-modal">?</button>
         <dialog id="faq-modal" class="modal content-modal">
           <div class="modal-header">
@@ -69,7 +77,7 @@
   <script type="text/javascript" src="includes/chance/chance.min.js"></script>
   <script type="text/javascript" src="assets/js/main.js?ver=1.1.4"></script>
   <script type="text/javascript" src="assets/js/modals.js?ver=1.1.4"></script>
-  <script type="text/javascript" src="assets/js/max-min.js?ver=1.1.4"></script>
+  <script type="text/javascript" src="assets/js/prefs.js?ver=1.1.4"></script>
   <script type="text/javascript" src="assets/js/template-loader.js?ver=1.1.4"></script>
 </body>
 </html>
