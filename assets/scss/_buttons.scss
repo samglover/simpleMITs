@@ -41,9 +41,14 @@ button {
   font-weight: bold;
   opacity: .5;
 
-  &:hover {
+  &:hover:not(:disabled) {
+    background-color: $gray-medium;
     color: White;
     opacity: revert;
+  }
+
+  &:disabled {
+    cursor: default;
   }
 
   &.size-button {
