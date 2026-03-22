@@ -18,9 +18,9 @@
       <h1>simpleMITs</h1>
     </header>
     <ul id="task-list" class="task-list"></ul>
-    <!-- Clear Tasks -->
+    <!-- Clear buttons -->
     <div id="clear-buttons" class="row gap-tiny">
-      <!-- Clear Completed -->
+      <!-- Clear completed button -->
       <button id="clear-completed-button" class="modal-button" data-modal-id="clear-completed-modal">Clear completed</button>
       <dialog id="clear-completed-modal" class="modal confirmation-modal">
         <div class="confirmation-modal-container">
@@ -29,7 +29,7 @@
           <button class="cancel"><span class="screen-reader-text">Cancel</span></button>
         </div>
       </dialog>
-      <!-- Clear All -->
+      <!-- Clear all button -->
       <button id="clear-all-button" class="modal-button" data-modal-id="clear-all-modal">Clear all</button>
       <dialog id="clear-all-modal" class="modal confirmation-modal">
         <div class="confirmation-modal-container">
@@ -39,7 +39,7 @@
         </div>
       </dialog>
     </div>
-    <!-- New Task Form -->
+    <!-- New task form -->
     <form id="add-task-form">
       <label for="add-task-input">What's the most important thing you could do today?</label>
       <div class="input-group">
@@ -49,8 +49,8 @@
     </form>
     <footer class="row">
       <p>Built by <a href="https://samglover.net" target="_blank">Sam Glover</a></p>
-      <!-- FAQ -->
       <div class="col row gap-xs">
+        <!-- Prefs -->
         <div class="prefs row gap-tiny">
           <button class="square-button size-button decrease-size-button">
             <span class="screen-reader-text">Decrease text size</span>
@@ -62,6 +62,7 @@
             <span class="screen-reader-text"></span>
           </button>
         </div>
+        <!-- FAQ -->
         <button class="modal-button square-button faq-button" data-modal-id="faq-modal">?</button>
         <dialog id="faq-modal" class="modal content-modal">
           <div class="modal-header">
