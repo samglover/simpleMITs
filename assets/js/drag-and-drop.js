@@ -61,15 +61,18 @@ function handleDrop(event) {
     taskList.insertBefore(draggedTask, this);
 
     // Moves the object in local storage.
-    let mits = fetchMITs();
+    let /** @type {Array} */ mits = fetchMITs();
     let oldPosition, targetPosition;
+
     for (let i = 0; i < mits.length; i++) {
       if (mits[i].id == draggedTask.id) oldPosition = i;
       if (mits[i].id == this.id) targetPosition = i;
     }
+
     let task = mits[oldPosition];
     mits.splice(oldPosition, 1);
     mits.splice(targetPosition, 0, task);
+		
     localStorage.setItem('simpleMITs', JSON.stringify(mits));
     listMITs();
   }
@@ -129,15 +132,18 @@ function handleTouchEnd(event) {
     taskList.insertBefore(draggedTask, targetTask);
 
     // Moves the object in local storage.
-    let mits = fetchMITs();
+    let /** @type {Array} */ mits = fetchMITs();
     let oldPosition, targetPosition;
+
     for (let i = 0; i < mits.length; i++) {
       if (mits[i].id == draggedTask.id) oldPosition = i;
       if (mits[i].id == targetTask.id) targetPosition = i;
     }
+
     let task = mits[oldPosition];
     mits.splice(oldPosition, 1);
     mits.splice(targetPosition, 0, task);
+
     localStorage.setItem('simpleMITs', JSON.stringify(mits));
     listMITs();
   }
