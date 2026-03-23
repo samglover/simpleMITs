@@ -22,6 +22,13 @@ function addDragHandlers(task) {
   task.addEventListener('touchstart', handleTouchStart);
   task.addEventListener('touchmove', handleTouchMove);
   task.addEventListener('touchend', handleTouchEnd);
+
+  let grabHandle = task.querySelector('.task-grab-handle');
+  grabHandle.addEventListener('mousedown', makeTaskDraggable);
+
+  function makeTaskDraggable() {
+    task.setAttribute('draggable', true);
+  }
 }
 
 // Handles mouse drag and drop functions.

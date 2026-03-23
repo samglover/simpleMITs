@@ -5,28 +5,28 @@
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
     addEventListeners();
-    setFocus()
+    focusAddTaskInput();
   });
 } else {
   addEventListeners();
-  setFocus();
+  focusAddTaskInput();
 }
 
 function addEventListeners() {
   document.getElementById('add-task-form').addEventListener('submit', saveTask);
 }
 
-function setFocus() {
+function focusAddTaskInput() {
   document.getElementById('add-task-input').focus();
 }
 
 const taskList = document.getElementById('task-list');
-const defaultAddTaskInputLabel = document.querySelector('#add-task-form label').innerText;
+const defaultAddTaskInputLabel = document.querySelector('#add-task-form label').textContent;
 const defaultAddTaskInputPlaceholder = document.querySelector('#add-task-form input').getAttribute('placeholder');
 
 function listMITs() {
   // Clears the task list.
-  while(taskList.firstChild) taskList.removeChild(taskList.lastChild); 
+  taskList.replaceChildren();
 
   let mits = fetchMITs();
   
@@ -34,11 +34,11 @@ function listMITs() {
   for (let i = 0; i < mits.length; i++) {
     let id = mits[i].id;
 
-    const newTask = document.createElement('li');
-    newTask.id = id;
-    newTask.classList.add('task');
+    const task = document.createElement('li');
+    task.id = id;
+    task.classList.add('task');
 
-    if (mits[i].status) newTask.classList.add(mits[i].status);
+    if (true === mits[i].completed) task.classList.add('completed');
 
     // Adds a label if the task is more than 1 day (24 hours) old.
     let taskAge = '';
@@ -52,7 +52,7 @@ function listMITs() {
       taskAge  = '<span class="task-age">' + daysOld + ' ' + days + ' old</span>';
     }
 
-    newTask.innerHTML = `
+    task.innerHTML = `
       <div class="task-grab-handle"></div>
       <button class="task-checkbox" href="#" role="checkbox" onclick="changeStatus('${id}')">
         <span class="number">${i + 1}</span>
@@ -63,72 +63,16 @@ function listMITs() {
       </div>        
       <button class="task-delete" onclick="delTask('${id}')"></button>
     `;
+    task.querySelector('.task-description').textContent = mits[i].description.trim();
 
-    newTask.querySelector('.task-description').textContent = mits[i].description.trim();
-
-    taskList.append(newTask);
+    taskList.append(task);
   }
   
-  let tasks = taskList.childNodes; {
-    tasks.forEach((task) => {
-      // Enables dragging when the grab handles are clicked.
-      addDragHandlers(task);
-
-      let grabHandle = task.querySelector('.task-grab-handle');
-      grabHandle.addEventListener('mousedown', makeTaskDraggable);
-
-      function makeTaskDraggable() {
-        task.setAttribute('draggable', true);
-      }
-      
-      // Handles task editing.
-      let taskDesc = task.querySelector('.task-description');
-      let taskDescText = taskDesc.innerText;
-
-      taskDesc.addEventListener('focusin', () => {        
-        addEventListener('keydown', updateDescIf);
-        addEventListener('pointerdown', updateDescIf);
-
-        function updateDescIf(event) {
-          // Returns if the user clicks on the task description.
-          if (
-            'pointerdown' == event.type
-            && taskDesc == event.target
-          ) return;
-
-          // Returns if Enter, Tab, or Escape are pressed.
-          if (
-            'keydown' == event.type
-            && 'Enter' !== event.code
-            && 'Tab' !== event.code
-            && 'Escape' !== event.code
-          ) return;
-
-          // Returns if Shift + Enter is pressed.
-          if (
-            'Enter' == event.code
-            && true == event.shiftKey
-          ) return;
-          
-          switch (event.code) {
-            case 'Enter':
-              taskDescText = taskDesc.innerText;
-              break;
-            case 'Tab':
-              if (false == event.shiftKey) taskDescText = taskDesc.innerText;
-              break;
-          }
-
-          event.preventDefault();
-          removeEventListener('keydown', updateDescIf);
-          removeEventListener('pointerdown', updateDescIf);
-          taskDesc.blur();
-          
-          updateDescription(task, taskDescText);
-        }
-      });
-    });
-  }
+  let tasks = taskList.childNodes;
+  tasks.forEach((task) => {
+    addDragHandlers(task);
+    addEditHandlers(task);      
+  });
 
   addTaskInputLabel();
 }
@@ -149,7 +93,6 @@ function fetchMITs() {
     } catch (error) {
       console.error("Bad data in localStorage", error);
       localStorage.removeItem('simpleMITs');
-      // TODO: Show an error message to the user.
       mits = [];
     } finally {
       mits = sortMITs(mits);
@@ -168,7 +111,11 @@ function fetchMITs() {
  * A valid MIT must have:
  * - `id` as a UUID string
  * - `date` as a valid ISO-8601 UTC timestamp string
- * - `status` as `completed`, empty string, or null/undefined
+ * - `completed` as a boolean value
+ *
+ * Legacy `status` values are normalized to `completed`:
+ * - `completed` => true
+ * - empty string / null / undefined => false
  *
  * @param {Array} mits Array of MIT objects.
  * @return {Array} Filtered array containing only valid MIT objects.
@@ -177,27 +124,47 @@ function validateMITs(mits) {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   const isoTimestampRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 
-  return mits.filter((task) => {
+  return mits.reduce((validMITs, task) => {
+    if (!task || 'object' !== typeof task) return validMITs;
+
     // Checks task.id
-    if ('string' !== typeof task.id) return false;
-    if (!uuidRegex.test(task.id)) return false;
+    if ('string' !== typeof task.id) return validMITs;
+    if (!uuidRegex.test(task.id)) return validMITs;
 
     // Checks task.date
-    if ('string' !== typeof task.date) return false;
-    if (!isoTimestampRegex.test(task.date)) return false;
+    if ('string' !== typeof task.date) return validMITs;
+    if (!isoTimestampRegex.test(task.date)) return validMITs;
 
     const parsedDate = new Date(task.date);
-    if (Number.isNaN(parsedDate.getTime())) return false;
+    if (Number.isNaN(parsedDate.getTime())) return validMITs;
 
-    // Checks task.status
-    return 'completed' === task.status || null == task.status || '' === task.status;
-  });
+    let completed;
+    const hasCompletedProperty = Object.prototype.hasOwnProperty.call(task, 'completed');
+
+    // Checks task.completed, or normalizes from legacy task.status.
+    if (hasCompletedProperty) {
+      if ('boolean' !== typeof task.completed) return validMITs;
+      completed = task.completed;
+    } else if ('completed' === task.status) {
+      completed = true;
+    } else if (null == task.status || '' === task.status) {
+      completed = false;
+    } else {
+      return validMITs;
+    }
+
+    validMITs.push({
+      ...task,
+      completed
+    });
+
+    return validMITs;
+  }, []);
 }
 
 
 /**
- * Sorts completed tasks to the end of the parsedMITs object using 
- * alphabetical sorting ('completed' >< '').
+ * Sorts completed tasks to the end of the parsedMITs object.
  * 
  * @param {Array} mits Array of MIT objects.
  * @return array Sorted array of MIT objects (empty if there are none).
@@ -205,16 +172,10 @@ function validateMITs(mits) {
 function sortMITs(mits) {
   // Sorts completed tasks to the end of the list .
   mits.sort(function(a, b) {
-    const statusA = a.status.toLowerCase();
-    const statusB = b.status.toLowerCase();
-    let comparison = 0;
-    if (statusA > statusB) {
-      comparison = -1;
-    } else if (statusA < statusB) {
-      comparison = 1;
-    }
+    const completedA = true === a.completed ? 1 : 0;
+    const completedB = true === b.completed ? 1 : 0;
     localStorage.setItem('simpleMITs', JSON.stringify(mits));
-    return comparison * -1;
+    return completedA - completedB;
   });
 
   return mits;
@@ -235,7 +196,7 @@ function saveTask(event) {
     id: chance.guid(),
     date: new Date(),
     description: taskDesc,
-    status: ''
+    completed: false
   }
   mits.push(newTask);
   localStorage.setItem('simpleMITs', JSON.stringify(mits));
@@ -257,13 +218,7 @@ function changeStatus(id) {
     if (mits[i].id == id) thisMIT = mits[i];
   }
   
-  switch (thisMIT.status) {
-    case 'completed': // i.e., we're un-completing this task.
-      thisMIT.status = '';
-      break;
-    default:
-      thisMIT.status = 'completed';
-    }
+  thisMIT.completed = !thisMIT.completed;
   localStorage.setItem('simpleMITs', JSON.stringify(mits));
   
   taskList.classList.add('a-task-just-changed-status');
@@ -294,11 +249,14 @@ function changeStatus(id) {
  * @param {string} taskDescText The new task description.
  */
 function updateDescription(task, taskDescText) {
+  const taskId = task.id;
   let mits = fetchMITs();
   let thisMIT;
+
   for (let i = 0; i < mits.length; i++) {
-    if (mits[i].id == task.id) thisMIT = mits[i];
+    if (mits[i].id == taskId) thisMIT = mits[i];
   }
+
   thisMIT.description = taskDescText.trim();
   localStorage.setItem('simpleMITs', JSON.stringify(mits));
   listMITs();
@@ -326,7 +284,7 @@ function delTask(id) {
 function clearCompleted() {
   let /** @type {Array} */ mits = fetchMITs();
   for (let i = 0; i < mits.length; i++) {
-    if (mits[i].status == 'completed') mits.splice(i);
+    if (true === mits[i].completed) mits.splice(i);
   }
   localStorage.setItem('simpleMITs',JSON.stringify(mits));
   closeModal();
@@ -345,6 +303,51 @@ function clearAll() {
 
 
 /**
+ * Handles task editing.
+ * 
+ * @param {Object} task Task node.
+ */
+function addEditHandlers(task) {
+  const taskDesc = task.querySelector('.task-description');
+  
+  taskDesc.addEventListener('focusin', () => {
+    const originalDesc = taskDesc.textContent;
+
+    const cleanupEditHandlers = () => {
+      taskDesc.addEventListener('focusleave', saveNewDesc);
+      taskDesc.removeEventListener('keydown', handleKeyDown);
+    }
+
+    const saveNewDesc = () => {
+      cleanupEditHandlers();
+      updateDescription(task, taskDesc.textContent);
+    };
+    
+    const handleKeyDown = (event) => {
+      // Escape cancels edits, restores the original description, and removes event listeners and focus
+      if ('Escape' === event.code) {
+        event.preventDefault();
+        taskDesc.textContent = originalDesc;
+        cleanupEditHandlers();
+        taskDesc.blur();
+      }
+
+      // Enter commits unless Shift+Enter is used for a new line
+      if ('Enter' === event.code) {
+        if (true === event.shiftKey) return;
+        event.preventDefault();
+        saveNewDesc();
+        taskDesc.blur();
+      }
+    };
+    
+    taskDesc.addEventListener('focusout', saveNewDesc);
+    taskDesc.addEventListener('keydown', handleKeyDown);
+  });
+}
+
+
+/**
  * Sets the new-task field label based on the number of incomplete tasks.
  */
 function addTaskInputLabel() {
@@ -352,7 +355,7 @@ function addTaskInputLabel() {
   let addTaskInputLabel = document.querySelector('#add-task-form label');
   let incompleteTasks = taskList.querySelectorAll('.task:not(.completed)').length;
   let inputPlaceholder = defaultAddTaskInputPlaceholder;
-  let inputLabelText = addTaskInputLabel.innerText;
+  let inputLabelText = addTaskInputLabel.textContent;
 
   if (incompleteTasks > 0) inputPlaceholder = 'Add another important task';
   if (incompleteTasks <= 4) {
@@ -376,6 +379,6 @@ function addTaskInputLabel() {
     inputPlaceholder = 'Add another task';
   }
 
-  addTaskInputLabel.innerText = inputLabelText;
+  addTaskInputLabel.textContent = inputLabelText;
   addTaskInput.setAttribute('placeholder', inputPlaceholder);
 }
