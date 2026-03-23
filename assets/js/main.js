@@ -5,18 +5,18 @@
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
     addEventListeners();
-    setFocus()
+    focusAddTaskInput();
   });
 } else {
   addEventListeners();
-  setFocus();
+  focusAddTaskInput();
 }
 
 function addEventListeners() {
   document.getElementById('add-task-form').addEventListener('submit', saveTask);
 }
 
-function setFocus() {
+function focusAddTaskInput() {
   document.getElementById('add-task-input').focus();
 }
 
@@ -80,60 +80,6 @@ function listMITs() {
 
 
 /**
- * Handles task editing.
- * 
- * @param {Object} task Task node.
- */
-function addEditHandlers(task) {
-  let taskDesc = task.querySelector('.task-description');
-  let taskDescText = taskDesc.innerText;
-
-  taskDesc.addEventListener('focusin', () => {        
-    addEventListener('keydown', updateDescIf);
-    addEventListener('pointerdown', updateDescIf);
-
-    function updateDescIf(event) {
-      // Returns if the user clicks on the task description.
-      if (
-        'pointerdown' == event.type
-        && taskDesc == event.target
-      ) return;
-
-      // Returns if Enter, Tab, or Escape are pressed.
-      if (
-        'keydown' == event.type
-        && 'Enter' !== event.code
-        && 'Tab' !== event.code
-        && 'Escape' !== event.code
-      ) return;
-
-      // Returns if Shift + Enter is pressed.
-      if (
-        'Enter' == event.code
-        && true == event.shiftKey
-      ) return;
-      
-      switch (event.code) {
-        case 'Enter':
-          taskDescText = taskDesc.innerText;
-          break;
-        case 'Tab':
-          if (false == event.shiftKey) taskDescText = taskDesc.innerText;
-          break;
-      }
-
-      event.preventDefault();
-      removeEventListener('keydown', updateDescIf);
-      removeEventListener('pointerdown', updateDescIf);
-      taskDesc.blur();
-      
-      updateDescription(task, taskDescText);
-    }
-  });
-}
-
-
-/**
  * Fetches and sorts MITs from local storage.
  * 
  * @return array Sorted array of MITs (empty if there are none).
@@ -148,7 +94,6 @@ function fetchMITs() {
     } catch (error) {
       console.error("Bad data in localStorage", error);
       localStorage.removeItem('simpleMITs');
-      // TODO: Show an error message to the user.
       mits = [];
     } finally {
       mits = sortMITs(mits);
@@ -194,7 +139,7 @@ function validateMITs(mits) {
     const parsedDate = new Date(task.date);
     if (Number.isNaN(parsedDate.getTime())) return validMITs;
 
-    let completed = false;
+    let completed;
     const hasCompletedProperty = Object.prototype.hasOwnProperty.call(task, 'completed');
 
     // Checks task.completed, or normalizes from legacy task.status.
@@ -305,11 +250,14 @@ function changeStatus(id) {
  * @param {string} taskDescText The new task description.
  */
 function updateDescription(task, taskDescText) {
+  const taskId = task.id;
   let mits = fetchMITs();
   let thisMIT;
+
   for (let i = 0; i < mits.length; i++) {
-    if (mits[i].id == task.id) thisMIT = mits[i];
+    if (mits[i].id == taskId) thisMIT = mits[i];
   }
+
   thisMIT.description = taskDescText.trim();
   localStorage.setItem('simpleMITs', JSON.stringify(mits));
   listMITs();
@@ -352,6 +300,51 @@ function clearAll() {
   localStorage.removeItem('simpleMITs');
   closeModal();
   listMITs();
+}
+
+
+/**
+ * Handles task editing.
+ * 
+ * @param {Object} task Task node.
+ */
+function addEditHandlers(task) {
+  const taskDesc = task.querySelector('.task-description');
+  
+  taskDesc.addEventListener('focusin', () => {
+    const originalDesc = taskDesc.innerText;
+
+    const cleanupEditHandlers = () => {
+      taskDesc.addEventListener('focusleave', saveNewDesc);
+      taskDesc.removeEventListener('keydown', handleKeyDown);
+    }
+
+    const saveNewDesc = () => {
+      cleanupEditHandlers();
+      updateDescription(task, taskDesc.innerText);
+    };
+    
+    const handleKeyDown = (event) => {
+      // Escape cancels edits, restores the original description, and removes event listeners and focus
+      if ('Escape' === event.code) {
+        event.preventDefault();
+        taskDesc.innerText = originalDesc;
+        cleanupEditHandlers();
+        taskDesc.blur();
+      }
+
+      // Enter commits unless Shift+Enter is used for a new line
+      if ('Enter' === event.code) {
+        if (true === event.shiftKey) return;
+        event.preventDefault();
+        saveNewDesc();
+        taskDesc.blur();
+      }
+    };
+    
+    taskDesc.addEventListener('focusout', saveNewDesc);
+    taskDesc.addEventListener('keydown', handleKeyDown);
+  });
 }
 
 
