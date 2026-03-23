@@ -63,7 +63,6 @@ function listMITs() {
       </div>        
       <button class="task-delete" onclick="delTask('${id}')"></button>
     `;
-
     task.querySelector('.task-description').textContent = mits[i].description.trim();
 
     taskList.append(task);
@@ -73,13 +72,6 @@ function listMITs() {
     tasks.forEach((task) => {
       // Enables dragging when the grab handles are clicked.
       addDragHandlers(task);
-
-      let grabHandle = task.querySelector('.task-grab-handle');
-      grabHandle.addEventListener('mousedown', makeTaskDraggable);
-
-      function makeTaskDraggable() {
-        task.setAttribute('draggable', true);
-      }
       
       // Handles task editing.
       let taskDesc = task.querySelector('.task-description');
