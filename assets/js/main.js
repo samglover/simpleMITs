@@ -68,12 +68,11 @@ function listMITs() {
     taskList.append(task);
   }
   
-  let tasks = taskList.childNodes; {
-    tasks.forEach((task) => {
-      addDragHandlers(task);
-      addEditHandlers(task);      
-    });
-  }
+  let tasks = taskList.childNodes;
+  tasks.forEach((task) => {
+    addDragHandlers(task);
+    addEditHandlers(task);      
+  });
 
   addTaskInputLabel();
 }
