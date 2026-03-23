@@ -1,7 +1,12 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. The format
-is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+## 1.1.5 - 2026-03-23
+
+### Changed
+- Moved drag-and-drop functionality to its own file (/assets/js/drag-and-drop.js)
+
 
 ## 1.1.4 - 2026-03-20
 
