@@ -38,7 +38,7 @@ function listMITs() {
     newTask.id = id;
     newTask.classList.add('task');
 
-    if (mits[i].status) newTask.classList.add(mits[i].status);
+    if (true === mits[i].completed) newTask.classList.add('completed');
 
     // Adds a label if the task is more than 1 day (24 hours) old.
     let taskAge = '';
@@ -168,7 +168,11 @@ function fetchMITs() {
  * A valid MIT must have:
  * - `id` as a UUID string
  * - `date` as a valid ISO-8601 UTC timestamp string
- * - `status` as `completed`, empty string, or null/undefined
+ * - `completed` as a boolean value
+ *
+ * Legacy `status` values are normalized to `completed`:
+ * - `completed` => true
+ * - empty string / null / undefined => false
  *
  * @param {Array} mits Array of MIT objects.
  * @return {Array} Filtered array containing only valid MIT objects.
@@ -177,27 +181,47 @@ function validateMITs(mits) {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   const isoTimestampRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 
-  return mits.filter((task) => {
+  return mits.reduce((validMITs, task) => {
+    if (!task || 'object' !== typeof task) return validMITs;
+
     // Checks task.id
-    if ('string' !== typeof task.id) return false;
-    if (!uuidRegex.test(task.id)) return false;
+    if ('string' !== typeof task.id) return validMITs;
+    if (!uuidRegex.test(task.id)) return validMITs;
 
     // Checks task.date
-    if ('string' !== typeof task.date) return false;
-    if (!isoTimestampRegex.test(task.date)) return false;
+    if ('string' !== typeof task.date) return validMITs;
+    if (!isoTimestampRegex.test(task.date)) return validMITs;
 
     const parsedDate = new Date(task.date);
-    if (Number.isNaN(parsedDate.getTime())) return false;
+    if (Number.isNaN(parsedDate.getTime())) return validMITs;
 
-    // Checks task.status
-    return 'completed' === task.status || null == task.status || '' === task.status;
-  });
+    let completed = false;
+    const hasCompletedProperty = Object.prototype.hasOwnProperty.call(task, 'completed');
+
+    // Checks task.completed, or normalizes from legacy task.status.
+    if (hasCompletedProperty) {
+      if ('boolean' !== typeof task.completed) return validMITs;
+      completed = task.completed;
+    } else if ('completed' === task.status) {
+      completed = true;
+    } else if (null == task.status || '' === task.status) {
+      completed = false;
+    } else {
+      return validMITs;
+    }
+
+    validMITs.push({
+      ...task,
+      completed
+    });
+
+    return validMITs;
+  }, []);
 }
 
 
 /**
- * Sorts completed tasks to the end of the parsedMITs object using 
- * alphabetical sorting ('completed' >< '').
+ * Sorts completed tasks to the end of the parsedMITs object.
  * 
  * @param {Array} mits Array of MIT objects.
  * @return array Sorted array of MIT objects (empty if there are none).
@@ -205,16 +229,10 @@ function validateMITs(mits) {
 function sortMITs(mits) {
   // Sorts completed tasks to the end of the list .
   mits.sort(function(a, b) {
-    const statusA = a.status.toLowerCase();
-    const statusB = b.status.toLowerCase();
-    let comparison = 0;
-    if (statusA > statusB) {
-      comparison = -1;
-    } else if (statusA < statusB) {
-      comparison = 1;
-    }
+    const completedA = true === a.completed ? 1 : 0;
+    const completedB = true === b.completed ? 1 : 0;
     localStorage.setItem('simpleMITs', JSON.stringify(mits));
-    return comparison * -1;
+    return completedA - completedB;
   });
 
   return mits;
@@ -235,7 +253,7 @@ function saveTask(event) {
     id: chance.guid(),
     date: new Date(),
     description: taskDesc,
-    status: ''
+    completed: false
   }
   mits.push(newTask);
   localStorage.setItem('simpleMITs', JSON.stringify(mits));
@@ -257,13 +275,7 @@ function changeStatus(id) {
     if (mits[i].id == id) thisMIT = mits[i];
   }
   
-  switch (thisMIT.status) {
-    case 'completed': // i.e., we're un-completing this task.
-      thisMIT.status = '';
-      break;
-    default:
-      thisMIT.status = 'completed';
-    }
+  thisMIT.completed = !thisMIT.completed;
   localStorage.setItem('simpleMITs', JSON.stringify(mits));
   
   taskList.classList.add('a-task-just-changed-status');
@@ -326,7 +338,7 @@ function delTask(id) {
 function clearCompleted() {
   let /** @type {Array} */ mits = fetchMITs();
   for (let i = 0; i < mits.length; i++) {
-    if (mits[i].status == 'completed') mits.splice(i);
+    if (true === mits[i].completed) mits.splice(i);
   }
   localStorage.setItem('simpleMITs',JSON.stringify(mits));
   closeModal();
