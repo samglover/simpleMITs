@@ -59,10 +59,12 @@ function listMITs() {
         <span class="check"></span>
       </button>
       <div class="task-description-col">
-        <span class="task-description" contenteditable="plaintext-only">${mits[i].description.trim()}</span>${taskAge}
+        <span class="task-description" contenteditable="plaintext-only"></span>${taskAge}
       </div>        
       <button class="task-delete" onclick="delTask('${id}')"></button>
     `;
+
+    newTask.querySelector('.task-description').textContent = mits[i].description.trim();
 
     taskList.append(newTask);
   }
@@ -149,7 +151,6 @@ function fetchMITs() {
       // TODO: Show an error message to the user.
       mits = [];
     } finally {
-      mits = sanitizeMITs(mits);
       mits = sortMITs(mits);
     }
   } else {
@@ -157,70 +158,6 @@ function fetchMITs() {
   }
 
   return mits;
-}
-
-
-function sanitizeMITs(mits) {
-  if (!Array.isArray(mits)) return [];
-
-  const escapeHTML = (value) => {
-    return value
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  };
-
-  const stripControlChars = (value) => {
-    return value
-      .split('')
-      .filter((char) => {
-        const code = char.charCodeAt(0);
-        return (code >= 32 && code !== 127);
-      })
-      .join('');
-  };
-
-  const sanitizedMITs = [];
-
-  for (let i = 0; i < mits.length; i++) {
-    const mit = mits[i];
-    if (!mit || typeof mit !== 'object') continue;
-
-    const sanitizedIdCandidate = typeof mit.id === 'string'
-      ? mit.id.replace(/[^a-zA-Z0-9_-]/g, '')
-      : '';
-
-    const sanitizedId = sanitizedIdCandidate
-      ? sanitizedIdCandidate
-      : 'mit-' + Date.now().toString(36) + '-' + i;
-
-    const sanitizedStatus = mit.status === 'completed' ? 'completed' : '';
-
-    const descriptionSource = typeof mit.description === 'string'
-      ? mit.description
-      : '';
-
-    // Keep only printable characters, then escape for safe innerHTML rendering.
-    const sanitizedDescription = escapeHTML(
-      stripControlChars(descriptionSource).trim()
-    );
-
-    const parsedDate = new Date(mit.date);
-    const sanitizedDate = Number.isNaN(parsedDate.getTime())
-      ? new Date().toISOString()
-      : parsedDate.toISOString();
-
-    sanitizedMITs.push({
-      id: sanitizedId,
-      date: sanitizedDate,
-      description: sanitizedDescription,
-      status: sanitizedStatus
-    });
-  }
-
-  return sanitizedMITs;
 }
 
 
