@@ -204,3 +204,40 @@ test('completed status persists after page reload', async ({ page }) => {
 
   await expect(page.locator('.task')).toHaveClass(/completed/);
 });
+
+test('sanitizes malformed MIT data from localStorage', async ({ page }) => {
+  await page.evaluate(() => {
+    window.__xssFired = false;
+    localStorage.setItem('simpleMITs', JSON.stringify([
+      null,
+      'invalid-entry',
+      {
+        id: '!!!',
+        date: 'invalid-date',
+        description: '<img src=x onerror="window.__xssFired=true">  Task\u0000',
+        status: 'invalid-status'
+      },
+      {
+        id: 'ok_1',
+        date: '2024-01-01T00:00:00.000Z',
+        description: 'Safe task',
+        status: 'completed'
+      }
+    ]));
+  });
+
+  await page.reload();
+
+  await expect(page.locator('.task')).toHaveCount(2);
+  await expect(page.locator('.task-description img')).toHaveCount(0);
+  await expect(page.locator('.task-description').nth(0)).toHaveText(
+    '<img src=x onerror="window.__xssFired=true">  Task'
+  );
+  await expect(page.locator('.task-description').nth(1)).toHaveText('Safe task');
+  await expect(page.locator('.task').nth(0)).not.toHaveClass(/completed/);
+  await expect(page.locator('.task').nth(1)).toHaveClass(/completed/);
+  const didXSSFire = await page.evaluate(() => {
+    return typeof window.__xssFired === 'boolean' ? window.__xssFired : false;
+  });
+  expect(didXSSFire).toBe(false);
+});
