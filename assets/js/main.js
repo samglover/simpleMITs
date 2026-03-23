@@ -26,7 +26,7 @@ const defaultAddTaskInputPlaceholder = document.querySelector('#add-task-form in
 
 function listMITs() {
   // Clears the task list.
-  while(taskList.firstChild) taskList.removeChild(taskList.lastChild); 
+  taskList.replaceChildren();
 
   let mits = fetchMITs();
   
