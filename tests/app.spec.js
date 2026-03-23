@@ -209,16 +209,32 @@ test('sanitizes malformed MIT data from localStorage', async ({ page }) => {
   await page.evaluate(() => {
     window.__xssFired = false;
     localStorage.setItem('simpleMITs', JSON.stringify([
-      null,
-      'invalid-entry',
       {
         id: '!!!',
-        date: 'invalid-date',
-        description: '<img src=x onerror="window.__xssFired=true">  Task\u0000',
-        status: 'invalid-status'
+        date: '2026-03-23T16:24:23.166Z',
+        description: 'Invalid id task',
+        status: ''
       },
       {
-        id: 'ok_1',
+        id: '8f66a5f4-2dc4-4662-a5af-1d93c57f39d0',
+        date: 'invalid-date',
+        description: 'Invalid date task',
+        status: ''
+      },
+      {
+        id: 'a6ee82c1-dd53-4756-89ee-cc4ad8d7f57f',
+        date: '2026-03-23T16:24:23.166Z',
+        description: 'Invalid status task',
+        status: 'in-progress'
+      },
+      {
+        id: 'f0262457-9300-4200-9f34-bf1836c6beed',
+        date: '2026-03-23T16:24:23.166Z',
+        description: '<img src=x onerror="window.__xssFired=true">  Task',
+        status: ''
+      },
+      {
+        id: 'b9fbf648-4193-4f0e-9802-3cdcb78d43ca',
         date: '2024-01-01T00:00:00.000Z',
         description: 'Safe task',
         status: 'completed'
