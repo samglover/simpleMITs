@@ -132,6 +132,7 @@ function listMITs() {
   addTaskInputLabel();
 }
 
+
 /**
  * Fetches and sorts MITs from local storage.
  * 
@@ -139,24 +140,45 @@ function listMITs() {
  */
 function fetchMITs() {
   let mits = localStorage.getItem('simpleMITs');
+
   if (mits) {
-    mits = JSON.parse(mits);
-    // Sorts completed tasks to the end of the list (uses alphabetical sorting, 'completed' >< '').
-    mits.sort(function(a, b) {
-      const statusA = a.status.toLowerCase();
-      const statusB = b.status.toLowerCase();
-      let comparison = 0;
-      if (statusA > statusB) {
-        comparison = -1;
-      } else if (statusA < statusB) {
-        comparison = 1;
-      }
-      localStorage.setItem('simpleMITs', JSON.stringify(mits));
-      return comparison * -1;
-    });
+    try {
+      mits = JSON.parse(mits);
+    } catch (e) {
+      console.error("Bad data in localStorage", e);
+      mits = [];
+    } finally {
+      mits = sortMITs(mits);
+    }
   } else {
     mits = [];
   }
+  return mits;
+}
+
+
+/**
+ * Sorts completed tasks to the end of the parsedMITs object using 
+ * alphabetical sorting ('completed' >< '').
+ * 
+ * @param {Array} mits Array of MIT objects.
+ * @return array Sorted array of MIT objects (empty if there are none).
+*/
+function sortMITs(mits) {
+  // Sorts completed tasks to the end of the list .
+  mits.sort(function(a, b) {
+    const statusA = a.status.toLowerCase();
+    const statusB = b.status.toLowerCase();
+    let comparison = 0;
+    if (statusA > statusB) {
+      comparison = -1;
+    } else if (statusA < statusB) {
+      comparison = 1;
+    }
+    localStorage.setItem('simpleMITs', JSON.stringify(mits));
+    return comparison * -1;
+  });
+
   return mits;
 }
 
