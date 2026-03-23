@@ -204,3 +204,56 @@ test('completed status persists after page reload', async ({ page }) => {
 
   await expect(page.locator('.task')).toHaveClass(/completed/);
 });
+
+test('sanitizes malformed MIT data from localStorage', async ({ page }) => {
+  await page.evaluate(() => {
+    window.__xssFired = false;
+    localStorage.setItem('simpleMITs', JSON.stringify([
+      {
+        id: '!!!',
+        date: '2026-03-23T16:24:23.166Z',
+        description: 'Invalid id task',
+        status: ''
+      },
+      {
+        id: '8f66a5f4-2dc4-4662-a5af-1d93c57f39d0',
+        date: 'invalid-date',
+        description: 'Invalid date task',
+        status: ''
+      },
+      {
+        id: 'a6ee82c1-dd53-4756-89ee-cc4ad8d7f57f',
+        date: '2026-03-23T16:24:23.166Z',
+        description: 'Invalid status task',
+        status: 'in-progress'
+      },
+      {
+        id: 'f0262457-9300-4200-9f34-bf1836c6beed',
+        date: '2026-03-23T16:24:23.166Z',
+        description: '<img src=x onerror="window.__xssFired=true">  Task',
+        status: ''
+      },
+      {
+        id: 'b9fbf648-4193-4f0e-9802-3cdcb78d43ca',
+        date: '2024-01-01T00:00:00.000Z',
+        description: 'Safe task',
+        status: 'completed'
+      }
+    ]));
+  });
+
+  await page.reload();
+
+  await expect(page.locator('.task')).toHaveCount(2);
+  await expect(page.locator('.task-description img')).toHaveCount(0);
+  await expect(page.locator('.task-description').nth(0)).toHaveText(
+    '<img src=x onerror="window.__xssFired=true">  Task'
+  );
+  await expect(page.locator('.task-description').nth(1)).toHaveText('Safe task');
+  await expect(page.locator('.task').nth(0)).not.toHaveClass(/completed/);
+  await expect(page.locator('.task').nth(1)).toHaveClass(/completed/);
+  const didXSSFire = await page.evaluate(() => {
+    return typeof window.__xssFired === 'boolean' ? window.__xssFired : false;
+  });
+  expect(didXSSFire).toBe(false);
+});

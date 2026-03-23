@@ -59,10 +59,12 @@ function listMITs() {
         <span class="check"></span>
       </button>
       <div class="task-description-col">
-        <span class="task-description" contenteditable="plaintext-only">${mits[i].description.trim()}</span>${taskAge}
+        <span class="task-description" contenteditable="plaintext-only"></span>${taskAge}
       </div>        
       <button class="task-delete" onclick="delTask('${id}')"></button>
     `;
+
+    newTask.querySelector('.task-description').textContent = mits[i].description.trim();
 
     taskList.append(newTask);
   }
@@ -131,6 +133,7 @@ function listMITs() {
   addTaskInputLabel();
 }
 
+
 /**
  * Fetches and sorts MITs from local storage.
  * 
@@ -138,24 +141,82 @@ function listMITs() {
  */
 function fetchMITs() {
   let mits = localStorage.getItem('simpleMITs');
+
   if (mits) {
-    mits = JSON.parse(mits);
-    // Sorts completed tasks to the end of the list (uses alphabetical sorting, 'completed' >< '').
-    mits.sort(function(a, b) {
-      const statusA = a.status.toLowerCase();
-      const statusB = b.status.toLowerCase();
-      let comparison = 0;
-      if (statusA > statusB) {
-        comparison = -1;
-      } else if (statusA < statusB) {
-        comparison = 1;
-      }
-      localStorage.setItem('simpleMITs', JSON.stringify(mits));
-      return comparison * -1;
-    });
+    try {
+      mits = JSON.parse(mits);
+      mits = validateMITs(mits);
+    } catch (error) {
+      console.error("Bad data in localStorage", error);
+      localStorage.removeItem('simpleMITs');
+      // TODO: Show an error message to the user.
+      mits = [];
+    } finally {
+      mits = sortMITs(mits);
+    }
   } else {
     mits = [];
   }
+
+  return mits;
+}
+
+
+/**
+ * Validates MIT objects and removes entries with invalid properties.
+ *
+ * A valid MIT must have:
+ * - `id` as a UUID string
+ * - `date` as a valid ISO-8601 UTC timestamp string
+ * - `status` as `completed`, empty string, or null/undefined
+ *
+ * @param {Array} mits Array of MIT objects.
+ * @return {Array} Filtered array containing only valid MIT objects.
+ */
+function validateMITs(mits) {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const isoTimestampRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+
+  return mits.filter((task) => {
+    // Checks task.id
+    if ('string' !== typeof task.id) return false;
+    if (!uuidRegex.test(task.id)) return false;
+
+    // Checks task.date
+    if ('string' !== typeof task.date) return false;
+    if (!isoTimestampRegex.test(task.date)) return false;
+
+    const parsedDate = new Date(task.date);
+    if (Number.isNaN(parsedDate.getTime())) return false;
+
+    // Checks task.status
+    return 'completed' === task.status || null == task.status || '' === task.status;
+  });
+}
+
+
+/**
+ * Sorts completed tasks to the end of the parsedMITs object using 
+ * alphabetical sorting ('completed' >< '').
+ * 
+ * @param {Array} mits Array of MIT objects.
+ * @return array Sorted array of MIT objects (empty if there are none).
+*/
+function sortMITs(mits) {
+  // Sorts completed tasks to the end of the list .
+  mits.sort(function(a, b) {
+    const statusA = a.status.toLowerCase();
+    const statusB = b.status.toLowerCase();
+    let comparison = 0;
+    if (statusA > statusB) {
+      comparison = -1;
+    } else if (statusA < statusB) {
+      comparison = 1;
+    }
+    localStorage.setItem('simpleMITs', JSON.stringify(mits));
+    return comparison * -1;
+  });
+
   return mits;
 }
 
@@ -250,7 +311,7 @@ function updateDescription(task, taskDescText) {
  * @param {string} id The task's `id` attribute.
  */
 function delTask(id) {
-  let mits = fetchMITs();
+  let /** @type {Array} */ mits = fetchMITs();
   for (let i = 0; i < mits.length; i++) {
     if (mits[i].id == id) mits.splice(i, 1);
   }
@@ -263,7 +324,7 @@ function delTask(id) {
  * Handles clearing all completed tasks at once, if there are two or more.
  */
 function clearCompleted() {
-  let mits = fetchMITs();
+  let /** @type {Array} */ mits = fetchMITs();
   for (let i = 0; i < mits.length; i++) {
     if (mits[i].status == 'completed') mits.splice(i);
   }

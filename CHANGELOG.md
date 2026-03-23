@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file. The format 
 
 ## 1.1.5 - 2026-03-23
 
+### Added
+- Validation for MIT `id`, `date`, and `status` properties
+
 ### Changed
 - Moved drag-and-drop functionality to its own file (/assets/js/drag-and-drop.js)
 
