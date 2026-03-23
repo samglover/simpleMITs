@@ -70,59 +70,66 @@ function listMITs() {
   
   let tasks = taskList.childNodes; {
     tasks.forEach((task) => {
-      // Enables dragging when the grab handles are clicked.
       addDragHandlers(task);
-      
-      // Handles task editing.
-      let taskDesc = task.querySelector('.task-description');
-      let taskDescText = taskDesc.innerText;
-
-      taskDesc.addEventListener('focusin', () => {        
-        addEventListener('keydown', updateDescIf);
-        addEventListener('pointerdown', updateDescIf);
-
-        function updateDescIf(event) {
-          // Returns if the user clicks on the task description.
-          if (
-            'pointerdown' == event.type
-            && taskDesc == event.target
-          ) return;
-
-          // Returns if Enter, Tab, or Escape are pressed.
-          if (
-            'keydown' == event.type
-            && 'Enter' !== event.code
-            && 'Tab' !== event.code
-            && 'Escape' !== event.code
-          ) return;
-
-          // Returns if Shift + Enter is pressed.
-          if (
-            'Enter' == event.code
-            && true == event.shiftKey
-          ) return;
-          
-          switch (event.code) {
-            case 'Enter':
-              taskDescText = taskDesc.innerText;
-              break;
-            case 'Tab':
-              if (false == event.shiftKey) taskDescText = taskDesc.innerText;
-              break;
-          }
-
-          event.preventDefault();
-          removeEventListener('keydown', updateDescIf);
-          removeEventListener('pointerdown', updateDescIf);
-          taskDesc.blur();
-          
-          updateDescription(task, taskDescText);
-        }
-      });
+      addEditHandlers(task);      
     });
   }
 
   addTaskInputLabel();
+}
+
+
+/**
+ * Handles task editing.
+ * 
+ * @param {Object} task Task node.
+ */
+function addEditHandlers(task) {
+  let taskDesc = task.querySelector('.task-description');
+  let taskDescText = taskDesc.innerText;
+
+  taskDesc.addEventListener('focusin', () => {        
+    addEventListener('keydown', updateDescIf);
+    addEventListener('pointerdown', updateDescIf);
+
+    function updateDescIf(event) {
+      // Returns if the user clicks on the task description.
+      if (
+        'pointerdown' == event.type
+        && taskDesc == event.target
+      ) return;
+
+      // Returns if Enter, Tab, or Escape are pressed.
+      if (
+        'keydown' == event.type
+        && 'Enter' !== event.code
+        && 'Tab' !== event.code
+        && 'Escape' !== event.code
+      ) return;
+
+      // Returns if Shift + Enter is pressed.
+      if (
+        'Enter' == event.code
+        && true == event.shiftKey
+      ) return;
+      
+      switch (event.code) {
+        case 'Enter':
+          taskDescText = taskDesc.innerText;
+          break;
+        case 'Tab':
+          if (false == event.shiftKey) taskDescText = taskDesc.innerText;
+          break;
+      }
+
+      event.preventDefault();
+      removeEventListener('keydown', updateDescIf);
+      removeEventListener('pointerdown', updateDescIf);
+      taskDesc.blur();
+      
+      updateDescription(task, taskDescText);
+    }
+  });
 }
 
 
