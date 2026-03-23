@@ -11,6 +11,7 @@ export default [
         // Browser globals
         document: 'readonly',
         window: 'readonly',
+        console: 'readonly',
         localStorage: 'readonly',
         addEventListener: 'readonly',
         removeEventListener: 'readonly',
