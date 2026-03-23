@@ -21,7 +21,7 @@ function focusAddTaskInput() {
 }
 
 const taskList = document.getElementById('task-list');
-const defaultAddTaskInputLabel = document.querySelector('#add-task-form label').innerText;
+const defaultAddTaskInputLabel = document.querySelector('#add-task-form label').textContent;
 const defaultAddTaskInputPlaceholder = document.querySelector('#add-task-form input').getAttribute('placeholder');
 
 function listMITs() {
@@ -312,7 +312,7 @@ function addEditHandlers(task) {
   const taskDesc = task.querySelector('.task-description');
   
   taskDesc.addEventListener('focusin', () => {
-    const originalDesc = taskDesc.innerText;
+    const originalDesc = taskDesc.textContent;
 
     const cleanupEditHandlers = () => {
       taskDesc.addEventListener('focusleave', saveNewDesc);
@@ -321,14 +321,14 @@ function addEditHandlers(task) {
 
     const saveNewDesc = () => {
       cleanupEditHandlers();
-      updateDescription(task, taskDesc.innerText);
+      updateDescription(task, taskDesc.textContent);
     };
     
     const handleKeyDown = (event) => {
       // Escape cancels edits, restores the original description, and removes event listeners and focus
       if ('Escape' === event.code) {
         event.preventDefault();
-        taskDesc.innerText = originalDesc;
+        taskDesc.textContent = originalDesc;
         cleanupEditHandlers();
         taskDesc.blur();
       }
@@ -356,7 +356,7 @@ function addTaskInputLabel() {
   let addTaskInputLabel = document.querySelector('#add-task-form label');
   let incompleteTasks = taskList.querySelectorAll('.task:not(.completed)').length;
   let inputPlaceholder = defaultAddTaskInputPlaceholder;
-  let inputLabelText = addTaskInputLabel.innerText;
+  let inputLabelText = addTaskInputLabel.textContent;
 
   if (incompleteTasks > 0) inputPlaceholder = 'Add another important task';
   if (incompleteTasks <= 4) {
@@ -380,6 +380,6 @@ function addTaskInputLabel() {
     inputPlaceholder = 'Add another task';
   }
 
-  addTaskInputLabel.innerText = inputLabelText;
+  addTaskInputLabel.textContent = inputLabelText;
   addTaskInput.setAttribute('placeholder', inputPlaceholder);
 }
