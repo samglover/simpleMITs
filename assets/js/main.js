@@ -145,8 +145,9 @@ function fetchMITs() {
   if (mits) {
     try {
       mits = JSON.parse(mits);
-    } catch (e) {
-      console.error("Bad data in localStorage", e);
+      mits = validateMITs(mits);
+    } catch (error) {
+      console.error("Bad data in localStorage", error);
       localStorage.removeItem('simpleMITs');
       // TODO: Show an error message to the user.
       mits = [];
@@ -158,6 +159,39 @@ function fetchMITs() {
   }
 
   return mits;
+}
+
+
+/**
+ * Validates MIT objects and removes entries with invalid properties.
+ *
+ * A valid MIT must have:
+ * - `id` as a UUID string
+ * - `date` as a valid ISO-8601 UTC timestamp string
+ * - `status` as `completed`, empty string, or null/undefined
+ *
+ * @param {Array} mits Array of MIT objects.
+ * @return {Array} Filtered array containing only valid MIT objects.
+ */
+function validateMITs(mits) {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const isoTimestampRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+
+  return mits.filter((task) => {
+    // Checks task.id
+    if ('string' !== typeof task.id) return false;
+    if (!uuidRegex.test(task.id)) return false;
+
+    // Checks task.date
+    if ('string' !== typeof task.date) return false;
+    if (!isoTimestampRegex.test(task.date)) return false;
+
+    const parsedDate = new Date(task.date);
+    if (Number.isNaN(parsedDate.getTime())) return false;
+
+    // Checks task.status
+    return 'completed' === task.status || null == task.status || '' === task.status;
+  });
 }
 
 
@@ -277,7 +311,7 @@ function updateDescription(task, taskDescText) {
  * @param {string} id The task's `id` attribute.
  */
 function delTask(id) {
-  let mits = fetchMITs();
+  let /** @type {Array} */ mits = fetchMITs();
   for (let i = 0; i < mits.length; i++) {
     if (mits[i].id == id) mits.splice(i, 1);
   }
@@ -290,7 +324,7 @@ function delTask(id) {
  * Handles clearing all completed tasks at once, if there are two or more.
  */
 function clearCompleted() {
-  let mits = fetchMITs();
+  let /** @type {Array} */ mits = fetchMITs();
   for (let i = 0; i < mits.length; i++) {
     if (mits[i].status == 'completed') mits.splice(i);
   }
