@@ -34,11 +34,11 @@ function listMITs() {
   for (let i = 0; i < mits.length; i++) {
     let id = mits[i].id;
 
-    const newTask = document.createElement('li');
-    newTask.id = id;
-    newTask.classList.add('task');
+    const task = document.createElement('li');
+    task.id = id;
+    task.classList.add('task');
 
-    if (true === mits[i].completed) newTask.classList.add('completed');
+    if (true === mits[i].completed) task.classList.add('completed');
 
     // Adds a label if the task is more than 1 day (24 hours) old.
     let taskAge = '';
@@ -52,7 +52,7 @@ function listMITs() {
       taskAge  = '<span class="task-age">' + daysOld + ' ' + days + ' old</span>';
     }
 
-    newTask.innerHTML = `
+    task.innerHTML = `
       <div class="task-grab-handle"></div>
       <button class="task-checkbox" href="#" role="checkbox" onclick="changeStatus('${id}')">
         <span class="number">${i + 1}</span>
@@ -64,9 +64,9 @@ function listMITs() {
       <button class="task-delete" onclick="delTask('${id}')"></button>
     `;
 
-    newTask.querySelector('.task-description').textContent = mits[i].description.trim();
+    task.querySelector('.task-description').textContent = mits[i].description.trim();
 
-    taskList.append(newTask);
+    taskList.append(task);
   }
   
   let tasks = taskList.childNodes; {
