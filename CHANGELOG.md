@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 - Validation for MIT `id`, `date`, and `status` properties
+- Build script that updates version-based cachebusters from package.json
 
 ### Changed
 - Moved drag-and-drop functionality to its own file (/assets/js/drag-and-drop.js)
