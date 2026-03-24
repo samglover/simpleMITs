@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 - Moved drag-and-drop functionality to its own file (/assets/js/drag-and-drop.js)
 - Refactor main.js for simplicity, better readability, and accessibility
+- Add version to footer
 
 ## 1.1.4 - 2026-03-20
 
