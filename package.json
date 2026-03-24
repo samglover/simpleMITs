@@ -11,8 +11,10 @@
     "sass": "^1.70.0"
   },
   "scripts": {
-    "dev": "sass --watch --update --style=expanded assets/scss:assets/css",
-    "build": "sass --no-source-map --style=compressed assets/scss:assets/css",
+    "sync:version": "node scripts/sync-version.js",
+    "version": "npm run sync:version && git add index.html",
+    "dev": "npm run sync:version && sass --watch --update --style=expanded assets/scss:assets/css",
+    "build": "npm run sync:version && sass --no-source-map --style=compressed assets/scss:assets/css",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "lint": "eslint assets/js",
