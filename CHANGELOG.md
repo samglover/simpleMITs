@@ -2,13 +2,13 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 1.1.6 - 2026-03-25
+## 1.2.2 - 2026-03-25
 
 ### Fixed
 - Specify button text colors because `revert` behaved differently on different browsers
 
 
-## 1.1.5 - 2026-03-23
+## 1.2.1 - 2026-03-23
 
 ### Added
 - Validation for MIT `id`, `date`, and `status` properties
@@ -19,7 +19,7 @@ All notable changes to this project will be documented in this file. The format 
 - Refactor main.js for simplicity, better readability, and accessibility
 - Add version to footer
 
-## 1.1.4 - 2026-03-20
+## 1.2.0 - 2026-03-20
 
 ### Added
 - The task list can now be maximized and minimized using the buttons on the bottom row
