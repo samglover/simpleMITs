@@ -35,3 +35,22 @@ $breakpoint-sm: 576px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
+
+// Inline SVG icons used by CSS-only controls to avoid background-image flash.
+$icon-add-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(1,0,0,1,1,0)'%3E%3Cpath d='M12 19H-1v-6h13V0h6v13h13v6H18v13h-6V19Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
+
+$icon-arrow-black: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(0.888889,-0.888889,0.771389,0.771389,4.7893,27.0115)'%3E%3Cpath d='M13.352 5 1.813-8.297l3.374-3.889L16.727 1.111v-11.353H21.5V10.5H3.5V5h9.852Z'/%3E%3C/g%3E%3C/svg%3E");
+
+$icon-check-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(0.625,-0.625,0.707107,0.707107,-1.43503,14.6863)'%3E%3Cpath d='M0 19V2.029h6.788V13H32v6H0Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
+
+$icon-close-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(1.38787,-1.38787,0.707107,0.707107,-19.6146,27.5729)'%3E%3Cpath d='M15.472 14V-2.627h3.056V14H27v6h-8.472v16.627h-3.056V20H7v-6h8.472Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
+
+$icon-grab-round-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(1,0,0,1,6,6)'%3E%3Cpath d='M10 7c1.656 0 3 1.344 3 3s-1.344 3-3 3-3-1.344-3-3 1.344-3 3-3Zm0-10c1.656 0 3 1.344 3 3s-1.344 3-3 3S7 1.656 7 0s1.344-3 3-3Zm0 20c1.656 0 3 1.344 3 3s-1.344 3-3 3-3-1.344-3-3 1.344-3 3-3Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
+
+$icon-maximize-black: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(1,0,0,1.89601,2,-3.79202)'%3E%3Cpath d='M24 5.165h-7.272V2H30v7h-6V5.165Z'/%3E%3C/g%3E%3Cg transform='matrix(-1,1.22465e-16,-2.32194e-16,-1.89601,30,35.792)'%3E%3Cpath d='M24 5.165h-7.272V2H30v7h-6V5.165Z'/%3E%3C/g%3E%3C/svg%3E");
+
+$icon-maximize-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(1,0,0,1.89601,2,-3.79202)'%3E%3Cpath d='M24 5.165h-7.272V2H30v7h-6V5.165Z' fill='white'/%3E%3C/g%3E%3Cg transform='matrix(-1,1.22465e-16,-2.32194e-16,-1.89601,30,35.792)'%3E%3Cpath d='M24 5.165h-7.272V2H30v7h-6V5.165Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
+
+$icon-minimize-black: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(-1,1.22465e-16,-2.32194e-16,-1.89601,48.7279,17.0641)'%3E%3Cpath d='M24 5.165h-7.272V2H30v7h-6V5.165Z'/%3E%3C/g%3E%3Cg transform='matrix(1,0,0,1.89601,-16.7279,14.9359)'%3E%3Cpath d='M24 5.165h-7.272V2H30v7h-6V5.165Z'/%3E%3C/g%3E%3C/svg%3E");
+
+$icon-minimize-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(-1,1.22465e-16,-2.32194e-16,-1.89601,48.7279,17.0641)'%3E%3Cpath d='M24 5.165h-7.272V2H30v7h-6V5.165Z' fill='white'/%3E%3C/g%3E%3Cg transform='matrix(1,0,0,1.89601,-16.7279,14.9359)'%3E%3Cpath d='M24 5.165h-7.272V2H30v7h-6V5.165Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");

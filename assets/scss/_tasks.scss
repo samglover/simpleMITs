@@ -64,7 +64,7 @@
     opacity: .5;
     
     &::before {
-      background-image: url('../img/arrow-black.svg');
+      background-image: $icon-arrow-black;
       background-position: center;
       background-repeat: no-repeat;
       background-size: $size-20;
@@ -97,7 +97,7 @@
       opacity: .5;
       
       &::before {
-        background-image: url('../img/arrow-black.svg');
+        background-image: $icon-arrow-black;
         background-position: center;
         background-repeat: no-repeat;
         background-size: $size-20;
@@ -130,7 +130,7 @@
     & + .task.completed,
     ~ .task:not(.completed) + .task.completed {
       &::before {
-        background-image: url('../img/arrow-black.svg');
+        background-image: $icon-arrow-black;
         background-position: center;
         background-repeat: no-repeat;
         background-size: $size-20;
@@ -150,7 +150,7 @@
 }
 
 .task-grab-handle {
-  background-image: url('../img/grab-round-white.svg');
+  background-image: $icon-grab-round-white;
   background-position: top $size-15 center;
   background-repeat: no-repeat;
   background-size: $size-20;
@@ -185,7 +185,7 @@
   }
 
   .check {
-    background-image: url('../img/check-white.svg');
+    background-image: $icon-check-white;
     background-position: center;
     background-repeat: no-repeat;
     background-size: $size-25;
@@ -258,7 +258,7 @@
   &::before {
     content: '';
     display: block;
-    background-image: url('../img/close-white.svg');
+    background-image: $icon-close-white;
     background-position: center;
     background-repeat: no-repeat;
     background-size: $size-20;
