@@ -79,21 +79,21 @@ button {
   
     &.maximize {
       &::before {
-        background-image: url(../img/maximize-black.svg); 
+        background-image: $icon-maximize-black;
       }
     
       &:hover::before {
-        background-image: url(../img/maximize-white.svg);
+        background-image: $icon-maximize-white;
       }
     }
     
     &.minimize {
       &::before {
-        background-image: url(../img/minimize-black.svg);
+        background-image: $icon-minimize-black;
       }
   
       &:hover::before {
-        background-image: url(../img/minimize-white.svg);
+        background-image: $icon-minimize-white;
       }
     }
   }

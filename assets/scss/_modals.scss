@@ -34,7 +34,7 @@ body {
   &::before {
     content: '';
     display: grid;
-    background-image: url('../img/close-white.svg');
+    background-image: $icon-close-white;
     background-position: center;
     background-repeat: no-repeat;
     background-size: $size-20;
@@ -84,7 +84,7 @@ body {
     }
 
     &.confirm {
-      background-image: url('../img/check-white.svg');
+      background-image: $icon-check-white;
       background-size: $size-20;
       grid-area: c;
     
@@ -95,7 +95,7 @@ body {
   
     &.cancel {
       background-color: $gray-light;
-      background-image: url('../img/close-white.svg');
+      background-image: $icon-close-white;
       background-size: $size-20;
       grid-area: b;
     
