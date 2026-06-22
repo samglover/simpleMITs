@@ -88,7 +88,8 @@ function handleDrop(event) {
 }
 
 // Handles touch drag and drop functions.
-function handleTouchStart() {
+function handleTouchStart(event) {
+  event.preventDefault();
   draggedTask = this;
   this.classList.add('dragging');
 }
@@ -96,6 +97,7 @@ function handleTouchStart() {
 function handleTouchMove(event) {
   if (!draggedTask) return;
 
+  event.preventDefault();
   const touch = event.touches[0];
   const element = document.elementFromPoint(touch.clientX, touch.clientY);
 
