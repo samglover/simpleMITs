@@ -10,21 +10,26 @@ let draggedTask;
  * drag-and-drop API. Chrome and Safari ignore the CSS `cursor` during a native
  * drag (and show a text cursor when the drag payload looks like text), so the
  * `grabbing` cursor never appeared. Pointer-based dragging keeps the cursor
- * under CSS control. Touch stays on its own handlers so page scrolling can be
- * blocked while dragging.
+ * under CSS control. Touch keeps its own handlers so page scrolling can be
+ * blocked while a drag is in progress.
  *
  * @link https://codepen.io/retrofuturistic/pen/tlbHE?editors=0010
  * @param {Object} task Task node.
  */
 function addDragHandlers(task) {
-  // Mouse and pen dragging via Pointer Events.
   let grabHandle = task.querySelector('.task-grab-handle');
+
+  // Mouse and pen dragging via Pointer Events.
   grabHandle.addEventListener('pointerdown', handlePointerDown);
 
-  // Touch dragging.
-  task.addEventListener('touchstart', handleTouchStart);
-  task.addEventListener('touchmove', handleTouchMove);
-  task.addEventListener('touchend', handleTouchEnd);
+  // Touch dragging. Listeners live on the grab handle (not the whole task) so
+  // the page still scrolls when a touch starts anywhere else on a task. Touch
+  // events use implicit capture, so `touchmove` / `touchend` keep firing on the
+  // handle once the drag has started. `passive: false` is required for
+  // `preventDefault()` and silences Chrome's scroll-blocking listener warning.
+  grabHandle.addEventListener('touchstart', handleTouchStart, { passive: false });
+  grabHandle.addEventListener('touchmove', handleTouchMove, { passive: false });
+  grabHandle.addEventListener('touchend', handleTouchEnd);
 }
 
 /**
@@ -129,8 +134,8 @@ function handlePointerEnd(event) {
 // Handles touch dragging.
 function handleTouchStart(event) {
   event.preventDefault();
-  draggedTask = this;
-  this.classList.add('dragging');
+  draggedTask = event.currentTarget.closest('.task');
+  draggedTask.classList.add('dragging');
 }
 
 function handleTouchMove(event) {
