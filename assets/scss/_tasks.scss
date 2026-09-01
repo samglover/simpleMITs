@@ -54,10 +54,6 @@
 
   &.dragging {
     opacity: .5;
-    
-    .task-grab-handle {
-      cursor: grabbing;
-    }
   }
   
   &.over {
@@ -160,10 +156,26 @@
   line-height: .5;
   margin-right: 1px;
   place-content: center;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 
   &:hover {
     background-color: $gray-light;
     color: White;
+  }
+}
+
+/**
+ * Forces the grabbing cursor everywhere while a task is being dragged with a
+ * mouse or pen. The pointer leaves the grab handle during the drag, so the
+ * cursor has to be set on the whole page.
+ */
+body.dragging-task {
+  cursor: grabbing;
+
+  * {
+    cursor: grabbing !important;
   }
 }
 

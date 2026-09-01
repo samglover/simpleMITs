@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 1.2.5 - 2026-08-31
+
+### Fixed
+- Show the `grabbing` cursor while dragging a task in Chrome and Safari by moving mouse/pen dragging from the native HTML5 drag-and-drop API to Pointer Events
+
+### Changed
+- Share the reorder and drop-target logic between the mouse and touch drag paths
+- Start touch dragging from the grab handle only, so the page still scrolls when a touch begins elsewhere on a task, and mark the touch listeners `passive: false` to silence Chrome's scroll-blocking listener warning
+
+
 ## 1.2.4 - 2026-06-22
 
 ### Fixed
