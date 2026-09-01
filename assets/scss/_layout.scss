@@ -1,5 +1,11 @@
 @use 'variables' as *;
 
+html {
+  // Keeps the layout from shifting when `overflow: hidden` hides the scrollbar
+  // during a drag.
+  scrollbar-gutter: stable;
+}
+
 body {
   background-color: $gray-lightest;
   height: 100%;

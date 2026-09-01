@@ -167,12 +167,16 @@
 }
 
 /**
- * Forces the grabbing cursor everywhere while a task is being dragged with a
- * mouse or pen. The pointer leaves the grab handle during the drag, so the
- * cursor has to be set on the whole page.
+ * Locks the page while a task is being dragged so it cannot scroll out from
+ * under the task, and forces the grabbing cursor everywhere (the pointer leaves
+ * the grab handle during a mouse drag). The class is set on <html>; touch
+ * scrolling is also blocked from JS because iOS ignores `overflow: hidden`.
  */
-body.dragging-task {
+.dragging-task {
   cursor: grabbing;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
 
   * {
     cursor: grabbing !important;

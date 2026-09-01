@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 1.2.6 - 2026-09-01
+
+### Fixed
+- Prevent the page from scrolling while a task is being dragged (`overflow: hidden` for mouse and pen, a non-passive `touchmove` handler for touch, which iOS needs)
+
+### Changed
+- Start a touch drag with a long press anywhere on a task instead of requiring the small grab handle
+
+
 ## 1.2.5 - 2026-08-31
 
 ### Fixed

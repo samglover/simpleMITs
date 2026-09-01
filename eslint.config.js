@@ -11,10 +11,13 @@ export default [
         // Browser globals
         document: 'readonly',
         window: 'readonly',
+        navigator: 'readonly',
         console: 'readonly',
         localStorage: 'readonly',
         addEventListener: 'readonly',
         removeEventListener: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
         AbortController: 'readonly',
         // Third-party libraries loaded via script tags
         chance: 'readonly',
