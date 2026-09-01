@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 - Show the `grabbing` cursor while dragging a task in Chrome and Safari by moving mouse/pen dragging from the native HTML5 drag-and-drop API to Pointer Events
+- Show a drop-target indicator on mobile
 
 ### Changed
 - Share the reorder and drop-target logic between the mouse and touch drag paths
