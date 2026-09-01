@@ -74,6 +74,14 @@
         top: 0;
         left: calc(-1 * $size-50);
       width: $size-50;
+
+      @media (max-width: $breakpoint-sm) {
+        background-image: none;
+        background-color: Black;
+        display: block;
+        left: calc(-1 * ($size-20 + 1px));
+        width: $size-20;
+      }
     }
   }
 }
