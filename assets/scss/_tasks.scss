@@ -11,7 +11,14 @@
   grid-template-columns: $size-15 $size-50 1fr $size-50;
   position: relative;
   width: 100%;
-  
+
+  // A long press anywhere on a task starts a drag, so the native text-selection
+  // and callout gestures have to be suppressed or they steal the touch first.
+  // Editing the description re-enables selection below.
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+
   &:not(:last-child) {
     margin-bottom: $size-2-5;
   }
@@ -247,6 +254,11 @@
 .task-description {
   padding-right: .5em;
   white-space: pre-wrap;
+
+  &:focus {
+    -webkit-user-select: text;
+    user-select: text;
+  }
 }
 
 .task-age {

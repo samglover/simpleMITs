@@ -8,7 +8,8 @@ All notable changes to this project will be documented in this file. The format 
 - Prevent the page from scrolling while a task is being dragged (`overflow: hidden` for mouse and pen, a non-passive `touchmove` handler for touch, which iOS needs)
 
 ### Changed
-- Start a touch drag with a long press anywhere on a task instead of requiring the small grab handle
+- Start a touch drag instantly from the grab handle or with a long press anywhere else on a task, instead of only from the small grab handle
+- Suppress native text selection and the callout menu on tasks so a long press starts a drag instead of selecting text (selection is restored while editing a description)
 
 
 ## 1.2.5 - 2026-08-31

@@ -4,9 +4,10 @@
 let draggedTask;
 let dragScrollY = 0;
 
-// Touch drag starts on a long press so a normal touch can still scroll the list.
+// Away from the grab handle, a touch drag starts on a long press so a normal
+// touch can still scroll the list.
 const LONG_PRESS_MS = 400;
-const LONG_PRESS_MOVE_TOLERANCE = 10;
+const LONG_PRESS_MOVE_TOLERANCE = 12;
 let longPressTimer = null;
 let touchStartPoint = null;
 
@@ -19,8 +20,9 @@ let touchStartPoint = null;
  * `grabbing` cursor never appeared. Pointer-based dragging keeps the cursor
  * under CSS control.
  *
- * Touch dragging starts on a long press anywhere on a task; a shorter touch
- * (or one that moves before the press registers) scrolls the list as usual.
+ * Touch dragging starts immediately from the grab handle, or on a long press
+ * anywhere else on a task; a shorter touch (or one that moves before the press
+ * registers) scrolls the list as usual.
  *
  * While a drag is in progress the page is locked so it cannot scroll out from
  * under the task: `html.dragging-task` sets `overflow: hidden` for mouse and
@@ -35,7 +37,7 @@ function addDragHandlers(task) {
   let grabHandle = task.querySelector('.task-grab-handle');
   grabHandle.addEventListener('pointerdown', handlePointerDown);
 
-  // Touch dragging via a long press.
+  // Touch dragging: immediate from the grab handle, long press elsewhere.
   task.addEventListener('touchstart', handleTouchStart, { passive: true });
   task.addEventListener('touchmove', handleTouchMove, { passive: false });
   task.addEventListener('touchend', handleTouchEnd);
@@ -188,13 +190,19 @@ function handlePointerEnd(event) {
   stopDragging();
 }
 
-// Handles touch dragging via a long press.
+// Handles touch dragging.
 function handleTouchStart(event) {
   if (draggedTask || event.touches.length > 1) return;
 
   const touch = event.touches[0];
   const task = event.currentTarget;
   touchStartPoint = { x: touch.clientX, y: touch.clientY };
+
+  // The grab handle starts a drag right away; anywhere else needs a long press.
+  if (event.target.closest('.task-grab-handle')) {
+    startDragging(task);
+    return;
+  }
 
   longPressTimer = setTimeout(function () {
     longPressTimer = null;
