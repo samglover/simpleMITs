@@ -59,8 +59,8 @@ function listMITs() {
         <span class="check"></span>
       </button>
       <div class="task-description-col">
-        <span class="task-description" contenteditable="plaintext-only"></span>${taskAge}
-      </div>        
+        <span class="task-description" tabindex="0"></span>${taskAge}
+      </div>
       <button class="task-delete" onclick="delTask('${id}')"></button>
     `;
     task.querySelector('.task-description').textContent = mits[i].description.trim();
@@ -309,7 +309,31 @@ function clearAll() {
  */
 function addEditHandlers(task) {
   const taskDesc = task.querySelector('.task-description');
-  
+
+  // The description is made editable only on a deliberate click, tap, or
+  // keyboard focus. Left permanently editable, its native long-press text
+  // selection on touch devices competes with the long-press drag gesture.
+  const beginEditing = (event) => {
+    if (!taskDesc.isContentEditable) {
+      taskDesc.setAttribute('contenteditable', 'plaintext-only');
+      taskDesc.focus();
+    }
+
+    // Drop the caret where the user clicked or tapped.
+    if (event && 'number' === typeof event.clientX && document.caretRangeFromPoint) {
+      const range = document.caretRangeFromPoint(event.clientX, event.clientY);
+      if (range) {
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    }
+  };
+
+  taskDesc.addEventListener('click', beginEditing);
+  taskDesc.addEventListener('focus', beginEditing);
+  taskDesc.addEventListener('focusout', () => taskDesc.removeAttribute('contenteditable'));
+
   taskDesc.addEventListener('focusin', () => {
     const originalDesc = taskDesc.textContent;
 

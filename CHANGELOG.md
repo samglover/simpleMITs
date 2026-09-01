@@ -9,7 +9,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 - Start a touch drag instantly from the grab handle or with a long press anywhere else on a task, instead of only from the small grab handle
-- Suppress native text selection and the callout menu on tasks so a long press starts a drag instead of selecting text (selection is restored while editing a description)
+- Suppress native text selection and the callout menu on tasks so a long press starts a drag instead of selecting text
+- Make a task description editable only when it is clicked, tapped, or focused with the keyboard, instead of leaving it permanently editable (its long-press text selection on touch fought the long-press drag)
 
 
 ## 1.2.5 - 2026-08-31

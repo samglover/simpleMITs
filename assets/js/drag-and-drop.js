@@ -40,7 +40,7 @@ function addDragHandlers(task) {
   // Touch dragging: immediate from the grab handle, long press elsewhere.
   task.addEventListener('touchstart', handleTouchStart, { passive: true });
   task.addEventListener('touchmove', handleTouchMove, { passive: false });
-  task.addEventListener('touchend', handleTouchEnd);
+  task.addEventListener('touchend', handleTouchEnd, { passive: false });
   task.addEventListener('touchcancel', handleTouchEnd);
 }
 
@@ -241,6 +241,10 @@ function handleTouchEnd(event) {
   }
 
   if (!draggedTask) return;
+
+  // Suppress the click the browser synthesizes after the drag, so it doesn't
+  // land on a task and open the description for editing.
+  if (event.cancelable) event.preventDefault();
 
   if (event.type !== 'touchcancel') {
     const touch = event.changedTouches[0];
