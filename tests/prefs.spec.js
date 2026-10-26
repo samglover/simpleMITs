@@ -40,7 +40,7 @@ test('decrease text size button shrinks text and saves it to prefs', async ({ pa
   expect(await rootSize(page)).toBe('14px');
 });
 
-test('increase text size button is disabled at the maximum size', async ({ page }) => {
+test('increase text size button is disabled at the maximum size, including after reload', async ({ page }) => {
   // 16px to 26px in 2px steps
   for (let i = 0; i < 5; i++) {
     await page.locator('.increase-size-button').click();
@@ -49,17 +49,23 @@ test('increase text size button is disabled at the maximum size', async ({ page 
   expect(await rootSize(page)).toBe('26px');
   await expect(page.locator('.increase-size-button')).toBeDisabled();
 
+  await page.reload();
+  await expect(page.locator('.increase-size-button')).toBeDisabled();
+
   await page.locator('.decrease-size-button').click();
   await expect(page.locator('.increase-size-button')).toBeEnabled();
 });
 
-test('decrease text size button is disabled at the minimum size', async ({ page }) => {
+test('decrease text size button is disabled at the minimum size, including after reload', async ({ page }) => {
   // 16px to 10px in 2px steps
   for (let i = 0; i < 3; i++) {
     await page.locator('.decrease-size-button').click();
   }
 
   expect(await rootSize(page)).toBe('10px');
+  await expect(page.locator('.decrease-size-button')).toBeDisabled();
+
+  await page.reload();
   await expect(page.locator('.decrease-size-button')).toBeDisabled();
 
   await page.locator('.increase-size-button').click();
