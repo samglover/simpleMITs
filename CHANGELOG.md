@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 1.2.6 - 2026-10-26
+
+### Fixed
+- Save the text size to prefs after decreasing it (#71)
+- Save an edited task description only once when pressing Enter, and don't save it after pressing Escape (#72)
+- Disable the text size buttons on page load when the saved size is already at the minimum or maximum
+
+### Added
+- Tests for editing a task description and for prefs (#55)
+
+### Changed
+- Run the Playwright test server on port 3471 instead of 3000 to avoid reusing other local dev servers
+
+
 ## 1.2.5 - 2026-08-31
 
 ### Fixed

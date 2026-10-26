@@ -28,18 +28,16 @@ $(document).ready(function($) {
 	let maxSize = 26;
 	let increment = 2;
 
+	updateSizeButtons();
+
 	$('.increase-size-button').click(function() {
 		let size = getSize();
 
 		if (size < maxSize) {
-			$('.decrease-size-button').prop('disabled', false)
 			pageContainer.style.setProperty('--root-size', size + increment + 'px');
 			prefs.size = size + increment + 'px';
 			localStorage.setItem('simpleMITs_prefs', JSON.stringify(prefs));
-
-			if (size == maxSize - increment) {
-				this.disabled = true;
-			}
+			updateSizeButtons();
 		}
 	});
 
@@ -47,16 +45,19 @@ $(document).ready(function($) {
 		let size = getSize();
 		
 		if (size > minSize) {
-			$('.increase-size-button').prop('disabled', false)
 			$(pageContainer).css('--root-size', size - increment + 'px');
-			prefs.size = size + increment - 'px';
+			prefs.size = size - increment + 'px';
 			localStorage.setItem('simpleMITs_prefs', JSON.stringify(prefs));
-			
-			if (size == minSize + increment) {
-				$(this).prop('disabled', true);
-			}
+			updateSizeButtons();
 		}
 	});
+
+	// Disables the size buttons at the size limits
+	function updateSizeButtons() {
+		let size = getSize();
+		$('.increase-size-button').prop('disabled', size >= maxSize);
+		$('.decrease-size-button').prop('disabled', size <= minSize);
+	}
 	
 	function getSize() {
 		let currentSize = window.getComputedStyle(pageContainer).getPropertyValue('--root-size').trim();
