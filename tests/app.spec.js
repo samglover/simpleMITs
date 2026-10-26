@@ -47,6 +47,61 @@ test('can delete a task', async ({ page }) => {
   await expect(page.locator('.task')).toHaveCount(0);
 });
 
+// Counts writes to the task list in localStorage, to catch duplicate saves.
+async function countTaskSaves(page) {
+  await page.evaluate(() => {
+    window.__taskSaves = 0;
+    const setItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      if ('simpleMITs' === key) window.__taskSaves++;
+      return setItem.call(this, key, value);
+    };
+  });
+}
+
+test('Enter saves an edited task description once', async ({ page }) => {
+  await page.fill('#add-task-input', 'Write tests');
+  await page.press('#add-task-input', 'Enter');
+  await countTaskSaves(page);
+
+  await page.locator('.task-description').fill('Write more tests');
+  await page.locator('.task-description').press('Enter');
+
+  await expect(page.locator('.task-description')).toHaveText('Write more tests');
+  await expect(page.locator('.task-description')).not.toBeFocused();
+  expect(await page.evaluate(() => window.__taskSaves)).toBe(1);
+
+  await page.reload();
+  await expect(page.locator('.task-description')).toHaveText('Write more tests');
+});
+
+test('clicking away saves an edited task description', async ({ page }) => {
+  await page.fill('#add-task-input', 'Write tests');
+  await page.press('#add-task-input', 'Enter');
+
+  await page.locator('.task-description').fill('Write more tests');
+  await page.locator('#add-task-input').click();
+
+  await page.reload();
+  await expect(page.locator('.task-description')).toHaveText('Write more tests');
+});
+
+test('Escape cancels editing a task description without saving', async ({ page }) => {
+  await page.fill('#add-task-input', 'Write tests');
+  await page.press('#add-task-input', 'Enter');
+  await countTaskSaves(page);
+
+  await page.locator('.task-description').fill('Write more tests');
+  await page.locator('.task-description').press('Escape');
+
+  await expect(page.locator('.task-description')).toHaveText('Write tests');
+  await expect(page.locator('.task-description')).not.toBeFocused();
+  expect(await page.evaluate(() => window.__taskSaves)).toBe(0);
+
+  await page.reload();
+  await expect(page.locator('.task-description')).toHaveText('Write tests');
+});
+
 test('can clear all tasks', async ({ page }) => {
   await page.fill('#add-task-input', 'First task');
   await page.press('#add-task-input', 'Enter');
