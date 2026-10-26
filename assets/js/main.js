@@ -314,7 +314,7 @@ function addEditHandlers(task) {
     const originalDesc = taskDesc.textContent;
 
     const cleanupEditHandlers = () => {
-      taskDesc.addEventListener('focusleave', saveNewDesc);
+      taskDesc.removeEventListener('focusout', saveNewDesc);
       taskDesc.removeEventListener('keydown', handleKeyDown);
     }
 
