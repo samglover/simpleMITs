@@ -49,7 +49,7 @@ $(document).ready(function($) {
 		if (size > minSize) {
 			$('.increase-size-button').prop('disabled', false)
 			$(pageContainer).css('--root-size', size - increment + 'px');
-			prefs.size = size + increment - 'px';
+			prefs.size = size - increment + 'px';
 			localStorage.setItem('simpleMITs_prefs', JSON.stringify(prefs));
 			
 			if (size == minSize + increment) {
