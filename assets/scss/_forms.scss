@@ -52,3 +52,27 @@
     }
   }
 }
+
+
+.sync-form {
+  .input-group {
+    background-color: $gray-lighter;
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  input {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
+    font-size: $size-20;
+    min-width: 0;
+    padding: $size-10 $size-15;
+    width: 100%;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}

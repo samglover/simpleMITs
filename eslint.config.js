@@ -16,6 +16,8 @@ export default [
         addEventListener: 'readonly',
         removeEventListener: 'readonly',
         AbortController: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
         // Third-party libraries loaded via script tags
         chance: 'readonly',
         $: 'readonly',

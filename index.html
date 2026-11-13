@@ -62,6 +62,36 @@
             <span class="screen-reader-text"></span>
           </button>
         </div>
+        <!-- Sync (hidden unless Supabase is configured in assets/js/config.js) -->
+        <button id="sync-button" class="modal-button sync-button" data-modal-id="sync-modal" hidden>Sync</button>
+        <dialog id="sync-modal" class="modal content-modal">
+          <div class="modal-header">
+            <h4>Sync</h4>
+            <button class="close-modal"><span class="screen-reader-text">Close modal</span></button>
+          </div>
+          <div class="modal-content">
+            <div id="sync-signed-out">
+              <p>Sign in to keep your tasks in sync across your devices. We'll email you a sign-in link, so there's no password to remember.</p>
+              <form id="sync-sign-in-form" class="sync-form">
+                <label for="sync-email-input" class="screen-reader-text">Email address</label>
+                <div class="input-group">
+                  <input id="sync-email-input" type="email" autocomplete="email" placeholder="Email address" required>
+                  <button type="submit">Send link</button>
+                </div>
+              </form>
+              <p id="sync-sign-in-message" aria-live="polite"></p>
+            </div>
+            <div id="sync-signed-in" hidden>
+              <p>Signed in as <strong id="sync-email"></strong>.</p>
+              <p id="sync-status" aria-live="polite"></p>
+              <div class="row gap-tiny">
+                <button id="sync-sign-out-button">Sign out</button>
+                <button id="sync-delete-button" class="danger-button">Delete account</button>
+              </div>
+              <p><small>Signing out or deleting your account doesn't remove the tasks on this device.</small></p>
+            </div>
+          </div>
+        </dialog>
         <!-- FAQ -->
         <button class="modal-button square-button faq-button" data-modal-id="faq-modal">?</button>
         <dialog id="faq-modal" class="modal content-modal">
@@ -76,11 +106,14 @@
   </div>
   <script type="text/javascript" src="includes/jquery/jquery-3.7.1.min.js"></script>
   <script type="text/javascript" src="includes/chance/chance.min.js?ver=1.2.7"></script>
+  <script type="text/javascript" src="includes/supabase/supabase-2.118.0.min.js"></script>
+  <script type="text/javascript" src="assets/js/config.js?ver=1.2.7"></script>
   <script type="text/javascript" src="assets/js/storage.js?ver=1.2.7"></script>
   <script type="text/javascript" src="assets/js/main.js?ver=1.2.7"></script>
   <script type="text/javascript" src="assets/js/drag-and-drop.js?ver=1.2.7"></script>
   <script type="text/javascript" src="assets/js/modals.js?ver=1.2.7"></script>
   <script type="text/javascript" src="assets/js/prefs.js?ver=1.2.7"></script>
   <script type="text/javascript" src="assets/js/template-loader.js?ver=1.2.7"></script>
+  <script type="text/javascript" src="assets/js/sync.js?ver=1.2.7"></script>
 </body>
 </html>

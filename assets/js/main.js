@@ -199,7 +199,10 @@ function changeStatus(id) {
   for (let i = 0; i < mits.length; i++) {
     if (mits[i].id == id) thisMIT = mits[i];
   }
-  
+
+  // The task may have been deleted on another device.
+  if (!thisMIT) return listMITs();
+
   thisMIT.completed = !thisMIT.completed;
   saveTasks(mits);
   
@@ -238,6 +241,9 @@ function updateDescription(task, taskDescText) {
   for (let i = 0; i < mits.length; i++) {
     if (mits[i].id == taskId) thisMIT = mits[i];
   }
+
+  // The task may have been deleted on another device.
+  if (!thisMIT) return listMITs();
 
   thisMIT.description = taskDescText.trim();
   saveTasks(mits);

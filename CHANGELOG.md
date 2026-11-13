@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## Unreleased
+
+### Added
+- Optional sync across devices using Supabase, with email magic-link sign-in. Off until Supabase settings are added to `assets/js/config.js`; see `supabase/README.md` for setup
+- Sign-out and account deletion; both keep the tasks on the current device
+
+### Fixed
+- Completing or editing a task that was deleted on another device no longer throws an error
+
+
 ## 1.2.7 2026-11-13
 
 ### Changed

@@ -6,3 +6,8 @@
     top: auto;
   width: 1px;
 }
+
+// Keeps the `hidden` attribute working on elements that set their own display.
+[hidden] {
+  display: none !important;
+}

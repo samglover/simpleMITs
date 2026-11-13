@@ -131,3 +131,15 @@ button {
     }
   }
 }
+
+.sync-button.signed-in {
+  font-weight: bold;
+}
+
+.danger-button {
+  background-color: #cc0000;
+
+  &:hover {
+    background-color: #aa0000;
+  }
+}
