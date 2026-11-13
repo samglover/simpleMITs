@@ -1,5 +1,5 @@
 /* exported changeStatus, delTask, clearCompleted, clearAll */
-/* global closeModal, addDragHandlers */
+/* global closeModal, addDragHandlers, loadTasks, saveTasks, clearTasks */
 
 // Waits for the document to load before doing things.
 if (document.readyState === "loading") {
@@ -79,29 +79,12 @@ function listMITs() {
 
 
 /**
- * Fetches and sorts MITs from local storage.
+ * Fetches, validates, and sorts MITs from storage.
  * 
  * @return array Sorted array of MITs (empty if there are none).
  */
 function fetchMITs() {
-  let mits = localStorage.getItem('simpleMITs');
-
-  if (mits) {
-    try {
-      mits = JSON.parse(mits);
-      mits = validateMITs(mits);
-    } catch (error) {
-      console.error("Bad data in localStorage", error);
-      localStorage.removeItem('simpleMITs');
-      mits = [];
-    } finally {
-      mits = sortMITs(mits);
-    }
-  } else {
-    mits = [];
-  }
-
-  return mits;
+  return sortMITs(validateMITs(loadTasks()));
 }
 
 
@@ -174,7 +157,6 @@ function sortMITs(mits) {
   mits.sort(function(a, b) {
     const completedA = true === a.completed ? 1 : 0;
     const completedB = true === b.completed ? 1 : 0;
-    localStorage.setItem('simpleMITs', JSON.stringify(mits));
     return completedA - completedB;
   });
 
@@ -199,7 +181,7 @@ function saveTask(event) {
     completed: false
   }
   mits.push(newTask);
-  localStorage.setItem('simpleMITs', JSON.stringify(mits));
+  saveTasks(mits);
   document.getElementById('add-task-form').reset();
   listMITs();
 }
@@ -212,14 +194,14 @@ function saveTask(event) {
  */
 function changeStatus(id) {
   let mits = fetchMITs();
-  let thisMIT; // This will be the object in the browser's local storage.
+  let thisMIT;
 
   for (let i = 0; i < mits.length; i++) {
     if (mits[i].id == id) thisMIT = mits[i];
   }
   
   thisMIT.completed = !thisMIT.completed;
-  localStorage.setItem('simpleMITs', JSON.stringify(mits));
+  saveTasks(mits);
   
   taskList.classList.add('a-task-just-changed-status');
   
@@ -258,7 +240,7 @@ function updateDescription(task, taskDescText) {
   }
 
   thisMIT.description = taskDescText.trim();
-  localStorage.setItem('simpleMITs', JSON.stringify(mits));
+  saveTasks(mits);
   listMITs();
 }
 
@@ -273,7 +255,7 @@ function delTask(id) {
   for (let i = 0; i < mits.length; i++) {
     if (mits[i].id == id) mits.splice(i, 1);
   }
-  localStorage.setItem('simpleMITs', JSON.stringify(mits));
+  saveTasks(mits);
   listMITs();
 }
 
@@ -283,10 +265,8 @@ function delTask(id) {
  */
 function clearCompleted() {
   let /** @type {Array} */ mits = fetchMITs();
-  for (let i = 0; i < mits.length; i++) {
-    if (true === mits[i].completed) mits.splice(i);
-  }
-  localStorage.setItem('simpleMITs',JSON.stringify(mits));
+  mits = mits.filter((task) => true !== task.completed);
+  saveTasks(mits);
   closeModal();
   listMITs();
 }
@@ -296,7 +276,7 @@ function clearCompleted() {
  * Clears all tasks and the local storage.
  */
 function clearAll() {
-  localStorage.removeItem('simpleMITs');
+  clearTasks();
   closeModal();
   listMITs();
 }

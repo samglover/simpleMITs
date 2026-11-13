@@ -312,3 +312,35 @@ test('sanitizes malformed MIT data from localStorage', async ({ page }) => {
   });
   expect(didXSSFire).toBe(false);
 });
+
+test('completing a task saves the task list once', async ({ page }) => {
+  await page.fill('#add-task-input', 'First task');
+  await page.press('#add-task-input', 'Enter');
+  await page.fill('#add-task-input', 'Second task');
+  await page.press('#add-task-input', 'Enter');
+  await page.fill('#add-task-input', 'Third task');
+  await page.press('#add-task-input', 'Enter');
+  await countTaskSaves(page);
+
+  await page.locator('.task-checkbox').nth(0).click();
+
+  await expect(page.locator('.task').nth(2)).toHaveClass(/completed/);
+  expect(await page.evaluate(() => window.__taskSaves)).toBe(1);
+});
+
+test('clearing completed tasks keeps active tasks regardless of stored order', async ({ page }) => {
+  await page.evaluate(() => {
+    localStorage.setItem('simpleMITs', JSON.stringify([
+      { id: '1b4e28ba-2fa1-41d2-883f-0016d3cca427', date: '2026-03-23T16:24:23.166Z', description: 'Done one', completed: true },
+      { id: '2b4e28ba-2fa1-41d2-883f-0016d3cca427', date: '2026-03-23T16:24:23.166Z', description: 'Active task', completed: false },
+      { id: '3b4e28ba-2fa1-41d2-883f-0016d3cca427', date: '2026-03-23T16:24:23.166Z', description: 'Done two', completed: true }
+    ]));
+  });
+  await page.reload();
+
+  await page.locator('#clear-completed-button').click();
+  await page.locator('#clear-completed-modal .confirm').click();
+
+  await expect(page.locator('.task')).toHaveCount(1);
+  await expect(page.locator('.task-description')).toHaveText('Active task');
+});

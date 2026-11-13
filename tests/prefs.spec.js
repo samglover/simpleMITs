@@ -93,3 +93,11 @@ test('maximize/minimize button toggles the layout and saves it to prefs', async 
   await page.reload();
   await expect(page.locator('.page-container')).not.toHaveClass(/maximized/);
 });
+
+test('corrupt prefs fall back to defaults', async ({ page }) => {
+  await page.evaluate(() => localStorage.setItem('simpleMITs_prefs', '{not json'));
+  await page.reload();
+
+  expect(await rootSize(page)).toBe('16px');
+  await expect(page.locator('.max-min-button')).toHaveClass(/maximize/);
+});

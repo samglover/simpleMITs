@@ -1,5 +1,5 @@
 /* exported addDragHandlers */
-/* global taskList, fetchMITs, listMITs */
+/* global taskList, fetchMITs, listMITs, saveTasks */
 
 let draggedTask;
 
@@ -80,7 +80,7 @@ function reorder(targetTask) {
   mits.splice(oldPosition, 1);
   mits.splice(targetPosition, 0, task);
 
-  localStorage.setItem('simpleMITs', JSON.stringify(mits));
+  saveTasks(mits);
   listMITs();
 }
 
