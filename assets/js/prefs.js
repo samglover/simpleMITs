@@ -1,15 +1,9 @@
+/* global loadPrefs, savePrefs */
 $(document).ready(function($) {
-	let prefs = localStorage.getItem('simpleMITs_prefs');
-
-	if (prefs) {
-    prefs = JSON.parse(prefs);
-	} else {
-		// Defaults
-		prefs = {
-			'maximized': false,
-			'size': '16px'
-		};
-	}
+	const prefs = loadPrefs({
+		'maximized': false,
+		'size': '16px'
+	});
 	
 	const pageContainer = document.querySelector('.page-container');
 
@@ -36,7 +30,7 @@ $(document).ready(function($) {
 		if (size < maxSize) {
 			pageContainer.style.setProperty('--root-size', size + increment + 'px');
 			prefs.size = size + increment + 'px';
-			localStorage.setItem('simpleMITs_prefs', JSON.stringify(prefs));
+			savePrefs(prefs);
 			updateSizeButtons();
 		}
 	});
@@ -47,7 +41,7 @@ $(document).ready(function($) {
 		if (size > minSize) {
 			$(pageContainer).css('--root-size', size - increment + 'px');
 			prefs.size = size - increment + 'px';
-			localStorage.setItem('simpleMITs_prefs', JSON.stringify(prefs));
+			savePrefs(prefs);
 			updateSizeButtons();
 		}
 	});
@@ -80,7 +74,7 @@ $(document).ready(function($) {
 		$('.max-min-button .screen-reader-text').text('Minimize');
 
 		prefs.maximized = true;
-		localStorage.setItem('simpleMITs_prefs', JSON.stringify(prefs));
+		savePrefs(prefs);
 	}
 	
 	function minimize() {
@@ -89,6 +83,6 @@ $(document).ready(function($) {
 		$('.max-min-button .screen-reader-text').text('Maximize');
 		
 		prefs.maximized = false;
-		localStorage.setItem('simpleMITs_prefs', JSON.stringify(prefs));
+		savePrefs(prefs);
 	}
 });

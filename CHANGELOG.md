@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## Unreleased
+
+### Changed
+- Move all localStorage reads and writes into a new `storage.js` module, in preparation for optional multi-device sync
+
+### Fixed
+- Save the task list once when sorting, instead of on every comparison
+- Clear completed tasks by filtering for them, instead of relying on completed tasks being sorted to the end
+- Fall back to default prefs instead of breaking when saved prefs are corrupt
+
+
 ## 1.2.6 - 2026-10-26
 
 ### Fixed
