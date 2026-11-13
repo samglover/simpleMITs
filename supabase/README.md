@@ -11,7 +11,9 @@ To turn on sync:
    - Add these **Redirect URLs**: `https://simplemits.com` and `http://localhost:3471` (for local testing).
 4. **Check that email sign-in is on.** Under **Authentication → Sign In / Providers**, the **Email** provider should be enabled. It is by default.
 5. **Customize the emails (optional).** Under **Authentication → Emails**, edit the **Magic Link** and **Confirm signup** templates so they mention simpleMITs. New users get the "Confirm signup" email the first time they sign in.
-6. **Add your keys to the app.** Under **Project Settings → API Keys**, copy the project URL and the public key (labeled *publishable* or *anon*) into `assets/js/config.js`. Never use the *secret* or *service_role* key; it bypasses all permissions.
+6. **Add your project URL and key to the app** in `assets/js/config.js`:
+   - `supabaseUrl`: under **Project Settings → Data API**, copy the **Project URL**. It looks like `https://<project-ref>.supabase.co`, where the project ref is the ID in your dashboard's address bar.
+   - `supabaseKey`: under **Project Settings → API Keys**, copy the public key (labeled *publishable* or *anon*). Never use the *secret* or *service_role* key; it bypasses all permissions.
 
 ## Before launch
 

@@ -11,6 +11,6 @@
  * Never put the service-role (secret) key here.
  */
 const SIMPLEMITS_CONFIG = {
-	supabaseUrl: '',
-	supabaseKey: ''
+	supabaseUrl: 'https://xoazglrktjcklzhcwnzg.supabase.co',
+	supabaseKey: 'sb_publishable_YHyNVlH7DYbDf3eIU2fCzw_lBEjPtvp'
 };
