@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## 1.2.7 2026-11-13
 
 ### Changed
 - Move all localStorage reads and writes into a new `storage.js` module, in preparation for optional multi-device sync
