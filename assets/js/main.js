@@ -53,15 +53,24 @@ function listMITs() {
     }
 
     task.innerHTML = `
-      <div class="task-grab-handle"></div>
+      <div class="task-grab-handle">
+        <span class="screen-reader-text">Reorder task ${i + 1}</span>
+      </div>
       <button class="task-checkbox" href="#" role="checkbox" onclick="changeStatus('${id}')">
-        <span class="number">${i + 1}</span>
-        <span class="check"></span>
+        <span class="number">
+          ${i + 1}
+          <span class="screen-reader-text">Un-complete task ${i + 1}</span>
+        </span>
+        <span class="check">
+          <span class="screen-reader-text">Complete task ${i + 1}</span>
+        </span>
       </button>
       <div class="task-description-col">
         <span class="task-description" contenteditable="plaintext-only"></span>${taskAge}
       </div>        
-      <button class="task-delete" onclick="delTask('${id}')"></button>
+      <button class="task-delete" onclick="delTask('${id}')">
+        <span class="screen-reader-text">Delete task ${i + 1}</span>
+      </button>
     `;
     task.querySelector('.task-description').textContent = mits[i].description.trim();
 
