@@ -118,6 +118,7 @@ function resetSignInForm() {
 async function signOut() {
 	// Upload any pending changes before signing out.
 	await syncNow();
+	while (syncInFlight) await syncInFlight;
 	await stopSyncing();
 }
 
