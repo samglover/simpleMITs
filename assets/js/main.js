@@ -38,7 +38,8 @@ function listMITs() {
     task.id = id;
     task.classList.add('task');
 
-    if (true === mits[i].completed) task.classList.add('completed');
+    const completed = true === mits[i].completed;
+    if (completed) task.classList.add('completed');
 
     // Adds a label if the task is more than 1 day (24 hours) old.
     let taskAge = '';
@@ -56,17 +57,12 @@ function listMITs() {
       <div class="task-grab-handle">
         <span class="screen-reader-text">Reorder task ${i + 1}</span>
       </div>
-      <button class="task-checkbox" href="#" role="checkbox" onclick="changeStatus('${id}')">
-        <span class="number">
-          ${i + 1}
-          <span class="screen-reader-text">Un-complete task ${i + 1}</span>
-        </span>
-        <span class="check">
-          <span class="screen-reader-text">Complete task ${i + 1}</span>
-        </span>
+      <button class="task-checkbox" role="checkbox" aria-checked="${completed}" aria-labelledby="task-${id}-number task-${id}-desc" onclick="changeStatus('${id}')">
+        <span id="task-${id}-number" class="number" aria-hidden="true">${i + 1}</span>
+        <span class="check" aria-hidden="true"></span>
       </button>
       <div class="task-description-col">
-        <span class="task-description" contenteditable="plaintext-only"></span>${taskAge}
+        <span id="task-${id}-desc" class="task-description" contenteditable="plaintext-only"></span>${taskAge}
       </div>        
       <button class="task-delete" onclick="delTask('${id}')">
         <span class="screen-reader-text">Delete task ${i + 1}</span>
@@ -218,6 +214,10 @@ function changeStatus(id) {
   taskList.classList.add('a-task-just-changed-status');
   
   listMITs();
+
+  // Re-rendering replaces the checkbox, so return focus to it. Keyboard and
+  // screen reader users keep their place and hear the new state.
+  document.getElementById(`task-${id}-number`).closest('.task-checkbox').focus();
   
   const controller = new AbortController();
   const checkboxes = taskList.querySelectorAll('.task-checkbox');

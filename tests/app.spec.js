@@ -344,3 +344,33 @@ test('clearing completed tasks keeps active tasks regardless of stored order', a
   await expect(page.locator('.task')).toHaveCount(1);
   await expect(page.locator('.task-description')).toHaveText('Active task');
 });
+
+test('task checkboxes report their state to screen readers', async ({ page }) => {
+  await page.fill('#add-task-input', 'Write tests');
+  await page.press('#add-task-input', 'Enter');
+
+  const checkbox = page.getByRole('checkbox', { name: '1 Write tests' });
+  await expect(checkbox).not.toBeChecked();
+
+  // Hovering swaps the visible number and check, but not the announced state.
+  await checkbox.hover();
+  await expect(checkbox).not.toBeChecked();
+
+  await checkbox.click();
+  await expect(page.getByRole('checkbox', { name: '1 Write tests' })).toBeChecked();
+});
+
+test('completing a task from the keyboard keeps focus on its checkbox', async ({ page }) => {
+  await page.fill('#add-task-input', 'First task');
+  await page.press('#add-task-input', 'Enter');
+  await page.fill('#add-task-input', 'Second task');
+  await page.press('#add-task-input', 'Enter');
+
+  await page.getByRole('checkbox', { name: '1 First task' }).focus();
+  await page.keyboard.press('Space');
+
+  // The completed task moves to the end of the list, and focus moves with it.
+  const moved = page.getByRole('checkbox', { name: '2 First task' });
+  await expect(moved).toBeChecked();
+  await expect(moved).toBeFocused();
+});
