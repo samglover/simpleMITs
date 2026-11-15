@@ -38,7 +38,7 @@ body {
     width: 100%;
   }
 
-  h4 {
+  h2 {
     display: grid;
     font-size: $size-25;
     grid-area: a;
@@ -63,7 +63,7 @@ body {
     display: grid;
     grid-template-columns: 1fr $size-50;
   
-    h4 {
+    h2 {
       font-size: $size-30;
       margin: 0;
       padding: $size-20;
