@@ -4,15 +4,24 @@ button,
 .modal button {
   appearance: none;
   -webkit-appearance: none;
-  background-color: $gray-light;
+  background-color: $gray-lighter;
   border: none;
-  color: White;
+  color: Black;
   cursor: pointer;
   padding: $size-5 $size-10;
   
   &:hover {
     background-color: $gray-light;
     color: White;
+  }
+
+  &:disabled,
+  &:disabled:not(:hover),
+  &:disabled:hover {
+    background-color: $gray-lighter;
+    color: revert;
+    cursor: default;
+    opacity: .25 !important;
   }
   
   &.icon-button {
@@ -22,7 +31,7 @@ button,
     padding: 0;
     place-content: center;
     width: $size-50;
-
+    
     &:not(:hover) {
       background-color: transparent;
     }
@@ -42,60 +51,53 @@ button,
     &:hover::before {
       color: White;
     }
+
+    &:disabled,
+    &:disabled:not(:hover),
+    &:disabled:hover {
+      &::before {
+        color: revert;
+      }
+    }
   }
 }
 
-.clear-buttons {
-  button {
-    font-size: $size-12-5;
-    
-    &:not(:hover) {
-      background-color: $gray-lighter;
-      color: Black;
-      opacity: .5;
-    }
+button.secondary-button {
+  &:not(:hover) {
+    opacity: .5;
+  }
+
+  &:not(:hover) {
+    background-color: $gray-lighter;
+    opacity: .5;
   }
 }
 
 #add-task-input {
-  + button {
-    border: none;
-
-    &::before {
-      background-image: $icon-add-white;
-    }
+  + button::before {
+    background-image: $icon-add-white;
   }
 }
 
 .footer-controls {
-  button {
-    font-size: $size-15;
-    height: 2em;
-    width: 2em;
-    
-    &:not(:hover) {
-      background-color: $gray-lighter;
-      opacity: .5;
-    }
+  > button,
+  .prefs > button {
+    font-size: $size-12-5;
 
-    &::before {
-      background-size: $size-12-5;
-      min-height: $size-12-5;
-      width: $size-12-5;
-    }
-  }
-  
-  .size-button {
-    font-weight: bold;
-  
-    &:disabled { 
-      &:hover {
-        background-color: $gray-lighter;
-        cursor: default;
-        opacity: .5;
+    &.icon-button {
+      font-size: $size-15;
+      height: 2em;
+      width: 2em;
+
+      &::before {
+        background-size: $size-12-5;
+        min-height: $size-12-5;
+        width: $size-12-5;
       }
     }
-  
+  }
+
+  .size-button {
     &::before {
       content: 'A';
     }
@@ -194,18 +196,17 @@ button,
 
     &.confirm {
       grid-area: c;
-      opacity: revert;
       
       &:not(:hover) {
         background-color: #cc0000;
       }
 
-      &::before {
-        background-image: $icon-check-white;
-      }
-      
       &:hover {
         background-color: #aa0000;
+      }
+      
+      &::before {
+        background-image: $icon-check-white;
       }
     }
   
@@ -225,8 +226,6 @@ button,
 
 .sync-form {
   button[type="submit"] {
-    opacity: unset;
-
     &::before {
       background-image: $icon-send-white;
     }

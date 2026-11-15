@@ -289,10 +289,6 @@ body.dragging-task {
     width: $size-50;
   }
 
-  &:hover {
-    background-color: $gray-light;
-  }
-
   &::selection {
     background-color: transparent;
   }
