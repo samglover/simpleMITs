@@ -19,6 +19,11 @@ $(document).ready(function($) {
 
 	// Size buttons
 	let minSize = 14;
+	if (getSize() < minSize) {
+		prefs.size = minSize + 'px';
+		pageContainer.style.setProperty('--root-size', prefs.size);
+		savePrefs(prefs);
+	}
 	let maxSize = 26;
 	let increment = 2;
 
