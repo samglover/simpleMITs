@@ -139,6 +139,12 @@ test.describe('with Supabase settings', () => {
     expect(await page.evaluate(() => window.__fake.otpEmails)).toEqual(['test@example.com']);
   });
 
+  test('?modal=sync opens the Sync screen on load', async ({ page }) => {
+    await setUp(page);
+    await page.goto('/?modal=sync');
+    await expect(page.locator('#sync')).toBeVisible();
+  });
+
   test('signing in shows the account and uploads local tasks when the server has none', async ({ page }) => {
     await setUp(page, { localTasks: [task(1), task(2)] });
     await signIn(page);
@@ -254,7 +260,7 @@ test.describe('with Supabase settings', () => {
     expect(await descriptions(page)).toEqual(['Task 1']);
 
     const uploadsBefore = await page.evaluate(() => window.__fake.upserts.length);
-    await page.locator('#sync-modal .close-modal').click();
+    await page.locator('#sync .close-modal').click();
     await addTask(page, 'After sign-out');
     await page.waitForTimeout(1500);
     expect(await page.evaluate(() => window.__fake.upserts.length)).toBe(uploadsBefore);
