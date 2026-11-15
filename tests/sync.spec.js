@@ -434,4 +434,39 @@ test.describe('with Supabase settings', () => {
     expect(await descriptions(page)).toEqual(['Task 1', 'Local change']);
     expect(await syncMeta(page)).toEqual(metaBefore);
   });
+
+  test('a change that arrives mid-drag waits for the drop, and deleting the dragged task loses nothing else', async ({ page }) => {
+    await setUp(page, { localTasks: [task(1), task(2), task(3)] });
+    await signIn(page);
+    await expect.poll(() => remoteDescriptions(page)).toEqual(['Task 1', 'Task 2', 'Task 3']);
+
+    // Start dragging Task 3.
+    const handle = await page.locator('.task:nth-child(3) .task-grab-handle').boundingBox();
+    await page.mouse.move(handle.x + handle.width / 2, handle.y + handle.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(handle.x + handle.width / 2, handle.y + handle.height / 2 - 10);
+
+    // Another device deletes Task 3, and the change arrives mid-drag. Its
+    // timestamp is now, so the drop that follows is the newest change and gets
+    // uploaded, as it would be in real use.
+    await page.evaluate((tasks) => {
+      window.__fake.remote = { tasks, updated_at: new Date().toISOString().replace('Z', '+00:00') };
+      document.dispatchEvent(new Event('visibilitychange'));
+    }, [task(1), task(2)]);
+    await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('simpleMITs')).length)).toBe(2);
+
+    // The list isn't re-rendered while dragging.
+    await expect(page.locator('.task.dragging')).toHaveCount(1);
+    await expect(page.locator('.task')).toHaveCount(3);
+
+    // Drop on Task 1. The deleted task is gone, and nothing else is lost.
+    const target = await page.locator('.task:nth-child(1)').boundingBox();
+    await page.mouse.move(target.x + target.width / 2, target.y + target.height / 2);
+    await page.mouse.up();
+
+    await expect.poll(() => descriptions(page)).toEqual(['Task 1', 'Task 2']);
+    await expect(page.locator('.task.dragging')).toHaveCount(0);
+    await page.waitForTimeout(1500);
+    expect(await remoteDescriptions(page)).toEqual(['Task 1', 'Task 2']);
+  });
 });

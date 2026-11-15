@@ -76,6 +76,14 @@ function reorder(targetTask) {
     if (mits[i].id == targetTask.id) targetPosition = i;
   }
 
+  // Either task may have been removed by a sync during the drag. Skip the
+  // move rather than splice with an undefined position, which would remove
+  // the first task.
+  if (undefined === oldPosition || undefined === targetPosition) {
+    listMITs();
+    return;
+  }
+
   let task = mits[oldPosition];
   mits.splice(oldPosition, 1);
   mits.splice(targetPosition, 0, task);
@@ -129,6 +137,7 @@ function handlePointerEnd(event) {
   clearOver();
 
   draggedTask = null;
+  taskList.dispatchEvent(new Event('taskdragend'));
 }
 
 // Handles touch dragging.
@@ -160,4 +169,5 @@ function handleTouchEnd(event) {
   clearOver();
 
   draggedTask = null;
+  taskList.dispatchEvent(new Event('taskdragend'));
 }

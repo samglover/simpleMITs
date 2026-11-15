@@ -334,8 +334,8 @@ function isNewer(a, b) {
 }
 
 /**
- * Re-renders the task list, unless the user is editing a task description.
- * In that case it waits until they finish.
+ * Re-renders the task list, unless the user is editing a task description or
+ * dragging a task. In those cases it waits until they finish.
  */
 function refreshTaskList() {
 	const active = document.activeElement;
@@ -345,6 +345,17 @@ function refreshTaskList() {
 		return;
 	}
 
+	// Re-rendering mid-drag would replace the dragged element and break the drag.
+	if (document.querySelector('.task.dragging')) {
+		document.getElementById('task-list').addEventListener('taskdragend', renderAfterDrag, { once: true });
+		return;
+	}
+
+	listMITs();
+}
+
+// A named function, so several syncs during one drag add only one listener.
+function renderAfterDrag() {
 	listMITs();
 }
 
