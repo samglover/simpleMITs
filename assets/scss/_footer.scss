@@ -5,8 +5,4 @@ footer {
   font-size: $size-12-5;
   justify-content: space-between;
   margin-bottom: $size-15;
-
-  p:not(:has(+ p)) {
-    margin-bottom: 0;
-  }
 }

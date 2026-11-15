@@ -18,7 +18,7 @@ $(document).ready(function($) {
 
 
 	// Size buttons
-	let minSize = 10;
+	let minSize = 14;
 	let maxSize = 26;
 	let increment = 2;
 

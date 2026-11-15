@@ -19,7 +19,7 @@
     </header>
     <ul id="task-list" class="task-list"></ul>
     <!-- Clear buttons -->
-    <div id="clear-buttons" class="row gap-tiny">
+    <div id="clear-buttons" class="clear-buttons row gap-tiny">
       <!-- Clear completed button -->
       <button id="clear-completed-button" class="modal-button" data-modal-id="clear-completed-modal">Clear completed</button>
       <dialog id="clear-completed-modal" class="modal confirmation-modal">
@@ -48,22 +48,25 @@
       </div>
     </form>
     <footer class="row">
-      <p>simpleMITs <span id="simplemits-version">1.2.7</span> by <a href="https://samglover.net" target="_blank">Sam Glover</a></p>
-      <div class="col row gap-xs">
+      <p class="remove-bottom-margin">simpleMITs <span id="simplemits-version">1.2.7</span> by <a href="https://samglover.net" target="_blank">Sam Glover</a></p>
+      <div class="footer-controls col row gap-xs">
         <!-- Prefs -->
         <div class="prefs row gap-tiny">
-          <button class="square-button size-button decrease-size-button">
+          <button class="size-button decrease-size-button">
             <span class="screen-reader-text">Decrease text size</span>
           </button>
-          <button class="square-button size-button increase-size-button">
+          <button class="size-button increase-size-button">
             <span class="screen-reader-text">Increase text size</span>
           </button>
-          <button class="square-button max-min-button">
+          <button class="max-min-button">
             <span class="screen-reader-text"></span>
           </button>
         </div>
+
         <!-- Sync (hidden unless Supabase is configured in assets/js/config.js) -->
-        <button id="sync-button" class="modal-button sync-button" data-modal-id="sync-modal" hidden>Sync</button>
+        <button id="sync-button" class="sync-button modal-button" data-modal-id="sync-modal" hidden>
+          <div class="screen-reader-text">Sync</div>
+        </button>
         <dialog id="sync-modal" class="modal content-modal">
           <div class="modal-header">
             <h4>Sync</h4>
@@ -76,7 +79,9 @@
                 <label for="sync-email-input" class="screen-reader-text">Email address</label>
                 <div class="input-group">
                   <input id="sync-email-input" type="email" autocomplete="email" placeholder="Email address" required>
-                  <button type="submit">Send link</button>
+                  <button type="submit">
+                    <div class="screen-reader-text">Send link</div>
+                  </button>
                 </div>
               </form>
               <p id="sync-sign-in-message" aria-live="polite"></p>
@@ -92,18 +97,24 @@
             </div>
           </div>
         </dialog>
+
         <!-- FAQ -->
-        <button class="modal-button square-button faq-button" data-modal-id="faq-modal">?</button>
+        <button class="faq-button modal-button" data-modal-id="faq-modal">
+          <div class="screen-reader-text">Frequently asked questions</div>
+        </button>
         <dialog id="faq-modal" class="modal content-modal">
           <div class="modal-header">
             <h4>simpleMITs FAQ</h4>
-            <button class="close-modal"><span class="screen-reader-text">Close modal</span></button>
+            <button class="close-modal">
+              <span class="screen-reader-text">Close modal</span>
+            </button>
           </div>
           <div class="modal-content"></div>
         </dialog>
       </div>
     </footer>
   </div>
+
   <script type="text/javascript" src="includes/jquery/jquery-3.7.1.min.js"></script>
   <script type="text/javascript" src="includes/chance/chance.min.js?ver=1.2.7"></script>
   <script type="text/javascript" src="includes/supabase/supabase-2.118.0.min.js"></script>
