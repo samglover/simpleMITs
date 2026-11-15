@@ -135,6 +135,7 @@ test.describe('with Supabase settings', () => {
     await page.press('#sync-email-input', 'Enter');
 
     await expect(page.locator('#sync-sign-in-message')).toHaveText('Check test@example.com for a sign-in link.');
+    await expect(page.locator('#sync-sign-in-form')).toBeHidden();
     expect(await page.evaluate(() => window.__fake.otpEmails)).toEqual(['test@example.com']);
   });
 
@@ -241,10 +242,14 @@ test.describe('with Supabase settings', () => {
     await signIn(page);
     await expect.poll(() => remoteDescriptions(page)).toEqual(['Task 1']);
 
+    // As if a sign-in link had been sent from this device before signing in.
+    await page.evaluate(() => { document.getElementById('sync-sign-in-form').hidden = true; });
+
     await page.locator('#sync-button').click();
     await page.locator('#sync-sign-out-button').click();
 
     await expect(page.locator('#sync-signed-out')).toBeVisible();
+    await expect(page.locator('#sync-sign-in-form')).toBeVisible();
     expect(await page.evaluate(() => localStorage.getItem('simpleMITs_sync'))).toBeNull();
     expect(await descriptions(page)).toEqual(['Task 1']);
 

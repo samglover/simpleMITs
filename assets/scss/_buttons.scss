@@ -8,7 +8,7 @@ button,
   border: none;
   color: Black;
   cursor: pointer;
-  padding: $size-5 $size-10;
+  padding: $size-5 $size-15;
   text-align: center;
   
   &:hover {
@@ -163,6 +163,7 @@ button.secondary-button {
   
   .danger-button {
     background-color: #cc0000;
+    color: White;
   
     &:hover {
       background-color: #aa0000;

@@ -95,9 +95,24 @@ async function sendSignInLink(event) {
 	});
 
 	submitButton.disabled = false;
-	message.textContent = error
-		? `Couldn't send the link: ${error.message}`
-		: `Check ${email} for a sign-in link.`;
+
+	if (error) {
+		message.textContent = `Couldn't send the link: ${error.message}`;
+		return;
+	}
+
+	form.hidden = true;
+	message.textContent = `Check ${email} for a sign-in link.`;
+}
+
+/**
+ * Shows the sign-in form again, empty, for the next time someone signs in.
+ */
+function resetSignInForm() {
+	const form = document.getElementById('sync-sign-in-form');
+	form.reset();
+	form.hidden = false;
+	document.getElementById('sync-sign-in-message').textContent = '';
 }
 
 async function signOut() {
@@ -107,7 +122,7 @@ async function signOut() {
 }
 
 async function deleteAccount() {
-	const confirmed = window.confirm('Delete your sync account and the copy of your tasks on the sync server? The tasks on this device will stay.');
+	const confirmed = window.confirm('This will delete your sync account and your data stored on the sync server. Your tasks will still be stored on this device.');
 	if (!confirmed) return;
 
 	// Stop syncing first, so an in-flight upload can't recreate the data.
@@ -136,6 +151,7 @@ async function stopSyncing() {
 	clearTimeout(syncPushTimer);
 	clearSyncMeta();
 	await syncClient.auth.signOut({ scope: 'local' });
+	resetSignInForm();
 	renderSyncUI();
 }
 
