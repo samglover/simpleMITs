@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 // A stand-in for the Supabase client, so sync can be tested without a server.
 // State lives on window.__fake; tests read and change it with page.evaluate().
