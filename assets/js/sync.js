@@ -267,32 +267,47 @@ async function runSync() {
 	setSyncStatus(`Last synced at ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}.`);
 }
 
+/**
+ * Uploads tasks with the save_tasks database function, which only saves them
+ * if they're newer than the stored list. If a newer list from another device
+ * is already there, it wins and replaces this device's list.
+ */
 async function pushTasks(userId, tasks) {
 	const startMeta = loadSyncMeta();
 	const updatedAt = startMeta.localUpdatedAt || new Date().toISOString();
 
 	const { data, error } = await syncClient
-		.from('user_data')
-		.upsert({ user_id: userId, tasks, updated_at: updatedAt })
-		.select('updated_at')
+		.rpc('save_tasks', { new_tasks: tasks, new_updated_at: updatedAt })
 		.single();
 
 	if (error) throw error;
+	if (!syncUser || syncUser.id !== userId) return;
 
-	// If tasks changed again during the upload, stay dirty and sync again.
 	const meta = loadSyncMeta();
 	const changedMeanwhile = meta.localUpdatedAt !== startMeta.localUpdatedAt;
 
-	if (!syncUser || syncUser.id !== userId) return;
+	if (changedMeanwhile) {
+		// Tasks changed again during the upload. Stay dirty, and let the next
+		// sync compare the newest local change with what's stored.
+		saveSyncMeta({ ...meta, userId, lastSyncedAt: data.accepted ? data.saved_updated_at : meta.lastSyncedAt, dirty: true });
+		syncAgain = true;
+		return;
+	}
+
+	if (!data.accepted) {
+		// The stored list is newer, usually because another device saved first,
+		// so it wins. (If this exact upload was already saved by an earlier
+		// attempt, the stored list is this one, and nothing changes.)
+		saveTasks(data.saved_tasks, { fromSync: true });
+		refreshTaskList();
+	}
 
 	saveSyncMeta({
 		userId,
-		lastSyncedAt: data.updated_at,
+		lastSyncedAt: data.saved_updated_at,
 		localUpdatedAt: meta.localUpdatedAt || updatedAt,
-		dirty: changedMeanwhile
+		dirty: false
 	});
-
-	if (changedMeanwhile) syncAgain = true;
 }
 
 

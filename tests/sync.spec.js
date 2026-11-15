@@ -42,23 +42,37 @@ window.supabase = {
               return { data: state.remote ? structuredClone(state.remote) : null, error: null };
             } }; } };
           },
-          upsert(row) {
-            return { select() { return { async single() {
-              // Postgres returns timestamps as +00:00, not Z.
-              const updated_at = row.updated_at.replace('Z', '+00:00');
-              state.remote = { tasks: structuredClone(row.tasks), updated_at };
-              state.upserts.push(structuredClone(row.tasks));
-              return { data: { updated_at }, error: null };
-            } }; } };
-          }
         };
       },
-      async rpc(name) {
+      rpc(name, args) {
+        if ('save_tasks' === name) {
+          return { async single() {
+            // Lets a test change the stored list just before this upload lands,
+            // as if another device had uploaded first.
+            if (state.beforeSave) {
+              const beforeSave = state.beforeSave;
+              state.beforeSave = null;
+              beforeSave();
+            }
+
+            // Like the real function: save only if newer than what's stored.
+            const current = state.remote;
+            if (!current || Date.parse(current.updated_at) < Date.parse(args.new_updated_at)) {
+              // Postgres returns timestamps as +00:00, not Z.
+              const updated_at = args.new_updated_at.replace('Z', '+00:00');
+              state.remote = { tasks: structuredClone(args.new_tasks), updated_at };
+              state.upserts.push(structuredClone(args.new_tasks));
+              return { data: { saved_tasks: structuredClone(args.new_tasks), saved_updated_at: updated_at, accepted: true }, error: null };
+            }
+            return { data: { saved_tasks: structuredClone(current.tasks), saved_updated_at: current.updated_at, accepted: false }, error: null };
+          } };
+        }
+
         if ('delete_account' === name) {
           state.deleted = true;
           state.remote = null;
         }
-        return { error: null };
+        return Promise.resolve({ error: null });
       }
     };
   }
@@ -283,5 +297,47 @@ test.describe('with Supabase settings', () => {
     await expect(page.locator('#sync-signed-out')).toBeVisible();
     expect(await page.evaluate(() => window.__fake.deleted)).toBe(true);
     expect(await descriptions(page)).toEqual(['Task 1']);
+  });
+
+  test('an upload that arrives after a newer one from another device takes the newer list', async ({ page }) => {
+    await setUp(page, { localTasks: [task(1)] });
+    await signIn(page);
+    await expect.poll(() => remoteDescriptions(page)).toEqual(['Task 1']);
+
+    // Another device uploads a newer list after this device checked the
+    // server, but before this device's upload lands.
+    await page.evaluate((tasks) => {
+      window.__fake.beforeSave = () => {
+        window.__fake.remote = { tasks, updated_at: new Date(Date.now() + 60000).toISOString().replace('Z', '+00:00') };
+      };
+    }, [task(1), task(2, { description: 'From another device' })]);
+
+    await addTask(page, 'Older local change');
+
+    await expect.poll(() => descriptions(page)).toEqual(['Task 1', 'From another device']);
+    expect(await remoteDescriptions(page)).toEqual(['Task 1', 'From another device']);
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem('simpleMITs_sync')).dirty)).toBe(false);
+  });
+
+  test('a retried upload that was already saved counts as saved', async ({ page }) => {
+    await setUp(page, { localTasks: [task(1)] });
+    await signIn(page);
+    await expect.poll(() => remoteDescriptions(page)).toEqual(['Task 1']);
+
+    // As if an earlier attempt of this same upload was saved but its response
+    // was lost: the stored list already has this upload's timestamp.
+    await page.evaluate(() => {
+      window.__fake.beforeSave = () => {
+        const meta = JSON.parse(localStorage.getItem('simpleMITs_sync'));
+        const tasks = JSON.parse(localStorage.getItem('simpleMITs'));
+        window.__fake.remote = { tasks, updated_at: meta.localUpdatedAt.replace('Z', '+00:00') };
+      };
+    });
+
+    await addTask(page, 'Second');
+
+    await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('simpleMITs_sync')).dirty)).toBe(false);
+    expect(await descriptions(page)).toEqual(['Task 1', 'Second']);
+    expect(await remoteDescriptions(page)).toEqual(['Task 1', 'Second']);
   });
 });

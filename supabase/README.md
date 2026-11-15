@@ -7,7 +7,7 @@ Sync is optional. Without Supabase settings in `assets/js/config.js`, simpleMITs
 To turn on sync:
 
 1. **Create a Supabase project** at [supabase.com](https://supabase.com). The free plan is enough.
-2. **Create the table and permissions.** In the project's **SQL Editor**, paste and run [`setup.sql`](setup.sql).
+2. **Create the table and permissions.** In the project's **SQL Editor**, paste and run [`setup.sql`](setup.sql). When you update simpleMITs, run the latest `setup.sql` again. It's safe to re-run and keeps existing data.
 3. **Set the sign-in redirect URLs.** Under **Authentication → URL Configuration**:
    - Set **Site URL** to your site's address, such as `https://simplemits.com`.
    - Add these **Redirect URLs**: your site's address followed by `/**` (for example, `https://simplemits.com/**` or `https://<your-username>.github.io/simpleMITs/**`) and `http://localhost:3471/**` (for local testing). The `/**` wildcard matters: the app asks to return to the page's address, including the trailing `/`, and an entry without the wildcard may not match it. When a redirect URL doesn't match, Supabase sends people to the Site URL instead.
@@ -34,6 +34,6 @@ To turn on sync:
 - The app always reads and writes local storage, so it stays fast and works offline.
 - When someone is signed in, their whole task list is stored as one row in `user_data`. Changes upload about a second after they're made, and the app checks for changes from other devices when it opens or comes back into view.
 - The first time someone signs in on a device, tasks from the device and the server are combined, so nothing is lost.
-- After that, if the list changed on two devices before either could sync, the most recent change wins and the other is discarded.
+- After that, if the list changed on two devices before either could sync, the most recent change wins and the other is discarded. The database makes this check when saving, so an older upload that arrives late can't overwrite a newer one.
 - Display preferences (text size, maximized/minimized) are not synced; each device keeps its own.
 - Signing out or deleting the account leaves the tasks on that device in place.
