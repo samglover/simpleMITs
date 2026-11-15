@@ -9,6 +9,7 @@ button,
   color: Black;
   cursor: pointer;
   padding: $size-5 $size-10;
+  text-align: center;
   
   &:hover {
     background-color: $gray-light;
@@ -42,10 +43,10 @@ button,
       display: block;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: $size-20;
+      background-size: contain;
       height: 100%;
-      min-height: $size-50;
-      width: $size-50;
+      min-height: $size-20;
+      width: $size-20;
     }
 
     &:hover::before {
