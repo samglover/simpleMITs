@@ -6,7 +6,7 @@
 
 <p><strong>No matter what else you do today, get your MITs done.</strong></p>
 
-<p><small>I first learned about MITs from <a href="https://zenhabits.net/purpose-your-day-most-important-task/" target="_blank">this post on <em>Zen Habits</em></a>, which was inspired by a post on <em>Lifehacker</em> that's no longer available.</small></p>
+<p><small>I first learned about MITs from <a href="https://zenhabits.net/purpose-your-day-most-important-task/" target="_blank" rel="bookmark noopener noreferrer">this post on <em>Zen Habits</em></a>, which was inspired by a post on <em>Lifehacker</em> that's no longer available.</small></p>
 
 <h3>What is simpleMITs?</h3>
 
@@ -14,44 +14,43 @@
 
 <p>By design, simpleMITs is, well, simple. What you see is what you get. You don't even need to log in; all your tasks are stored in your browser's local storage. But you can log in if you want to sync your tasks between devices.</p>
 
-<p>simpleMITs works great if you add it to the home screen of your phone or tablet.</p>
+<p>simpleMITs works like an app, too! Just add it to the home screen of your phone or tablet.</p>
 
 <p>Tasks:</p>
 
 <ul>
   <li>To complete a task, click or tap the number next to it.</li>
-  <li>To delete a task, click or tap the <span class="icon icon-close"></span> next to it.</li>
+  <li>To delete a task, click or tap the <span class="icon icon-close"><span class="screen-reader-text">Delete task button</span></span> next to it.</li>
   <li>To edit a task, click or tap the text of the task.</li>
-  <li>To reorder tasks, click or tap and drag the <span class="icon icon-grab"></span>.</li>
+  <li>To reorder tasks, click or tap and drag the <span class="icon icon-grab"><span class="screen-reader-text">Reorder task icon</span></span>.</li>
 </ul>
 
 <p>Preferences:</p>
 
 <ul>
-  <li>To make text smaller or larger, use the <span class="icon icon-size decrease-size"></span>&thinsp;<span class="icon icon-size increase-size"></span> buttons.</li>
-  <li>To make your task list stretch to fill the screen, use the </li>
+  <li>To make text smaller or larger, click or tap the <span class="icon icon-size decrease-size"><span class="screen-reader-text">Decrease text size icon</span></span>&thinsp;<span class="icon icon-size increase-size"><span class="screen-reader-text">Increase text size icon</span></span> buttons.</li>
+  <li>To make your task list stretch to fill the screen, click or tap the <span class="icon icon-maximize"><span class="screen-reader-text">Maximize task layout icon</span></span> button. Click or tap the <span class="icon icon-minimize"><span class="screen-reader-text">Constrain task layout icon</span></span> button to return to a fixed-width layout.</li>
 </ul>
 
 <p>Sync:</p>
 
 <ul>
-  <li>To sync your tasks, click the <strong>&#8651;</strong> button in the footer.</li>
+  <li>To sync your tasks, click or tap the <span class="icon icon-sync"><span class="screen-reader-text">Sync icon</span></span> button. If you are signed in it will have a green dot: <span class="icon icon-sync signed-in"><span class="screen-reader-text">Sync icon with green dot</span></span>.</li>
+  <li>While you are signed in, your tasks will be synced with all your signed-in browsers via the cloud. You can still use simpleMITs if you are offline.</li>
 </ul>
 
-<p><small>For updates, see the <a href="https://github.com/samglover/simpleMITs/blob/main/CHANGELOG.md" target="_blank">changelog</a>.</small></p>
+<p><small>For updates, see the <a href="https://github.com/samglover/simpleMITs/blob/main/CHANGELOG.md" target="_blank" rel="bookmark noopener noreferrer">changelog</a>.</small></p>
 
-<h3>Where are my tasks stored?</h3>
+<h3>Where are my tasks stored, who has access to them, and how secure are they?</h3>
 
-<p>By default, your tasks are only stored only in your browser's local storage on your computer. If you switch browsers or devices, you won't have access to them. Clearing your browser cache will also clear your tasks and preferences.</p>
+<p>With sync off (the default), your tasks are only stored in your browser's local storage on your computer or device. If you switch browsers, log in as a different user, or use a different computer or device, you won't have access to them. Clearing the browser cache will also clear your tasks and preferences.</p>
 
-<h3>How secure is syncing?</h3>
+<p>With sync on, your data (email address, tasks, and a timestamp) is synced with a database hosted by <a href="https://supabase.com/" target="_blank" rel="bookmark noopener noreferrer">Supabase</a>. Because Supabase controls the database server, its staff can access your data, so you should review its <a href="https://supabase.com/privacy" target="_blank" rel="bookmark noopener noreferrer">privacy policy</a>.</p>
+  
+<p>The database admin can also access your data. If you are using simpleMITS on simplemits.com, that's <a href="https://samglover.net" target="_blank" rel="bookmark noopener noreferrer">me</a>. I will not access your data, but I may need to delete it (if the database becomes to large, for example).</p>
 
-Your tasks are synced with an encrypted database hosted by <a href="https://supabase.com/" target="_blank">Supabase</a>. The database contains users' email address and tasks.
-
-I can access the database contents, and so can Supabase, but I will only access your tasks if you ask me to.
-
-If you aren't comfortable with that, don't use the sync feature. That way your tasks will only be stored in your browser's local storage on your computer. Or you can host simpleMITs yourself, and use your own Supabase account. (See the README for details.)
+<p>If you aren't comfortable with that, don't use the sync feature. Or host simpleMITs yourself.</p>
 
 <h3>What if I have a different question?</h3>
 
-<p>Please feel free to <a href="mailto:sam@samglover.net">email me</a> with questions or comments.</p>
+<p>Please feel free to <a href="https://samglover.net/contact/" target="_blank" rel="bookmark noopener noreferrer">contact me</a> with any other questions or comments.</p>
