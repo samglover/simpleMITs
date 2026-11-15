@@ -9,8 +9,8 @@ To turn on sync:
 1. **Create a Supabase project** at [supabase.com](https://supabase.com). The free plan is enough.
 2. **Create the table and permissions.** In the project's **SQL Editor**, paste and run [`setup.sql`](setup.sql).
 3. **Set the sign-in redirect URLs.** Under **Authentication → URL Configuration**:
-   - Set **Site URL** to `https://simplemits.com`.
-   - Add these **Redirect URLs**: `https://simplemits.com` and `http://localhost:3471` (for local testing).
+   - Set **Site URL** to your site's address, such as `https://simplemits.com`.
+   - Add these **Redirect URLs**: your site's address followed by `/**` (for example, `https://simplemits.com/**` or `https://<your-username>.github.io/simpleMITs/**`) and `http://localhost:3471/**` (for local testing). The `/**` wildcard matters: the app asks to return to the page's address, including the trailing `/`, and an entry without the wildcard may not match it. When a redirect URL doesn't match, Supabase sends people to the Site URL instead.
 4. **Check that email sign-in is on.** Under **Authentication → Sign In / Providers**, the **Email** provider should be enabled. It is by default.
 5. **Customize the emails (optional).** Under **Authentication → Emails**, edit the **Magic Link** and **Confirm signup** templates so they mention simpleMITs. New users get the "Confirm signup" email the first time they sign in.
 6. **Find your project URL and key.**
