@@ -99,3 +99,14 @@ test('corrupt prefs fall back to defaults', async ({ page }) => {
   expect(await rootSize(page)).toBe('16px');
   await expect(page.locator('.max-min-button')).toHaveClass(/maximize/);
 });
+
+test('a saved text size below the minimum is raised to the minimum', async ({ page }) => {
+  // Sizes below 14px could be saved before the minimum was raised.
+  await page.evaluate(() => localStorage.setItem('simpleMITs_prefs', JSON.stringify({ maximized: false, size: '10px' })));
+  await page.reload();
+
+  expect(await rootSize(page)).toBe('14px');
+  expect((await savedPrefs(page)).size).toBe('14px');
+  await expect(page.locator('.decrease-size-button')).toBeDisabled();
+  await expect(page.locator('.increase-size-button')).toBeEnabled();
+});

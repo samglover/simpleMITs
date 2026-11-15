@@ -3,6 +3,12 @@ import { test, expect } from './fixtures.js';
 // A stand-in for the Supabase client, so sync can be tested without a server.
 // State lives on window.__fake; tests read and change it with page.evaluate().
 const fakeSupabase = `
+// Responses arrive on a later turn of the event loop, as real network
+// responses do, so other code can run while a request is in progress.
+function networkDelay() {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
 window.supabase = {
   createClient() {
     const listeners = [];
@@ -15,6 +21,11 @@ window.supabase = {
       signIn(user) {
         state.user = user;
         listeners.forEach((cb) => cb('SIGNED_IN', { user }));
+      },
+      // Ends the session without signing out, as when a login expires.
+      loseSession() {
+        state.user = null;
+        listeners.forEach((cb) => cb('SIGNED_OUT', null));
       }
     };
 
@@ -39,6 +50,7 @@ window.supabase = {
         return {
           select() {
             return { eq() { return { async maybeSingle() {
+              await networkDelay();
               return { data: state.remote ? structuredClone(state.remote) : null, error: null };
             } }; } };
           },
@@ -47,13 +59,15 @@ window.supabase = {
       rpc(name, args) {
         if ('save_tasks' === name) {
           return { async single() {
-            // Lets a test change the stored list just before this upload lands,
-            // as if another device had uploaded first.
+            // Lets a test act just before this upload lands: change the stored
+            // list, as if another device had uploaded first, or return a
+            // promise to hold the upload until the test releases it.
             if (state.beforeSave) {
               const beforeSave = state.beforeSave;
               state.beforeSave = null;
-              beforeSave();
+              await beforeSave();
             }
+            await networkDelay();
 
             // Like the real function: save only if newer than what's stored.
             const current = state.remote;
@@ -124,6 +138,29 @@ function remoteDescriptions(page) {
     const remote = window.__fake.remote;
     return remote ? remote.tasks.map((t) => t.description) : null;
   });
+}
+
+// Holds the next upload until releaseUpload() is called. Optionally changes the
+// stored list first, as if another device had uploaded a newer one.
+function holdNextUpload(page, newerRemoteTasks = null) {
+  return page.evaluate((tasks) => {
+    window.__uploadHeld = false;
+    window.__fake.beforeSave = () => new Promise((resolve) => {
+      if (tasks) {
+        window.__fake.remote = { tasks, updated_at: new Date(Date.now() + 60000).toISOString().replace('Z', '+00:00') };
+      }
+      window.__uploadHeld = true;
+      window.__releaseUpload = resolve;
+    });
+  }, newerRemoteTasks);
+}
+
+function releaseUpload(page) {
+  return page.evaluate(() => window.__releaseUpload());
+}
+
+function syncMeta(page) {
+  return page.evaluate(() => JSON.parse(localStorage.getItem('simpleMITs_sync')));
 }
 
 function addTask(page, text) {
@@ -339,5 +376,62 @@ test.describe('with Supabase settings', () => {
     await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('simpleMITs_sync')).dirty)).toBe(false);
     expect(await descriptions(page)).toEqual(['Task 1', 'Second']);
     expect(await remoteDescriptions(page)).toEqual(['Task 1', 'Second']);
+  });
+
+  test('signing out waits for an upload queued during the current one', async ({ page }) => {
+    await setUp(page, { localTasks: [task(1)] });
+    await signIn(page);
+    await expect.poll(() => remoteDescriptions(page)).toEqual(['Task 1']);
+
+    // Start an upload and hold it, then make another change while it's in progress.
+    await holdNextUpload(page);
+    await addTask(page, 'First change');
+    await expect.poll(() => page.evaluate(() => window.__uploadHeld)).toBe(true);
+    await addTask(page, 'Second change');
+
+    await page.locator('#sync-button').click();
+    await page.locator('#sync-sign-out-button').click();
+    await releaseUpload(page);
+
+    await expect(page.locator('#sync-signed-out')).toBeVisible();
+    expect(await remoteDescriptions(page)).toEqual(['Task 1', 'First change', 'Second change']);
+  });
+
+  test('changes made after the session ends upload when the same account signs back in', async ({ page }) => {
+    await setUp(page, { localTasks: [task(1)] });
+    await signIn(page);
+    await expect.poll(() => remoteDescriptions(page)).toEqual(['Task 1']);
+    const uploadsBefore = await page.evaluate(() => window.__fake.upserts.length);
+
+    await page.evaluate(() => window.__fake.loseSession());
+    await addTask(page, 'Made while signed out');
+
+    // Recorded, but not uploaded without a session.
+    expect((await syncMeta(page)).dirty).toBe(true);
+    await page.waitForTimeout(1500);
+    expect(await page.evaluate(() => window.__fake.upserts.length)).toBe(uploadsBefore);
+
+    await signIn(page);
+    await expect.poll(() => remoteDescriptions(page)).toEqual(['Task 1', 'Made while signed out']);
+  });
+
+  test('an upload response that arrives after the session ends is ignored', async ({ page }) => {
+    await setUp(page, { localTasks: [task(1)] });
+    await signIn(page);
+    await expect.poll(() => remoteDescriptions(page)).toEqual(['Task 1']);
+
+    // Hold an upload that the server will reject in favor of another device's list.
+    await holdNextUpload(page, [task(9, { description: 'From another device' })]);
+    await addTask(page, 'Local change');
+    await expect.poll(() => page.evaluate(() => window.__uploadHeld)).toBe(true);
+    const metaBefore = await syncMeta(page);
+
+    await page.evaluate(() => window.__fake.loseSession());
+    await releaseUpload(page);
+    await page.waitForTimeout(300);
+
+    // Neither the tasks nor this device's sync bookkeeping change.
+    expect(await descriptions(page)).toEqual(['Task 1', 'Local change']);
+    expect(await syncMeta(page)).toEqual(metaBefore);
   });
 });
