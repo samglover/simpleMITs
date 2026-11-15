@@ -162,13 +162,16 @@ async function stopSyncing() {
  */
 
 function handleLocalChange() {
-	if (!syncUser) return;
+	const meta = loadSyncMeta();
+	if (!syncUser && !meta.userId) return;
 
 	saveSyncMeta({
-		...loadSyncMeta(),
+		...meta,
 		dirty: true,
 		localUpdatedAt: new Date().toISOString()
 	});
+
+	if (!syncUser) return;
 
 	clearTimeout(syncPushTimer);
 	syncPushTimer = setTimeout(syncNow, SYNC_PUSH_DELAY);
