@@ -25,8 +25,8 @@
       <dialog id="clear-completed-modal" class="modal confirmation-modal">
         <div class="confirmation-modal-container">
           <h2>Clear completed MITs?</h2>
-          <button class="confirm" onclick="clearCompleted()"><span class="screen-reader-text">Clear completed</span></button>
-          <button class="cancel"><span class="screen-reader-text">Cancel</span></button>
+          <button class="confirm icon-button" onclick="clearCompleted()"><span class="screen-reader-text">Clear completed</span></button>
+          <button class="cancel icon-button"><span class="screen-reader-text">Cancel</span></button>
         </div>
       </dialog>
       <!-- Clear all button -->
@@ -34,8 +34,8 @@
       <dialog id="clear-all-modal" class="modal confirmation-modal">
         <div class="confirmation-modal-container">
           <h2>Clear all MITs?</h2>
-          <button class="confirm" onclick="clearAll()"><span class="screen-reader-text">Clear all</span></button>
-          <button class="cancel"><span class="screen-reader-text">Cancel</span></button>
+          <button class="confirm icon-button" onclick="clearAll()"><span class="screen-reader-text">Clear all</span></button>
+          <button class="cancel icon-button"><span class="screen-reader-text">Cancel</span></button>
         </div>
       </dialog>
     </div>
@@ -44,7 +44,7 @@
       <label for="add-task-input">What's the most important thing you could do today?</label>
       <div class="input-group">
         <input id="add-task-input" type="text" placeholder="Add an important task">
-        <button type="submit"><span class="screen-reader-text">Add task</span></button>
+        <button type="submit" class="icon-button"><span class="screen-reader-text">Add task</span></button>
       </div>
     </form>
     <footer class="row">
@@ -52,25 +52,25 @@
       <div class="footer-controls col row gap-xs">
         <!-- Prefs -->
         <div class="prefs row gap-tiny">
-          <button class="size-button decrease-size-button">
+          <button class="size-button decrease-size-button icon-button">
             <span class="screen-reader-text">Decrease text size</span>
           </button>
-          <button class="size-button increase-size-button">
+          <button class="size-button increase-size-button icon-button">
             <span class="screen-reader-text">Increase text size</span>
           </button>
-          <button class="max-min-button">
+          <button class="max-min-button icon-button">
             <span class="screen-reader-text"></span>
           </button>
         </div>
 
         <!-- Sync (hidden unless Supabase is configured in assets/js/config.js) -->
-        <button id="sync-button" class="sync-button modal-button" data-modal-id="sync-modal" hidden>
+        <button id="sync-button" class="sync-button icon-button modal-button" data-modal-id="sync-modal" hidden>
           <div class="screen-reader-text">Sync</div>
         </button>
         <dialog id="sync-modal" class="modal content-modal">
           <div class="modal-header">
             <h2>Sync</h2>
-            <button class="close-modal"><span class="screen-reader-text">Close modal</span></button>
+            <button class="close-modal icon-button"><span class="screen-reader-text">Close modal</span></button>
           </div>
           <div class="modal-content">
             <div id="sync-signed-out">
@@ -79,7 +79,7 @@
                 <label for="sync-email-input" class="screen-reader-text">Email address</label>
                 <div class="input-group">
                   <input id="sync-email-input" type="email" autocomplete="email" placeholder="Email address" required>
-                  <button type="submit">
+                  <button type="submit" class="icon-button">
                     <div class="screen-reader-text">Send link</div>
                   </button>
                 </div>
@@ -99,13 +99,13 @@
         </dialog>
 
         <!-- FAQ -->
-        <button class="faq-button modal-button" data-modal-id="faq-modal">
+        <button class="faq-button icon-button modal-button" data-modal-id="faq-modal">
           <div class="screen-reader-text">Frequently asked questions</div>
         </button>
         <dialog id="faq-modal" class="modal content-modal">
           <div class="modal-header">
             <h2>simpleMITs FAQ</h2>
-            <button class="close-modal">
+            <button class="close-modal icon-button">
               <span class="screen-reader-text">Close modal</span>
             </button>
           </div>

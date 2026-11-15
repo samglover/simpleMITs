@@ -181,57 +181,70 @@ footer {
   outline: 0;
 }
 
-button {
+button,
+.modal button {
   appearance: none;
   -webkit-appearance: none;
   background-color: LightSlateGray;
   border: none;
   color: White;
   cursor: pointer;
-  display: grid;
-  place-content: center;
   padding: calc(var(--root-size) * 0.3125) calc(var(--root-size) * 0.625);
 }
-button:hover {
+button:hover,
+.modal button:hover {
   background-color: LightSlateGray;
+  color: White;
+}
+button.icon-button,
+.modal button.icon-button {
+  display: grid;
+  font-weight: bold;
+  height: 100%;
+  padding: 0;
+  place-content: center;
+  width: calc(var(--root-size) * 3.125);
+}
+button.icon-button:not(:hover),
+.modal button.icon-button:not(:hover) {
+  background-color: transparent;
+}
+button.icon-button::before,
+.modal button.icon-button::before {
+  color: Black;
+  content: "";
+  display: block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: calc(var(--root-size) * 1.25);
+  height: 100%;
+  min-height: calc(var(--root-size) * 3.125);
+  width: calc(var(--root-size) * 3.125);
+}
+button.icon-button:hover::before,
+.modal button.icon-button:hover::before {
+  color: White;
 }
 
 .clear-buttons button {
-  color: Black;
   font-size: calc(var(--root-size) * 0.78125);
 }
 .clear-buttons button:not(:hover) {
   background-color: #dde1e5;
+  color: Black;
   opacity: 0.5;
-}
-.clear-buttons button:hover {
-  color: White;
 }
 
 #add-task-input + button {
   border: none;
-  height: 100%;
-  padding: 0;
-  width: calc(var(--root-size) * 3.125);
-}
-#add-task-input + button:not(:hover) {
-  background-color: transparent;
 }
 #add-task-input + button::before {
-  content: "";
-  display: block;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(1,0,0,1,1,0)'%3E%3Cpath d='M12 19H-1v-6h13V0h6v13h13v6H18v13h-6V19Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: calc(var(--root-size) * 1.25);
-  height: calc(var(--root-size) * 3.125);
-  width: calc(var(--root-size) * 3.125);
 }
 
 .footer-controls button {
   font-size: calc(var(--root-size) * 0.9375);
   height: 2em;
-  padding: 0;
   width: 2em;
 }
 .footer-controls button:not(:hover) {
@@ -239,16 +252,9 @@ button:hover {
   opacity: 0.5;
 }
 .footer-controls button::before {
-  background-position: center;
-  background-repeat: no-repeat;
   background-size: calc(var(--root-size) * 0.78125);
-  color: Black;
-  content: "";
-  height: calc(var(--root-size) * 0.78125);
+  min-height: calc(var(--root-size) * 0.78125);
   width: calc(var(--root-size) * 0.78125);
-}
-.footer-controls button:hover::before {
-  color: White;
 }
 .footer-controls .size-button {
   font-weight: bold;
@@ -258,13 +264,8 @@ button:hover {
   cursor: default;
   opacity: 0.5;
 }
-.footer-controls .size-button:disabled:hover::before {
-  color: Black;
-}
 .footer-controls .size-button::before {
   content: "A";
-  height: unset;
-  width: unset;
 }
 .footer-controls .size-button.decrease-size-button::before {
   font-size: 80%;
@@ -309,72 +310,51 @@ button:hover {
 .footer-controls .danger-button:hover {
   background-color: #aa0000;
 }
-.footer-controls .faq-button {
-  font-weight: bold;
-}
 .footer-controls .faq-button::before {
   content: "?";
-  height: unset;
-  width: unset;
 }
 
-.modal button.close-modal {
-  height: 100%;
-  width: calc(var(--root-size) * 3.125);
-}
 .modal button.close-modal:not(:hover) {
-  background-color: transparent;
   opacity: unset;
 }
 .modal button.close-modal::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(1.38787,-1.38787,0.707107,0.707107,-19.6146,27.5729)'%3E%3Cpath d='M15.472 14V-2.627h3.056V14H27v6h-8.472v16.627h-3.056V20H7v-6h8.472Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: calc(var(--root-size) * 1.25);
-  height: calc(var(--root-size) * 3.125);
-  width: calc(var(--root-size) * 3.125);
 }
 
 .confirmation-modal button {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: calc(var(--root-size) * 1.5625);
   border: none;
-  height: 100%;
-  width: calc(var(--root-size) * 3.125);
 }
 .confirmation-modal button::selection {
   background-color: transparent;
 }
 .confirmation-modal button.confirm {
-  background-color: #cc0000;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(0.625,-0.625,0.707107,0.707107,-1.43503,14.6863)'%3E%3Cpath d='M0 19V2.029h6.788V13H32v6H0Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: calc(var(--root-size) * 1.25);
   grid-area: c;
   opacity: revert;
+}
+.confirmation-modal button.confirm:not(:hover) {
+  background-color: #cc0000;
+}
+.confirmation-modal button.confirm::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(0.625,-0.625,0.707107,0.707107,-1.43503,14.6863)'%3E%3Cpath d='M0 19V2.029h6.788V13H32v6H0Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
 }
 .confirmation-modal button.confirm:hover {
   background-color: #aa0000;
 }
 .confirmation-modal button.cancel {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(1.38787,-1.38787,0.707107,0.707107,-19.6146,27.5729)'%3E%3Cpath d='M15.472 14V-2.627h3.056V14H27v6h-8.472v16.627h-3.056V20H7v-6h8.472Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: calc(var(--root-size) * 1.25);
-  background-color: LightSlateGray;
   grid-area: b;
+}
+.confirmation-modal button.cancel:not(:hover) {
+  background-color: LightSlateGray;
+}
+.confirmation-modal button.cancel::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(1.38787,-1.38787,0.707107,0.707107,-19.6146,27.5729)'%3E%3Cpath d='M15.472 14V-2.627h3.056V14H27v6h-8.472v16.627h-3.056V20H7v-6h8.472Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 .sync-form button[type=submit] {
-  height: 100%;
   opacity: unset;
-  width: calc(var(--root-size) * 3.125);
-}
-.sync-form button[type=submit]:not(:hover) {
-  background-color: transparent;
 }
 .sync-form button[type=submit]::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg transform='matrix(0.8,0.8,-0.707107,0.707107,10.125,0.00367966)'%3E%3Cpath d='M19.991 6v16.627h-5.304V6H0V0h14.688l-.001-.01h5.304V0H20v6h-.009Z' fill='white'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: calc(var(--root-size) * 1.25);
-  content: "";
-  height: calc(var(--root-size) * 3.125);
-  width: calc(var(--root-size) * 3.125);
 }
 
 body:has(.modal.visible) {
