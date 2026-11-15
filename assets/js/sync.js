@@ -283,6 +283,8 @@ async function pushTasks(userId, tasks) {
 	const meta = loadSyncMeta();
 	const changedMeanwhile = meta.localUpdatedAt !== startMeta.localUpdatedAt;
 
+	if (!syncUser || syncUser.id !== userId) return;
+
 	saveSyncMeta({
 		userId,
 		lastSyncedAt: data.updated_at,
