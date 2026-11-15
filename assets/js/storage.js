@@ -1,12 +1,14 @@
-/* exported loadTasks, saveTasks, clearTasks, loadPrefs, savePrefs */
+/* exported loadTasks, saveTasks, clearTasks, onTasksSaved, loadPrefs, savePrefs, loadSyncMeta, saveSyncMeta, clearSyncMeta */
 
 /**
- * All reads and writes of persisted data go through this file, so a sync
- * backend can be added in one place later.
+ * All reads and writes of persisted data go through this file.
  */
 
 const TASKS_KEY = 'simpleMITs';
 const PREFS_KEY = 'simpleMITs_prefs';
+const SYNC_META_KEY = 'simpleMITs_sync';
+
+const tasksSavedListeners = [];
 
 /**
  * Reads and parses a JSON value from local storage.
@@ -28,6 +30,18 @@ function readJSON(key) {
 }
 
 /**
+ * Reads a plain object from local storage.
+ *
+ * @param {string} key Storage key.
+ * @return {Object} The stored object, or an empty object.
+ */
+function readObject(key) {
+	const value = readJSON(key);
+	const isObject = value && 'object' === typeof value && !Array.isArray(value);
+	return isObject ? value : {};
+}
+
+/**
  * Returns the stored task array (unvalidated), or an empty array.
  *
  * @return {Array}
@@ -40,17 +54,33 @@ function loadTasks() {
 /**
  * Saves the full task array.
  *
+ * Listeners registered with onTasksSaved() are notified, unless the save came
+ * from sync itself (so remote changes don't get pushed straight back).
+ *
  * @param {Array} tasks
+ * @param {Object} [options]
+ * @param {boolean} [options.fromSync] True when sync is writing remote data.
  */
-function saveTasks(tasks) {
+function saveTasks(tasks, options = {}) {
 	localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
+	if (options.fromSync) return;
+	tasksSavedListeners.forEach((listener) => listener(tasks));
 }
 
 /**
- * Removes all stored tasks.
+ * Removes all tasks.
  */
 function clearTasks() {
-	localStorage.removeItem(TASKS_KEY);
+	saveTasks([]);
+}
+
+/**
+ * Registers a function to call after the user changes their tasks.
+ *
+ * @param {Function} listener Called with the saved task array.
+ */
+function onTasksSaved(listener) {
+	tasksSavedListeners.push(listener);
 }
 
 /**
@@ -60,9 +90,7 @@ function clearTasks() {
  * @return {Object}
  */
 function loadPrefs(defaults) {
-	const prefs = readJSON(PREFS_KEY);
-	const isObject = prefs && 'object' === typeof prefs && !Array.isArray(prefs);
-	return { ...defaults, ...(isObject ? prefs : {}) };
+	return { ...defaults, ...readObject(PREFS_KEY) };
 }
 
 /**
@@ -72,4 +100,29 @@ function loadPrefs(defaults) {
  */
 function savePrefs(prefs) {
 	localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+}
+
+/**
+ * Returns this device's sync bookkeeping, or an empty object.
+ *
+ * @return {Object}
+ */
+function loadSyncMeta() {
+	return readObject(SYNC_META_KEY);
+}
+
+/**
+ * Saves this device's sync bookkeeping.
+ *
+ * @param {Object} meta
+ */
+function saveSyncMeta(meta) {
+	localStorage.setItem(SYNC_META_KEY, JSON.stringify(meta));
+}
+
+/**
+ * Removes this device's sync bookkeeping (on sign-out).
+ */
+function clearSyncMeta() {
+	localStorage.removeItem(SYNC_META_KEY);
 }

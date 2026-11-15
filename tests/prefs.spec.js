@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
@@ -57,12 +57,10 @@ test('increase text size button is disabled at the maximum size, including after
 });
 
 test('decrease text size button is disabled at the minimum size, including after reload', async ({ page }) => {
-  // 16px to 10px in 2px steps
-  for (let i = 0; i < 3; i++) {
-    await page.locator('.decrease-size-button').click();
-  }
+  // 16px to 14px in one 2px step
+  await page.locator('.decrease-size-button').click();
 
-  expect(await rootSize(page)).toBe('10px');
+  expect(await rootSize(page)).toBe('14px');
   await expect(page.locator('.decrease-size-button')).toBeDisabled();
 
   await page.reload();
@@ -100,4 +98,15 @@ test('corrupt prefs fall back to defaults', async ({ page }) => {
 
   expect(await rootSize(page)).toBe('16px');
   await expect(page.locator('.max-min-button')).toHaveClass(/maximize/);
+});
+
+test('a saved text size below the minimum is raised to the minimum', async ({ page }) => {
+  // Sizes below 14px could be saved before the minimum was raised.
+  await page.evaluate(() => localStorage.setItem('simpleMITs_prefs', JSON.stringify({ maximized: false, size: '10px' })));
+  await page.reload();
+
+  expect(await rootSize(page)).toBe('14px');
+  expect((await savedPrefs(page)).size).toBe('14px');
+  await expect(page.locator('.decrease-size-button')).toBeDisabled();
+  await expect(page.locator('.increase-size-button')).toBeEnabled();
 });

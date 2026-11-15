@@ -22,33 +22,27 @@
     border-color: SlateBlue;
     outline: 0;
   }
-  
-  + button {
+}
+
+.sync-form {
+  .input-group {
+    background-color: $gray-lighter;
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  input {
+    appearance: none;
+    -webkit-appearance: none;
     background-color: transparent;
     border: none;
-    display: grid;
-    height: 100%;
-    padding: 0;
-    place-content: center;
-    position: relative;
-    width: $size-50;
+    font-size: $size-20;
+    min-width: 0;
+    padding: $size-10 $size-15;
+    width: 100%;
 
-    &::before {
-      content: '';
-      display: block;
-      background-image: $icon-add-white;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: $size-20;
-      height: $size-50;
-      position: absolute;
-        top: 0;
-        left: 0;
-      width: $size-50;
-    }
-
-    &:hover {
-      background-color: $gray-medium;
+    &:focus {
+      outline: 0;
     }
   }
 }

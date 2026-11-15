@@ -4,83 +4,139 @@
   <meta name="robots" content="noindex">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="icon" type="image/svg" href="assets/img/simpleMITs-logo.svg?ver=1.2.7">
-  <link rel="manifest" href="manifest.json?ver=1.2.7">
-  <link rel="stylesheet" href="includes/normalize/normalize.css?ver=1.2.7">
-  <link rel="stylesheet" href="assets/css/jost.css?ver=1.2.7">
-  <link rel="stylesheet" href="assets/css/style.css?ver=1.2.7">
+  <link rel="icon" type="image/svg" href="assets/img/simpleMITs-logo.svg?ver=1.3.0">
+  <link rel="manifest" href="manifest.json?ver=1.3.0">
+  <link rel="stylesheet" href="includes/normalize/normalize.css?ver=1.3.0">
+  <link rel="stylesheet" href="assets/css/jost.css?ver=1.3.0">
+  <link rel="stylesheet" href="assets/css/style.css?ver=1.3.0">
   <title>simpleMITs</title>
 </head>
 <body onload="listMITs()">
   <div class="page-container">
     <header class="page-header row gap-xs">
-      <img src="assets/img/simpleMITs-logo.svg?ver=1.2.7" alt="simpleMITs logo">
+      <img src="assets/img/simpleMITs-logo.svg?ver=1.3.0" alt="simpleMITs logo">
       <h1>simpleMITs</h1>
     </header>
     <ul id="task-list" class="task-list"></ul>
+
     <!-- Clear buttons -->
     <div id="clear-buttons" class="row gap-tiny">
       <!-- Clear completed button -->
-      <button id="clear-completed-button" class="modal-button" data-modal-id="clear-completed-modal">Clear completed</button>
+      <button id="clear-completed-button" class="secondary-button modal-button" data-modal-id="clear-completed-modal">Clear completed</button>
       <dialog id="clear-completed-modal" class="modal confirmation-modal">
         <div class="confirmation-modal-container">
-          <h4>Clear completed MITs?</h4>
-          <button class="confirm" onclick="clearCompleted()"><span class="screen-reader-text">Clear completed</span></button>
-          <button class="cancel"><span class="screen-reader-text">Cancel</span></button>
+          <h2>Clear completed MITs?</h2>
+          <button class="confirm icon-button" onclick="clearCompleted()">
+            <span class="screen-reader-text">Clear completed</span>
+          </button>
+          <button class="cancel icon-button secondary-button">
+            <span class="screen-reader-text">Cancel</span>
+          </button>
         </div>
       </dialog>
       <!-- Clear all button -->
-      <button id="clear-all-button" class="modal-button" data-modal-id="clear-all-modal">Clear all</button>
+      <button id="clear-all-button" class="secondary-button modal-button" data-modal-id="clear-all-modal">Clear all</button>
       <dialog id="clear-all-modal" class="modal confirmation-modal">
         <div class="confirmation-modal-container">
-          <h4>Clear all MITs?</h4>
-          <button class="confirm" onclick="clearAll()"><span class="screen-reader-text">Clear all</span></button>
-          <button class="cancel"><span class="screen-reader-text">Cancel</span></button>
+          <h2>Clear all MITs?</h2>
+          <button class="confirm icon-button" onclick="clearAll()">
+            <span class="screen-reader-text">Clear all</span>
+          </button>
+          <button class="cancel icon-button secondary-button">
+            <span class="screen-reader-text">Cancel</span>
+          </button>
         </div>
       </dialog>
     </div>
+
     <!-- New task form -->
     <form id="add-task-form">
       <label for="add-task-input">What's the most important thing you could do today?</label>
       <div class="input-group">
         <input id="add-task-input" type="text" placeholder="Add an important task">
-        <button type="submit"><span class="screen-reader-text">Add task</span></button>
+        <button type="submit" class="icon-button">
+          <span class="screen-reader-text">Add task</span>
+        </button>
       </div>
     </form>
+
     <footer class="row">
-      <p>simpleMITs <span id="simplemits-version">1.2.7</span> by <a href="https://samglover.net" target="_blank">Sam Glover</a></p>
-      <div class="col row gap-xs">
+      <p class="remove-bottom-margin">simpleMITs <span id="simplemits-version">1.3.0</span> by <a href="https://samglover.net" target="_blank" rel="bookmark noopener noreferrer">Sam Glover</a></p>
+      <div class="footer-controls col row gap-xs">
         <!-- Prefs -->
         <div class="prefs row gap-tiny">
-          <button class="square-button size-button decrease-size-button">
+          <button class="size-button decrease-size-button icon-button secondary-button">
             <span class="screen-reader-text">Decrease text size</span>
           </button>
-          <button class="square-button size-button increase-size-button">
+          <button class="size-button increase-size-button icon-button secondary-button">
             <span class="screen-reader-text">Increase text size</span>
           </button>
-          <button class="square-button max-min-button">
-            <span class="screen-reader-text"></span>
+          <button class="max-min-button icon-button secondary-button">
+            <span class="screen-reader-text">Maximize or constrain the task layout</span>
           </button>
         </div>
-        <!-- FAQ -->
-        <button class="modal-button square-button faq-button" data-modal-id="faq-modal">?</button>
-        <dialog id="faq-modal" class="modal content-modal">
+
+        <!-- Sync (hidden unless Supabase is configured in assets/js/config.js) -->
+        <button id="sync-button" class="sync-button icon-button secondary-button modal-button" data-modal-id="sync" hidden>
+          <div class="screen-reader-text">Sync</div>
+        </button>
+        <dialog id="sync" class="modal content-modal">
           <div class="modal-header">
-            <h4>simpleMITs FAQ</h4>
-            <button class="close-modal"><span class="screen-reader-text">Close modal</span></button>
+            <h2>Sync</h2>
+            <button class="close-modal icon-button"><span class="screen-reader-text">Close modal</span></button>
+          </div>
+          <div class="modal-content">
+            <div id="sync-signed-out">
+              <p>Sign in to keep your tasks in sync across your devices. We'll email you a sign-in link, so there's no password to remember.</p>
+              <form id="sync-sign-in-form" class="sync-form">
+                <label for="sync-email-input" class="screen-reader-text">Email address</label>
+                <div class="input-group">
+                  <input id="sync-email-input" type="email" autocomplete="email" placeholder="Email address" required>
+                  <button type="submit" class="icon-button">
+                    <div class="screen-reader-text">Send link</div>
+                  </button>
+                </div>
+              </form>
+              <p id="sync-sign-in-message" aria-live="polite"></p>
+            </div>
+            <div id="sync-signed-in" hidden>
+              <p>Signed in as <strong id="sync-email"></strong>. <span id="sync-status" aria-live="polite"></span></p>
+              <div class="row gap-xs">
+                <button id="sync-sign-out-button">Sign out</button>
+                <button id="sync-delete-button" class="danger-button">Delete account</button>
+              </div>
+              <p><small>Signing out or deleting your sync account does not remove the tasks stored on this device.</small></p>
+            </div>
+          </div>
+        </dialog>
+
+        <!-- FAQ -->
+        <button class="faq-button icon-button secondary-button modal-button" data-modal-id="faq">
+          <div class="screen-reader-text">Frequently asked questions</div>
+        </button>
+        <dialog id="faq" class="modal content-modal">
+          <div class="modal-header">
+            <h2>simpleMITs FAQ</h2>
+            <button class="close-modal icon-button">
+              <span class="screen-reader-text">Close modal</span>
+            </button>
           </div>
           <div class="modal-content"></div>
         </dialog>
       </div>
     </footer>
   </div>
+
   <script type="text/javascript" src="includes/jquery/jquery-3.7.1.min.js"></script>
-  <script type="text/javascript" src="includes/chance/chance.min.js?ver=1.2.7"></script>
-  <script type="text/javascript" src="assets/js/storage.js?ver=1.2.7"></script>
-  <script type="text/javascript" src="assets/js/main.js?ver=1.2.7"></script>
-  <script type="text/javascript" src="assets/js/drag-and-drop.js?ver=1.2.7"></script>
-  <script type="text/javascript" src="assets/js/modals.js?ver=1.2.7"></script>
-  <script type="text/javascript" src="assets/js/prefs.js?ver=1.2.7"></script>
-  <script type="text/javascript" src="assets/js/template-loader.js?ver=1.2.7"></script>
+  <script type="text/javascript" src="includes/chance/chance.min.js?ver=1.3.0"></script>
+  <script type="text/javascript" src="includes/supabase/supabase-2.118.0.min.js"></script>
+  <script type="text/javascript" src="assets/js/config.js?ver=1.3.0"></script>
+  <script type="text/javascript" src="assets/js/storage.js?ver=1.3.0"></script>
+  <script type="text/javascript" src="assets/js/main.js?ver=1.3.0"></script>
+  <script type="text/javascript" src="assets/js/drag-and-drop.js?ver=1.3.0"></script>
+  <script type="text/javascript" src="assets/js/modals.js?ver=1.3.0"></script>
+  <script type="text/javascript" src="assets/js/prefs.js?ver=1.3.0"></script>
+  <script type="text/javascript" src="assets/js/template-loader.js?ver=1.3.0"></script>
+  <script type="text/javascript" src="assets/js/sync.js?ver=1.3.0"></script>
 </body>
 </html>

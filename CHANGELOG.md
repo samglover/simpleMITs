@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 1.3.0 - 2026-11-15
+
+### Added
+- Optional sync across devices using Supabase, with email magic-link sign-in. Sync is off unless Supabase settings are provided; see `supabase/README.md`
+- Sign-out and account deletion; both keep the tasks on the current device
+- A `modal` URL parameter that opens a modal when the page loads (for example, `?modal=faq`). Closing the modal removes the parameter
+- A GitHub Actions workflow that deploys to GitHub Pages and writes the Supabase settings from repository variables, so they aren't stored in the repo
+- Instructions for hosting simpleMITs yourself
+- Screen reader text for task controls and footer buttons
+
+### Changed
+- Redesigned buttons, with icons for the footer controls
+- Rewrote the FAQ, including how sync works and who can access synced data
+- Raised the minimum text size to 14px. Text sizes saved below the new minimum are raised to 14px
+- Load the FAQ from a relative path, so simpleMITs works when hosted in a subfolder
+
+### Fixed
+- Completing or editing a task that was deleted on another device no longer throws an error
+- Clicking the text inside a modal button now opens its modal
+- Task checkboxes now tell screen readers whether each task is complete, instead of announcing the opposite action, and keep keyboard focus after completing or un-completing a task
+
+
 ## 1.2.7 2026-11-13
 
 ### Changed

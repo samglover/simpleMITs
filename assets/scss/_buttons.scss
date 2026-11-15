@@ -1,82 +1,119 @@
 @use 'variables' as *;
 
-button {
+button,
+.modal button {
   appearance: none;
   -webkit-appearance: none;
-  background-color: $gray-light;
+  background-color: $gray-lighter;
   border: none;
-  color: White;
+  color: Black;
   cursor: pointer;
-  padding: $size-5 $size-10;
-
+  padding: $size-5 $size-15;
+  text-align: center;
+  
   &:hover {
-    background-color: $gray-medium;
-  }
-
-  &.square-button {
-    height: 2em;
-    padding: 0;
-    display: grid;
-    place-content: center;
-    width: 2em;
-  }
-}
-
-.modal-button {
-  background-color: $gray-lighter;
-  color: Black;
-  font-size: $size-12-5;
-  opacity: .5;
-
-  &:hover {
+    background-color: $gray-light;
     color: White;
-    opacity: revert;
-  }
-}
-
-.prefs button {
-  background-color: $gray-lighter;
-  color: Black;
-  font-size: $size-12-5;
-  font-weight: bold;
-  opacity: .5;
-
-  &:hover:not(:disabled) {
-    background-color: $gray-medium;
-    color: White;
-    opacity: revert;
   }
 
-  &:disabled {
+  &:disabled,
+  &:disabled:not(:hover),
+  &:disabled:hover {
+    background-color: $gray-lighter;
+    color: revert;
     cursor: default;
+    opacity: .25 !important;
+  }
+  
+  &.icon-button {
+    display: grid;
+    font-weight: bold;
+    height: 100%;
+    padding: 0;
+    place-content: center;
+    width: $size-50;
+    
+    &:not(:hover) {
+      background-color: transparent;
+    }
+
+    &::before {
+      color: Black;
+      content: '';
+      display: block;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      height: 100%;
+      min-height: $size-20;
+      width: $size-20;
+    }
+
+    &:hover::before {
+      color: White;
+    }
+
+    &:disabled,
+    &:disabled:not(:hover),
+    &:disabled:hover {
+      &::before {
+        color: revert;
+      }
+    }
+  }
+}
+
+button.secondary-button {
+  &:not(:hover) {
+    opacity: .5;
   }
 
-  &.size-button {
+  &:not(:hover) {
+    background-color: $gray-lighter;
+    opacity: .5;
+  }
+}
+
+#add-task-input {
+  + button::before {
+    background-image: $icon-add-white;
+  }
+}
+
+.footer-controls {
+  > button,
+  .prefs > button {
+    font-size: $size-12-5;
+
+    &.icon-button {
+      font-size: $size-15;
+      height: 2em;
+      width: 2em;
+
+      &::before {
+        background-size: $size-12-5;
+        min-height: $size-12-5;
+        width: $size-12-5;
+      }
+    }
+  }
+
+  .size-button {
     &::before {
       content: 'A';
     }
-
-    &.increase-size-button::before {
-      font-size: 125%;
-    }
-
+  
     &.decrease-size-button::before {
-      font-size: 75%;
+      font-size: 80%;
     }
-  }
-
-
-  &.max-min-button {
-    &::before {
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: $size-12-5;
-      content: '';
-      display: block;
-      height: $size-12-5;
-      width: $size-12-5;
+    
+    &.increase-size-button::before {
+      font-size: 120%;
     }
   
+  }
+  
+  .max-min-button {
     &.maximize {
       &::before {
         background-image: $icon-maximize-black;
@@ -98,36 +135,102 @@ button {
     }
   }
   
-}
+  .sync-button {
+    
+    &::before {
+      background-image: $icon-sync-black;
+    }
+    
+    &:hover::before {
+      background-image: $icon-sync-white;
+    }
+    
+    &.signed-in {
+      position: relative;
 
-.faq-button {
-  font-weight: bold;
-}
-
-
-.modal button {
-  &.close-modal:not(:hover) {
-    background-color: transparent;
+      &::after {
+        background-color: Lime;
+        border-radius: 9999px;
+        content: '';
+        height: 25%;
+        position: absolute;
+          top: -10%;
+          left: -10%;
+        width: 25%;
+      }
+    }
   }
   
-  &.confirm {
+  .danger-button {
     background-color: #cc0000;
     color: White;
-    font-size: $size-12-5;
-    opacity: revert;
-    
+  
     &:hover {
       background-color: #aa0000;
     }
   }
   
-  &.cancel {
-    background-color: $gray-lighter;
-    color: revert;
-    font-size: $size-12-5;
-    opacity: .5;
-    &:hover {
-      opacity: revert;
+  .faq-button {
+    &::before {
+      content: '?';
+    }
+  }
+}
+
+.modal {
+  button.close-modal {
+    &:not(:hover) {
+      opacity: unset;
+    }
+  
+    &::before {
+      background-image: $icon-close-white;
+    }
+  }
+}
+
+.confirmation-modal {
+  button {
+    border: none;
+
+    &::selection {
+      background-color: transparent;
+    }
+
+    &.confirm {
+      grid-area: c;
+      
+      &:not(:hover) {
+        background-color: #cc0000;
+      }
+
+      &:hover {
+        background-color: #aa0000;
+      }
+      
+      &::before {
+        background-image: $icon-check-white;
+      }
+    }
+  
+    &.cancel {
+      grid-area: b;
+      
+      &:not(:hover) {
+        background-color: $gray-light;
+      }
+      
+      &::before {
+        background-image: $icon-close-white;
+      }
+    }
+  }
+}
+
+.sync-form {
+  button[type="submit"] {
+    &::before {
+      background-image: $icon-send-white;
     }
   }
 }
