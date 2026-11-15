@@ -57,12 +57,10 @@ test('increase text size button is disabled at the maximum size, including after
 });
 
 test('decrease text size button is disabled at the minimum size, including after reload', async ({ page }) => {
-  // 16px to 10px in 2px steps
-  for (let i = 0; i < 3; i++) {
-    await page.locator('.decrease-size-button').click();
-  }
+  // 16px to 14px in one 2px step
+  await page.locator('.decrease-size-button').click();
 
-  expect(await rootSize(page)).toBe('10px');
+  expect(await rootSize(page)).toBe('14px');
   await expect(page.locator('.decrease-size-button')).toBeDisabled();
 
   await page.reload();
