@@ -15,12 +15,13 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 - Redesigned buttons, with icons for the footer controls
 - Rewrote the FAQ, including how sync works and who can access synced data
-- Raised the minimum text size to 14px
+- Raised the minimum text size to 14px. Text sizes saved below the new minimum are raised to 14px
 - Load the FAQ from a relative path, so simpleMITs works when hosted in a subfolder
 
 ### Fixed
 - Completing or editing a task that was deleted on another device no longer throws an error
 - Clicking the text inside a modal button now opens its modal
+- Task checkboxes now tell screen readers whether each task is complete, instead of announcing the opposite action, and keep keyboard focus after completing or un-completing a task
 
 
 ## 1.2.7 2026-11-13

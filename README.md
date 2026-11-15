@@ -4,7 +4,7 @@ A simple tool for keeping track of your Most Important Tasks (MITs). Use it at [
 
 Built by [Sam Glover](https://samglover.net). 
 
-[Changelog](https://github.com/samglover/simpleMITs/blob/master/CHANGELOG.md)
+[Changelog](https://github.com/samglover/simpleMITs/blob/main/CHANGELOG.md)
 
 ## Host simpleMITs yourself
 
