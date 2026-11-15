@@ -5,7 +5,6 @@
 	display: inline-grid;
 	font-weight: bold;
 	height: 1lh;
-	overflow: hidden;
 	padding: 0;
 	place-content: center;
 	text-align: center;
@@ -39,7 +38,10 @@
 	}
 
 	/* Black-on-gray icons */
-	&.icon-size {
+	&.icon-size,
+	&.icon-maximize,
+	&.icon-minimize,
+	&.icon-sync {
 		opacity: .5;
 	}
 
@@ -56,5 +58,34 @@
 			font-size: 120%;
 			transform: translateY(-10%);
 		}
+	}
+
+	&.icon-maximize::before {
+		background-image: $icon-maximize-black;
+	}
+
+	&.icon-minimize::before {
+		background-image: $icon-minimize-black;
+	}
+
+	&.icon-sync {
+		&::before {
+			background-image: $icon-sync-black;
+		}
+
+		&.signed-in {
+			position: relative;
+			
+      &::after {
+        background-color: Lime;
+        border-radius: 9999px;
+        content: '';
+        height: 25%;
+        position: absolute;
+          top: -10%;
+          left: -10%;
+        width: 25%;
+      }
+    }
 	}
 }

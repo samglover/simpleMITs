@@ -136,8 +136,7 @@ button.secondary-button {
   }
   
   .sync-button {
-    position: relative;
-  
+    
     &::before {
       background-image: $icon-sync-black;
     }
@@ -147,14 +146,16 @@ button.secondary-button {
     }
     
     &.signed-in {
+      position: relative;
+
       &::after {
         background-color: Lime;
         border-radius: 9999px;
         content: '';
         height: 25%;
         position: absolute;
-          top: -12.5%;
-          left: -12.5%;
+          top: -10%;
+          left: -10%;
         width: 25%;
       }
     }
