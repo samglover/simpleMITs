@@ -21,6 +21,7 @@ let syncUser = null;
 let syncPushTimer = null;
 let syncInFlight = null;
 let syncAgain = false;
+let pendingEmail = '';
 
 if (document.readyState === 'loading') {
 	document.addEventListener('DOMContentLoaded', initSync);
@@ -44,6 +45,8 @@ function initSync() {
 
 	document.getElementById('sync-button').hidden = false;
 	document.getElementById('sync-sign-in-form').addEventListener('submit', sendSignInLink);
+	document.getElementById('sync-code-form').addEventListener('submit', verifySignInCode);
+	document.getElementById('sync-different-email-button').addEventListener('click', useDifferentEmail);
 	document.getElementById('sync-sign-out-button').addEventListener('click', signOut);
 	document.getElementById('sync-delete-button').addEventListener('click', deleteAccount);
 
@@ -101,17 +104,62 @@ async function sendSignInLink(event) {
 		return;
 	}
 
+	// The email has a link and a code. The link opens in the default browser,
+	// which on iPhone isn't a Home Screen app (they have separate storage), so
+	// the code lets people sign in right here instead.
+	pendingEmail = email;
 	form.hidden = true;
-	message.textContent = `Check ${email} for a sign-in link.`;
+	document.getElementById('sync-code-form').hidden = false;
+	document.getElementById('sync-different-email').hidden = false;
+	message.textContent = `We sent a sign-in link and code to ${email}. Click the link or enter the code here.`;
+	document.getElementById('sync-code-input').focus();
+}
+
+async function verifySignInCode(event) {
+	event.preventDefault();
+
+	const form = event.target;
+	const submitButton = form.querySelector('button[type="submit"]');
+	const token = form.querySelector('input').value.replace(/\s/g, '');
+	const message = document.getElementById('sync-sign-in-message');
+
+	if (!token || !pendingEmail) return;
+
+	submitButton.disabled = true;
+	message.textContent = 'Checking…';
+
+	const { error } = await syncClient.auth.verifyOtp({ email: pendingEmail, token, type: 'email' });
+
+	submitButton.disabled = false;
+
+	if (error) {
+		message.textContent = `That code didn't work: ${error.message}`;
+		return;
+	}
+
+	// Supabase reports the sign-in through onAuthStateChange, which updates the
+	// screen. Reset the form for the next time someone signs in.
+	resetSignInForm();
+}
+
+function useDifferentEmail() {
+	resetSignInForm();
+	document.getElementById('sync-email-input').focus();
 }
 
 /**
- * Shows the sign-in form again, empty, for the next time someone signs in.
+ * Shows the email form again, empty, for the next time someone signs in.
  */
 function resetSignInForm() {
 	const form = document.getElementById('sync-sign-in-form');
+	const codeForm = document.getElementById('sync-code-form');
+
+	pendingEmail = '';
 	form.reset();
 	form.hidden = false;
+	codeForm.reset();
+	codeForm.hidden = true;
+	document.getElementById('sync-different-email').hidden = true;
 	document.getElementById('sync-sign-in-message').textContent = '';
 }
 
