@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 1.3.1 2026-11-15
+
+### Added
+- Sign in with a code from the email, as well as the link. This makes sync work in apps added to an iPhone or iPad Home Screen, which can't use the link because it opens in Safari. Requires adding `{{ .Token }}` to the Supabase email templates; see `supabase/README.md`
+- A "Use a different email" button after requesting a sign-in email
+
+
 ## 1.3.0 - 2026-11-15
 
 ### Added

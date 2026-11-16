@@ -25,6 +25,11 @@
 }
 
 .sync-form {
+  label:not(.screen-reader-text) {
+    display: block;
+    margin-bottom: $size-5;
+  }
+
   .input-group {
     background-color: $gray-lighter;
     display: grid;

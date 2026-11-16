@@ -17,6 +17,7 @@ window.supabase = {
       remote: null,
       upserts: [],
       otpEmails: [],
+      verifyCalls: [],
       deleted: false,
       signIn(user) {
         state.user = user;
@@ -39,6 +40,13 @@ window.supabase = {
         async signInWithOtp({ email }) {
           state.otpEmails.push(email);
           return { error: null };
+        },
+        // Accepts the code '123456' and signs in as that email address.
+        async verifyOtp({ email, token, type }) {
+          state.verifyCalls.push({ email, token, type });
+          if ('123456' !== token) return { data: {}, error: { message: 'Token has expired or is invalid' } };
+          state.signIn({ id: '00000000-0000-4000-8000-000000000001', email });
+          return { data: {}, error: null };
         },
         async signOut() {
           state.user = null;
@@ -185,9 +193,50 @@ test.describe('with Supabase settings', () => {
     await page.fill('#sync-email-input', 'test@example.com');
     await page.press('#sync-email-input', 'Enter');
 
-    await expect(page.locator('#sync-sign-in-message')).toHaveText('Check test@example.com for a sign-in link.');
+    await expect(page.locator('#sync-sign-in-message')).toHaveText('We sent a sign-in link and code to test@example.com. Click the link or enter the code here.');
     await expect(page.locator('#sync-sign-in-form')).toBeHidden();
+    await expect(page.locator('#sync-code-input')).toBeFocused();
     expect(await page.evaluate(() => window.__fake.otpEmails)).toEqual(['test@example.com']);
+  });
+
+  test('entering the emailed code signs in, after a wrong code shows an error', async ({ page }) => {
+    await setUp(page, { localTasks: [task(1)] });
+
+    await page.locator('#sync-button').click();
+    await page.fill('#sync-email-input', 'test@example.com');
+    await page.press('#sync-email-input', 'Enter');
+
+    await page.fill('#sync-code-input', '000000');
+    await page.press('#sync-code-input', 'Enter');
+    await expect(page.locator('#sync-sign-in-message')).toHaveText("That code didn't work: Token has expired or is invalid");
+    await expect(page.locator('#sync-signed-out')).toBeVisible();
+
+    // Spaces are ignored, since some email apps show codes as "123 456".
+    await page.fill('#sync-code-input', '123 456');
+    await page.press('#sync-code-input', 'Enter');
+
+    await expect(page.locator('#sync-signed-in')).toBeVisible();
+    await expect(page.locator('#sync-email')).toHaveText('test@example.com');
+    await expect.poll(() => remoteDescriptions(page)).toEqual(['Task 1']);
+    expect(await page.evaluate(() => window.__fake.verifyCalls.at(-1))).toEqual({ email: 'test@example.com', token: '123456', type: 'email' });
+  });
+
+  test('"Use a different email" returns to an empty email form', async ({ page }) => {
+    await setUp(page);
+
+    await page.locator('#sync-button').click();
+    await page.fill('#sync-email-input', 'typo@example.con');
+    await page.press('#sync-email-input', 'Enter');
+    await expect(page.locator('#sync-code-form')).toBeVisible();
+
+    await page.locator('#sync-different-email-button').click();
+
+    await expect(page.locator('#sync-sign-in-form')).toBeVisible();
+    await expect(page.locator('#sync-email-input')).toHaveValue('');
+    await expect(page.locator('#sync-email-input')).toBeFocused();
+    await expect(page.locator('#sync-code-form')).toBeHidden();
+    await expect(page.locator('#sync-different-email')).toBeHidden();
+    await expect(page.locator('#sync-sign-in-message')).toHaveText('');
   });
 
   test('?modal=sync opens the Sync screen on load', async ({ page }) => {
@@ -307,6 +356,7 @@ test.describe('with Supabase settings', () => {
 
     await expect(page.locator('#sync-signed-out')).toBeVisible();
     await expect(page.locator('#sync-sign-in-form')).toBeVisible();
+    await expect(page.locator('#sync-code-form')).toBeHidden();
     expect(await page.evaluate(() => localStorage.getItem('simpleMITs_sync'))).toBeNull();
     expect(await descriptions(page)).toEqual(['Task 1']);
 

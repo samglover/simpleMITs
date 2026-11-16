@@ -12,7 +12,15 @@ To turn on sync:
    - Set **Site URL** to your site's address, such as `https://simplemits.com`.
    - Add these **Redirect URLs**: your site's address followed by `/**` (for example, `https://simplemits.com/**` or `https://<your-username>.github.io/simpleMITs/**`) and `http://localhost:3471/**` (for local testing). The `/**` wildcard matters: the app asks to return to the page's address, including the trailing `/`, and an entry without the wildcard may not match it. When a redirect URL doesn't match, Supabase sends people to the Site URL instead.
 4. **Check that email sign-in is on.** Under **Authentication → Sign In / Providers**, the **Email** provider should be enabled. It is by default.
-5. **Customize the emails (optional).** Under **Authentication → Emails**, edit the **Magic Link** and **Confirm signup** templates so they mention simpleMITs. New users get the "Confirm signup" email the first time they sign in.
+5. **Add the sign-in code to the emails.** Under **Authentication → Emails**, edit both the **Magic Link** and **Confirm signup** templates. New users get the "Confirm signup" email the first time they sign in. Each template needs the link (`{{ .ConfirmationURL }}`) and the code (`{{ .Token }}`). For example:
+
+   ```html
+   <h2>Sign in to simpleMITs</h2>
+   <p><a href="{{ .ConfirmationURL }}">Sign in to simpleMITs</a></p>
+   <p>Or enter this code in simpleMITs: <strong>{{ .Token }}</strong></p>
+   ```
+
+   The code is what makes sign-in work from an app added to an iPhone or iPad Home Screen. Those apps have their own storage, separate from Safari, but email links always open in Safari. Without `{{ .Token }}` in the templates, people can only sign in by tapping the link.
 6. **Find your project URL and key.**
    - **Project URL:** under **Project Settings → Data API**, copy the **Project URL**. It looks like `https://<project-ref>.supabase.co`, where the project ref is the ID in your dashboard's address bar.
    - **Key:** under **Project Settings → API Keys**, copy the public key (labeled *publishable* or *anon*). Never use the *secret* or *service_role* key; it bypasses all permissions.
