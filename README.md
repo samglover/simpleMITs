@@ -6,6 +6,10 @@ Built by [Sam Glover](https://samglover.net).
 
 [Changelog](https://github.com/samglover/simpleMITs/blob/main/CHANGELOG.md)
 
+## New in 1.3: sync tasks!
+
+Now you can sign in to sync your tasks across your devices. [Read the FAQ for details.](https://simplemits.com?modal=faq)
+
 ## Host simpleMITs yourself
 
 simpleMITs is a static site: HTML, CSS, and JavaScript, with no server code. You can host your own copy anywhere that serves static files. Sync is optional and off by default.
