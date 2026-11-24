@@ -2,7 +2,16 @@
 
 Sync is optional. Without Supabase settings in `assets/js/config.js`, simpleMITs works entirely from the browser's local storage and the Sync button is hidden.
 
-`config.js` isn't in the repo, so a fork or downloaded copy never syncs to someone else's Supabase project. Each copy uses its own settings: a local file for development, and repository variables when deployed to GitHub Pages.
+`config.js` isn't in the repo, so a fork or downloaded copy never syncs to someone else's Supabase project. The same two settings (project URL and key) live in two places, and each place is used for a different copy of the site:
+
+| Where | Used by | Needed? |
+| --- | --- | --- |
+| Your local `assets/js/config.js` | The app when you run it on your computer | Only if you want sync while developing locally |
+| GitHub repository variables | The live site on GitHub Pages; the deploy workflow writes its own `config.js` from them | Yes, for sync on the live site |
+
+They don't depend on each other. Deleting your local `config.js` doesn't affect the live site, and changing the repository variables doesn't change your local copy. If you change Supabase projects, update both.
+
+Neither setting is a secret. The publishable key is designed to be public, and it ends up in the live site's JavaScript where anyone can read it. Your data is protected by the permissions that `setup.sql` creates.
 
 To turn on sync:
 
@@ -24,8 +33,8 @@ To turn on sync:
 6. **Find your project URL and key.**
    - **Project URL:** under **Project Settings → Data API**, copy the **Project URL**. It looks like `https://<project-ref>.supabase.co`, where the project ref is the ID in your dashboard's address bar.
    - **Key:** under **Project Settings → API Keys**, copy the public key (labeled *publishable* or *anon*). Never use the *secret* or *service_role* key; it bypasses all permissions.
-7. **Add them for local development.** Copy `assets/js/config.example.js` to `assets/js/config.js` and fill in both values. Git ignores `config.js`, so it stays on your computer.
-8. **Add them for GitHub Pages.** In your GitHub repository:
+7. **Add them for local development (optional).** Copy `assets/js/config.example.js` to `assets/js/config.js` and fill in both values. Git ignores `config.js`, so it stays on your computer and is never deployed. Skip this step if you don't need sync when running the app locally.
+8. **Add them for GitHub Pages.** The live site doesn't use your local `config.js`. In your GitHub repository:
    - Under **Settings → Secrets and variables → Actions → Variables**, add repository variables named `SUPABASE_URL` and `SUPABASE_KEY`.
    - Under **Settings → Pages**, set **Source** to **GitHub Actions**.
 
