@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 - Cloudflare analytics JS snippet
 
+### Changed
+- Separate deployment workflow into separate build and deploy jobs
+
+
 ## 1.3.2 2026-11-17
 
 ### Changed
