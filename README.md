@@ -22,6 +22,8 @@ simpleMITs is a static site: HTML, CSS, and JavaScript, with no server code. You
 4. **Publish with GitHub Actions.** Under **Settings → Pages**, set **Source** to **GitHub Actions**.
 5. **Deploy.** Push to `main`, or run the **Deploy to GitHub Pages** workflow from the **Actions** tab. Your copy will be at `https://<your-username>.github.io/simpleMITs/`, or at your custom domain.
 
+To use [Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/), add your site's token as a repository variable named `CLOUDFLARE_ANALYTICS_TOKEN` under **Settings → Secrets and variables → Actions → Variables**. The deploy workflow adds it to the page. Without it, the analytics script is left out.
+
 ### Anywhere else
 
 Upload the repository's files to any static host or web server, such as Netlify, Cloudflare Pages, or your own server. There's nothing to build; the compiled CSS is already in the repo. You can leave out the development files (`tests/`, `scripts/`, `.github/`, `package.json`, and so on).

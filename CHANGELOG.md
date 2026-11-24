@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 1.3.3 2026-11-24
+
+### Added
+- Cloudflare analytics JS snippet
+
 ## 1.3.2 2026-11-17
 
 ### Changed

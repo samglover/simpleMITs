@@ -3,6 +3,9 @@
 # Writes assets/js/config.js from the SUPABASE_URL and SUPABASE_KEY repository
 # variables, so the Supabase settings aren't in the repo. Forks don't inherit
 # repository variables, so their copies deploy with sync turned off.
+#
+# Also fills in the Cloudflare Web Analytics token in index.html from the
+# CLOUDFLARE_ANALYTICS_TOKEN repository variable. Without it, the beacon is removed.
 
 name: Deploy to GitHub Pages
 
@@ -44,6 +47,28 @@ jobs:
           '
           if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_KEY" ]; then
             echo "::notice::SUPABASE_URL or SUPABASE_KEY is not set, so sync is turned off for this deploy."
+          fi
+
+      - name: Set the Cloudflare Web Analytics token from a repository variable
+        env:
+          CLOUDFLARE_ANALYTICS_TOKEN: ${{ vars.CLOUDFLARE_ANALYTICS_TOKEN }}
+        run: |
+          node -e '
+            const fs = require("fs");
+            const token = process.env.CLOUDFLARE_ANALYTICS_TOKEN || "";
+            const html = fs.readFileSync("index.html", "utf8");
+            const beacon = /^[ \t]*<script[^>]*static\.cloudflareinsights\.com\/beacon\.min\.js[^>]*><\/script>\r?\n/m;
+            if (!beacon.test(html)) {
+              console.error("::error::Could not find the Cloudflare beacon script in index.html.");
+              process.exit(1);
+            }
+            const updated = token
+              ? html.replace(beacon, (tag) => tag.replace("CLOUDFLARE_ANALYTICS_TOKEN", () => token.replace(/[^A-Za-z0-9_-]/g, "")))
+              : html.replace(beacon, "");
+            fs.writeFileSync("index.html", updated);
+          '
+          if [ -z "$CLOUDFLARE_ANALYTICS_TOKEN" ]; then
+            echo "::notice::CLOUDFLARE_ANALYTICS_TOKEN is not set, so the Cloudflare beacon was removed for this deploy."
           fi
 
       - uses: actions/configure-pages@v6
